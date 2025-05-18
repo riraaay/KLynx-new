@@ -17,19 +17,32 @@ function Consultation()
   const [mockData, setMockData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
+ 
   const [isEditing, setIsEditing] = useState(false);
   
   const itemsPerPage = 8;
 
+  const [data, setData] = useState([]);
+
+  //set active modal 
+   const [activeTab, setActiveTab] = useState('patient');
+
+
   const [formData, setFormData] = useState({
-    familyId: '',
-    patientName: '',
-    problem: '',
-    diagnosis: '',
-    procedure: '',
-    medication: '',
-    doctorName: '',
-    date: ''
+            familyId: '',
+            LastName: '',
+            FirstName: '',
+            MiddleName: '',
+            ContactNo: '',
+            Age: '',
+            Bday: '',
+            Gender: '',
+            CivilStat: '',
+            Occupation: '',
+            Educ: '',
+            PhilHealth: '',
+            Address: ''
+
   });
 
 const [generalDetails, setGeneralDetails] = useState({
@@ -39,6 +52,34 @@ const [generalDetails, setGeneralDetails] = useState({
     password: ''
 });
 
+// Dropdown for Patient Consultation
+const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState('options ▼');
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  const handleOptionClick = (option) => {
+    setSelected(option);
+    setIsOpen(false);
+  };
+
+ const options = ['Option 1', 'Option 2', 'Option 3'];
+
+// Sample for Search query 
+const [query, setQuery] = useState('');
+  const items = ['ABC123', 'Smith', 'Juan', 'Dela Cruz', 'BCD234'];
+
+  const filteredItems = items.filter(item =>
+    item.toLowerCase().includes(query.toLowerCase())
+  );
+
+ // deleting the record
+ const handleDelete = (id) => {
+    const confirmed = window.confirm("Are you sure you want to delete this?");
+    if (confirmed) {
+      setData(prev => prev.filter(item => item.id !== id));
+    }
+  };
 
   // Load account details from local storage on component mount
   useEffect(() => {
@@ -79,13 +120,18 @@ const [generalDetails, setGeneralDetails] = useState({
       {
         if (
           !formData.familyId ||
-          !formData.patientName ||
-          !formData.problem ||
-          !formData.diagnosis ||
-          !formData.procedure ||
-          !formData.medication ||
-          !formData.doctorName ||
-          !formData.date
+          !formData.LastName ||
+          !formData.FirstName ||
+          !formData.MiddleName ||
+          !formData.ContactNo ||
+          !formData.Age ||
+          !formData.Bday ||
+          !formData.Gender ||
+          !formData.CivilStat ||
+          !formData.Occupation ||
+          !formData.Educ ||
+          !formData.PhilHealth ||
+           !formData.Address  
         ) {
           toast.error("Please enter all the fields");
           return;
@@ -114,18 +160,25 @@ const [generalDetails, setGeneralDetails] = useState({
         {
           setFormData({
             familyId: '',
-            patientName: '',
-            problem: '',
-            diagnosis: '',
-            procedure: '',
-            medication: '',
-            doctorName: '',
-            date: '',
+            LastName: '',
+            FirstName: '',
+            MiddleName: '',
+            ContactNo: '',
+            Age: '',
+            Bday: '',
+            Gender: '',
+            CivilStat: '',
+            Occupation: '',
+            Educ: '',
+            PhilHealth: '',
+            Address: ''
           });
           setShowModal(false);
           toast.success("Consultation Record Added Successfully");
         })
       };
+
+      
 
 
     // Fetch Consultation Record
@@ -150,25 +203,37 @@ const [generalDetails, setGeneralDetails] = useState({
     if (record) {
       setFormData({
         familyId: record["family ID"],
-        patientName: record["Patient Name"],
-        problem: record["Problem"],
-        diagnosis: record["Diagnosis"],
-        procedure: record["Proceed"],
-        medication: record["Medication"],
-        doctorName: record["Doctor Name"],
-        date: record["Date"]
+        FirstName: record["First Name"],
+        LastName: record["Last Name"],
+        MiddleName: record["Middle Name"],
+        ContactNo: record["Contact No."],
+        Age: record["Age"],
+        Bday: record["Birthdate"],
+        Gender: record["Gender"],
+        CivilStat: record["Civil Status"],
+        Occupation: record["Occupation"],
+        Educ: record["Educational Attainment"],
+        PhilHealth: record["PhilHealth"],
+        Address: record["Complete Address"]
+        
       });
       setIsEditing(true);
     } else {
       setFormData({
-        familyId: '',
-        patientName: '',
-        problem: '',
-        diagnosis: '',
-        procedure: '',
-        medication: '',
-        doctorName: '',
-        date: ''
+         familyId: '',
+            LastName: '',
+            FirstName: '',
+            MiddleName: '',
+            ContactNo: '',
+            Age: '',
+            Bday: '',
+            Gender: '',
+            CivilStat: '',
+            Occupation: '',
+            Educ: '',
+            PhilHealth: '',
+            Address: ''
+
       });
       setIsEditing(false);
     }
@@ -177,7 +242,9 @@ const [generalDetails, setGeneralDetails] = useState({
 
   const handleModalClose = () => {
     setShowModal(false);
+    setActiveTab(false);
   };
+
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -196,6 +263,7 @@ const [generalDetails, setGeneralDetails] = useState({
       ]);
     }
     setShowModal(false);
+    setActiveTab
   };
 
 
@@ -428,9 +496,59 @@ const [generalDetails, setGeneralDetails] = useState({
 
         <div className="contents">
           <div className="patrec-btn">
+            <h3>Show </h3>
+                  <input type='text' onClick={toggleDropdown} value={selected}/>
+                
+    {isOpen && (
+      <ul>
+        {options.map(option => (
+          <li
+            key={option}
+            onClick={() => handleOptionClick(option)}
+          >
+            {option}
+          </li>
+        ))}
+      </ul>
+    )}
             <button className="adit" onClick={() => handleModalOpen()}>
-              <i className="fa-solid fa-user-plus fa-sm"></i> Add
+              Add
             </button>
+              
+                
+               
+               <button
+                    className="edit"
+                    onClick={() => handleModalOpen(currentData)} 
+                  >
+                    Edit
+                  </button> 
+                 
+       
+            <button 
+              className="delete"
+             onClick={() => handleDelete(formData)}  
+            >
+              Delete
+            </button>
+            <div className='patrec-btn'>
+                <h3>Search:</h3> 
+              <input type="text" value={query} 
+              onChange={(e) => setQuery(e.target.value)}
+              />
+
+        {query && (
+        <ul>
+          {filteredItems.length > 0 ? (
+            filteredItems.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))
+          ) : (
+            <li>No results found</li>
+          )}
+        </ul>
+      )}  
+            </div>
           </div>
         </div>
 
@@ -439,34 +557,32 @@ const [generalDetails, setGeneralDetails] = useState({
             <thead>
               <tr>
                 <th>Family ID</th>
-                <th>Patient Name</th>
-                <th>Problem</th>
-                <th>Diagnosis</th>
-                <th>Procedure</th>
-                <th>Medication</th>
-                <th>Doctor&#39;s Name</th>
-                <th>Date</th>
-                <th>Actions</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Contact No.</th>
+                <th>Record</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
             {currentData.map((item) => (
                 <tr key={item.id||item.familyId}>
                   <td>{item.familyId}</td>
-                  <td>{item.patientName}</td>
-                  <td>{item.problem}</td>
-                  <td>{item.diagnosis}</td>
-                  <td>{item.procedure}</td>
-                  <td>{item.medication}</td>
-                  <td>{item.doctorName}</td>
-                  <td>{item.date}</td>
-                  <td>
+                  <td>{item.LastName}</td>
+                  <td>{item.FirstName}</td>
+                  <td>{item.MiddleName}</td>
+                  <td>{item.ContactNo}</td>
+                  <td><button>View</button></td>
+                  <td><input type="checkbox" /></td>
+            
+                  {/* <td>
                     <button className="action-btn" 
                     onClick={() => handleModalOpen(item)}
                     >
-                      Edit
+                      View
                     </button>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>
@@ -503,7 +619,14 @@ const [generalDetails, setGeneralDetails] = useState({
       {showModal && (
         <div className="modal">
           <div className="modal-content">
-            <h3>{isEditing ? 'Edit Patient Record' :   <i className="fa-solid fa-user-plus fa-sm">  Add Patient Consultation</i>}</h3>
+            <div className='tab-buttons'>
+          <button  className={activeTab === 'showModal' ? 'active' : ''}
+          onClick={() => setActiveTab('showModal')}> Patient Profile </button>
+           <button className={activeTab === 'spouse' ? 'active' : ''}
+          onClick={() => setActiveTab('spouse')}> Husband/Wife Profile </button> 
+           <button className={activeTab === 'parent' ? 'active' : ''}
+          onClick={() => setActiveTab('parent')}> Father/Mother Profile </button>
+          </div>
             <form onSubmit={handleFormSubmit}>
             <input
               type="text"
@@ -515,64 +638,454 @@ const [generalDetails, setGeneralDetails] = useState({
             />
             <input
               type="text"
-              name="patientName"
-              value={formData.patientName}
+              name="LastName"
+              value={formData.LastName}
               onChange={handleFormChange}
-              placeholder="Patient Name"
+              placeholder="Last Name"
               required
             />
             <input
               type="text"
-              name="problem"
-              value={formData.problem}
+              name="FirstName"
+              value={formData.FirstName}
               onChange={handleFormChange}
-              placeholder="Problem"
+              placeholder="First Name"
               required
             />
             <input
               type="text"
-              name="diagnosis"
-              value={formData.diagnosis}
+              name="MiddleName"
+              value={formData.MiddleName}
               onChange={handleFormChange}
-              placeholder="Diagnosis"
+              placeholder="Middle Name"
+              
+            />
+            <input
+              type="Contact"
+              size={12}
+              name="ContactNo"
+              value={formData.ContactNo}
+              onChange={handleFormChange}
+              placeholder="Contact No."
               required
             />
             <input
               type="text"
-              name="procedure"
-              value={formData.procedure}
+              name="Age"
+              value={formData.Age}
               onChange={handleFormChange}
-              placeholder="Procedure"
-              required
-            />
-            <input
-              type="text"
-              name="medication"
-              value={formData.medication}
-              onChange={handleFormChange}
-              placeholder="Medication"
-              required
-            />
-            <input
-              type="text"
-              name="doctorName"
-              value={formData.doctorName}
-              onChange={handleFormChange}
-              placeholder="Doctor's Name"
+              placeholder="Age"
               required
             />
             <input
               type="date"
-              name="date"
-              value={formData.date}
+              name="Bday"
+              value={formData.Bday}
+             
+              onChange={handleFormChange}
+              placeholder="Birthdate"
+              required
+            />
+            <input
+              type="text"
+              name="Gender"
+              value={formData.Gender}
+              onChange={handleFormChange}
+              placeholder='Gender'
+              required
+            />
+             <input
+              type="text"
+              name="CivilStat"
+              value={formData.CivilStat}
+              placeholder='Civil Status'
               onChange={handleFormChange}
               required
             />
-              <button type="submit" onClick={handleSubmit3}>Save</button>
+             <input
+              type="text"
+              name="Occupation"
+              value={formData.Occupation}
+              placeholder='Occupation'
+              onChange={handleFormChange}
+              required
+            />
+             <input
+              type="text"
+              name="Educ"
+              value={formData.Educ} 
+              placeholder='Educational Attainment'
+              onChange={handleFormChange}
+              required
+            />
+             <input
+              type="text"
+              name="PhilHealth"
+              value={formData.PhilHealth}
+              placeholder='PhilHealth No.'
+              onChange={handleFormChange}
+              required
+            />
+            </form> 
+            <div className='modal-buttons'>
+             <button type="submit" onClick={handleSubmit3}>Save</button>
               <button type="button" onClick={handleModalClose}>
                 Cancel
               </button>
-            </form>
+              </div>
+          </div>
+        </div>
+      )}
+
+       {activeTab === "spouse" && (
+        <div className="modal">
+          <div className="modal-content">
+            <div className='tab-buttons'>
+          <button  className={activeTab === 'showModal' ? 'active' : ''}
+          onClick={() => setActiveTab('showModal')}> Patient Profile </button>
+           <button className={activeTab === 'spouse' ? 'active' : ''}
+          onClick={() => setActiveTab('spouse')}> Husband/Wife Profile </button> 
+           <button className={activeTab === 'parent' ? 'active' : ''}
+          onClick={() => setActiveTab('parent')}> Father/Mother Profile </button>
+          </div>
+            <form onSubmit={handleFormSubmit}>
+            <input
+              type="text"
+              name="familyId"
+              value={formData.familyId}
+              onChange={handleFormChange}
+              placeholder="Family ID"
+              required
+            />
+            <input
+              type="text"
+              name="LastName"
+              value={formData.LastName}
+              onChange={handleFormChange}
+              placeholder="Last Name"
+              required
+            />
+            <input
+              type="text"
+              name="FirstName"
+              value={formData.FirstName}
+              onChange={handleFormChange}
+              placeholder="First Name"
+              required
+            />
+            <input
+              type="text"
+              name="MiddleName"
+              value={formData.MiddleName}
+              onChange={handleFormChange}
+              placeholder="Middle Name"
+              
+            />
+            <input
+              type="Contact"
+              name="ContactNo"
+              value={formData.ContactNo}
+              onChange={handleFormChange}
+              placeholder="Contact No."
+              required
+            />
+            <input
+              type="text"
+              name="Age"
+              value={formData.Age}
+              onChange={handleFormChange}
+              placeholder="Age"
+              required
+            />
+            <input
+              type="date"
+              name="Bday"
+              value={formData.Bday}
+             
+              onChange={handleFormChange}
+              placeholder="Birthdate"
+              required
+            />
+            <input
+              type="text"
+              name="Gender"
+              value={formData.Gender}
+              onChange={handleFormChange}
+              placeholder='Gender'
+              required
+            />
+             <input
+              type="text"
+              name="CivilStat"
+              value={formData.CivilStat}
+              placeholder='Civil Status'
+              onChange={handleFormChange}
+              required
+            />
+             <input
+              type="text"
+              name="Occupation"
+              value={formData.Occupation}
+              placeholder='Occupation'
+              onChange={handleFormChange}
+              required
+            />
+             <input
+              type="text"
+              name="Educ"
+              value={formData.Educ} 
+              placeholder='Educational Attainment'
+              onChange={handleFormChange}
+              required
+            />
+             <input
+              type="text"
+              name="PhilHealth"
+              value={formData.PhilHealth}
+              placeholder='PhilHealth No.'
+              onChange={handleFormChange}
+              required
+            />
+
+               <input
+              type="text"
+              name="Address"
+              value={formData.Address}
+              placeholder='Complete Address'
+              onChange={handleFormChange}
+              required
+            />
+            </form> 
+            <div className='modal-buttons'>
+             <button type="submit" onClick={handleSubmit3}>Save</button>
+              <button type="button" onClick={handleModalClose}>
+                Cancel
+              </button>
+              </div>
+          </div>
+        </div>
+      )}
+
+       {activeTab === 'parent' && (
+        <div className="modal">
+          <div className="modal-content2">
+            <div className='tab-buttons'>
+          <button  className={activeTab === 'showModal' ? 'active' : ''}
+          onClick={() => setActiveTab('showModal')}> Patient Profile </button>
+           <button className={activeTab === 'spouse' ? 'active' : ''}
+          onClick={() => setActiveTab('spouse')}> Husband/Wife Profile </button> 
+           <button className={activeTab === 'parent' ? 'active' : ''}
+          onClick={() => setActiveTab('parent')}> Father/Mother Profile </button>
+          </div>
+            <form onSubmit={handleFormSubmit}>
+              <h4>Father&apos;s Information</h4>
+            <input
+              type="text"
+              name="familyId"
+              value={formData.familyId}
+              onChange={handleFormChange}
+              placeholder="Family ID"
+              required
+            />
+            <input
+              type="text"
+              name="LastName"
+              value={formData.LastName}
+              onChange={handleFormChange}
+              placeholder="Last Name"
+              required
+            />
+            <input
+              type="text"
+              name="FirstName"
+              value={formData.FirstName}
+              onChange={handleFormChange}
+              placeholder="First Name"
+              required
+            />
+            <input
+              type="text"
+              name="MiddleName"
+              value={formData.MiddleName}
+              onChange={handleFormChange}
+              placeholder="Middle Name"
+              
+            />
+            <input
+              type="Contact"
+              name="ContactNo"
+              value={formData.ContactNo}
+              onChange={handleFormChange}
+              placeholder="Contact No."
+              required
+            />
+            <input
+              type="text"
+              name="Age"
+              value={formData.Age}
+              onChange={handleFormChange}
+              placeholder="Age"
+              required
+            />
+            <input
+              type="date"
+              name="Bday"
+              value={formData.Bday}
+             
+              onChange={handleFormChange}
+              placeholder="Birthdate"
+              required
+            />
+            <input
+              type="text"
+              name="Gender"
+              value={formData.Gender}
+              onChange={handleFormChange}
+              placeholder='Gender'
+              required
+            />
+             <input
+              type="text"
+              name="CivilStat"
+              value={formData.CivilStat}
+              placeholder='Civil Status'
+              onChange={handleFormChange}
+              required
+            />
+             <input
+              type="text"
+              name="Occupation"
+              value={formData.Occupation}
+              placeholder='Occupation'
+              onChange={handleFormChange}
+              required
+            />
+             <input
+              type="text"
+              name="Educ"
+              value={formData.Educ} 
+              placeholder='Educational Attainment'
+              onChange={handleFormChange}
+              required
+            />
+             <input
+              type="text"
+              name="PhilHealth"
+              value={formData.PhilHealth}
+              placeholder='PhilHealth No.'
+              onChange={handleFormChange}
+              required
+            />
+
+            </form> 
+
+             <form onSubmit={handleFormSubmit}>
+              <h4>Mother&apos;s Information</h4>
+            <input
+              type="text"
+              name="familyId"
+              value={formData.familyId}
+              onChange={handleFormChange}
+              placeholder="Family ID"
+              required
+            />
+            <input
+              type="text"
+              name="LastName"
+              value={formData.LastName}
+              onChange={handleFormChange}
+              placeholder="Last Name"
+              required
+            />
+            <input
+              type="text"
+              name="FirstName"
+              value={formData.FirstName}
+              onChange={handleFormChange}
+              placeholder="First Name"
+              required
+            />
+            <input
+              type="text"
+              name="MiddleName"
+              value={formData.MiddleName}
+              onChange={handleFormChange}
+              placeholder="Middle Name"
+              
+            />
+            <input
+              type="Contact"
+              name="ContactNo"
+              value={formData.ContactNo}
+              onChange={handleFormChange}
+              placeholder="Contact No."
+              required
+            />
+            <input
+              type="text"
+              name="Age"
+              value={formData.Age}
+              onChange={handleFormChange}
+              placeholder="Age"
+              required
+            />
+            <input
+              type="date"
+              name="Bday"
+              value={formData.Bday}
+             
+              onChange={handleFormChange}
+              placeholder="Birthdate"
+              required
+            />
+            <input
+              type="text"
+              name="Gender"
+              value={formData.Gender}
+              onChange={handleFormChange}
+              placeholder='Gender'
+              required
+            />
+             <input
+              type="text"
+              name="CivilStat"
+              value={formData.CivilStat}
+              placeholder='Civil Status'
+              onChange={handleFormChange}
+              required
+            />
+             <input
+              type="text"
+              name="Occupation"
+              value={formData.Occupation}
+              placeholder='Occupation'
+              onChange={handleFormChange}
+              required
+            />
+             <input
+              type="text"
+              name="Educ"
+              value={formData.Educ} 
+              placeholder='Educational Attainment'
+              onChange={handleFormChange}
+              required
+            />
+             <input
+              type="text"
+              name="PhilHealth"
+              value={formData.PhilHealth}
+              placeholder='PhilHealth No.'
+              onChange={handleFormChange}
+              required
+            />
+
+            </form> 
+            <div className='modal-buttons'>
+             <button type="submit" onClick={handleSubmit3}>Save</button>
+              <button type="button" onClick={handleModalClose}>
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
