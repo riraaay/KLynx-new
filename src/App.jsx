@@ -20,6 +20,8 @@ import About from './pages/Facepage/about'
 import Contact from './pages/Facepage/contact'
 import Home from './pages/Facepage/Frontpage'
 
+import Prenatal from './pages/Admin/Prenatal'
+
 
 
 function App() {
@@ -51,6 +53,8 @@ function App() {
               <Route path='/Home' element={<Home/>} />
               <Route path="*" element={<Home />} />
                <Route path="/" element={<Home />} />
+               
+              <Route path='/Prenatal' element={<Prenatal/>} />
               
               </Routes>
           </BrowserRouter>
@@ -58,4 +62,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
