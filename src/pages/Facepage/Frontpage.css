@@ -1,0 +1,609 @@
+/* THIS IS THE DESIGN FOR THE FRONTPAGE.JSX */
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  background-color: #f5f5f5;
+  font-family: Arial, sans-serif;
+  position: relative;
+
+  background-image: url('../../assets/picture/cityhall.png'); /* Replace with your image path */
+  background-size: cover; /* Makes the background image cover the entire container */
+  background-position: center; /* Centers the background image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  
+}
+
+/* Navbar styles */
+.home-navbar {
+  position: absolute;
+  top: 37px;
+  right: 70px;
+  display: flex;
+  gap: 30px;
+}
+
+.home-nav-link {
+  text-decoration: none;
+  color: #002878;
+  font-size: 18px;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.home-nav-link:hover {
+  color: #2267f3;
+}
+
+/* Logo styles */
+.home-logo-container {
+  margin-top: 30px;
+}
+
+.home-logo {
+  align-items: center;
+  justify-content: center;
+  width: 400px;
+  height: auto;
+  
+}
+
+/* Buttons container */
+.home-button-container {
+  margin-top: 20px;
+  display: flex;
+  gap: 50px;
+}
+
+.home-button-container button {
+  padding: 15px 30px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 200px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.home-button-container button:active {
+  transform: scale(0.98);
+}
+
+/* Admin button styles */
+.home-admin-button {
+  color: white;
+  padding: 10px 20px;
+  margin: 20px;
+  background-color:#003399;
+  cursor: pointer;
+  width: 200px;
+  height: 50px;
+}
+
+.home-admin-button:hover {
+  background-color:#0246ce;
+}
+
+/* Patient button styles */
+.home-patient-button {
+  color: white;
+  padding: 10px 20px;
+  margin: 20px;
+  background-color:#003399;
+  cursor: pointer;
+  width: 200px;
+  height: 50px;
+}
+
+.home-patient-button:hover {
+  background-color:#0246ce;
+}
+
+/* THIS IS THE DESIGN FOR THE FRONTPAGE.JSX */
+
+
+
+/* THIS IS THE DESIGN FOR THE REGISTER.JSX */
+
+.register-page {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display:  flex;
+  flex-direction: column;
+
+  background-image: url('../../assets/picture/cityhall.png'); /* Replace with your image path */
+  background-size: cover; /* Makes the background image cover the entire container */
+  background-position: center; /* Centers the background image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+
+.register-page h1{
+  color:#003399;
+}
+
+.Register-Page-Box{
+  width: 400px;
+  height: auto;
+  padding: 20px; 
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-sizing: border-box;
+  border-radius: 24px;
+  background-color:#ffffff;
+  border-radius: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Fixed shadow */
+  font-size: 16px;
+  font-weight: bold;
+
+  margin-top: 50px;
+  margin-bottom: 30px;
+}
+
+.Register-Page-Box h1{
+  font-size: 22px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.register-form label {
+  margin-top: 11px;
+  margin-bottom: 0.9px;
+  font-size: 12px;
+  color: rgb(50, 50, 50);
+}
+
+.register-form input {
+  padding: 10px;
+  width: 300px;
+  border: 1px solid #003399;
+  border-radius: 17px;
+  background-color: white;
+  color: black;
+}
+
+.register-form div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: center;
+}
+
+.register-form .register-button {
+  padding: 10px 20px;
+  background-color: #003399;
+  border: none;
+  border-radius: 17px;
+  cursor: pointer;
+  width: 322px;
+  color: white;
+  margin-top: 26px;
+  text-align: center;
+}
+.register-button{
+  margin-top: 20px;
+  margin-bottom: 14px;
+}
+
+.register-form .register-button:hover {
+  background-color: #0246ce;
+}
+
+.register-form .addlinks{
+  font-size: 10px;
+  margin-left: 70px;
+  color: #003399;
+}
+
+.logintwo-link:hover{
+  color: #002a80;
+  text-decoration: none;
+}
+
+/* THIS IS THE DESIGN FOR THE REGISTER.JSX */
+
+
+
+/* THIS IS THE DESIGN FOR THE LOGIN.JSX */
+
+.login-page {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display:flex ;
+  flex-direction: column;
+
+  background-image: url('../../assets/picture/cityhall.png'); /* Replace with your image path */
+  background-size: cover; /* Makes the background image cover the entire container */
+  background-position: center; /* Centers the background image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+
+.login-page h1{
+  color:#003399;
+}
+
+.Login-Page-Box{
+  width: 400px;
+  height: auto;
+  padding: 20px; 
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-sizing: border-box;
+  border-radius: 24px;
+  background-color:#ffffff;
+  border-radius: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Fixed shadow */
+  font-size: 16px;
+  font-weight: bold;
+
+  margin-top: 185px;
+  margin-bottom: 10px;
+}
+
+.Login-Page-Box h1{
+  font-size: 22px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.login-form label {
+  margin-top: 11px;
+  margin-bottom: 0.9px;
+  font-size: 12px;
+  color: rgb(50, 50, 50);
+}
+
+.login-form input {
+  padding: 10px;
+  width: 300px;
+  border: 1px solid #003399;
+  border-radius: 17px;
+  background-color: white;
+  color: black;
+}
+
+.login-form div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: center;
+}
+
+.login-form .login-button-admin {
+  padding: 10px 20px;
+  background-color: #003399;
+  border: none;
+  border-radius: 17px;
+  cursor: pointer;
+  width: 322px;
+  color: white;
+  margin-top: 26px;
+  text-align: center;
+}
+
+.login-button-admin{
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+.login-form .login-button-admin:hover {
+  background-color: #0148d6;
+}
+
+.addlinks-admin{
+  font-size: 10px;
+  margin-left: 1px;
+}
+
+.addlinks-admin:hover{
+  color: #002a80;
+  text-decoration: none;
+}
+
+/* THIS IS THE DESIGN FOR THE LOGIN.JSX */
+
+
+
+/* THIS IS THE DESIGN FOR THE LOGINTWO.JSX */
+
+.login-form .login-button-patient {
+  padding: 10px 20px;
+  background-color: #003399;
+  border: none;
+  border-radius: 17px;
+  cursor: pointer;
+  width: 322px;
+  color: white;
+  margin-top: 26px;
+  text-align: center;
+}
+
+.login-button-patient{
+  margin-top: 20px;
+  margin-bottom: 9px;
+}
+
+.login-form .login-button-patient:hover {
+  background-color: #0148d6;
+}
+
+.addlinks-patient{
+  font-size: 10px;
+  margin-left: 70px;
+  color: #003399;
+}
+
+.addlinks-patient2{
+  font-size: 10px;
+  margin-left: 40px;
+  color: #003399;
+}
+
+.register-link-patient:hover{
+  color: #002a80;
+  text-decoration: none;
+}
+
+.forgot-password-link-patient:hover {
+  color: #002a80;
+  text-decoration: none;
+}
+
+/* THIS IS THE DESIGN FOR THE LOGINTWO.JSX */
+
+
+
+/* THIS IS THE DESIGN FOR THE FORGOTPASSWORD.JSX */
+
+.forgot-password-page {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display:flex ;
+  flex-direction: column;
+
+  background-image: url('../../assets/picture/cityhall.png'); /* Replace with your image path */
+  background-size: cover; /* Makes the background image cover the entire container */
+  background-position: center; /* Centers the background image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+
+.forgot-password-page-box {
+  width: 400px;
+  height: auto; 
+  padding: 20px;
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-sizing: border-box;
+  border-radius: 24px;
+  background-color:#ffffff;
+  border-radius: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+  margin-top: 180px;
+  margin-bottom: 30px;
+}
+
+.forgot-password-page h1{
+  color:#003399;
+}
+
+.forgot-password-page-box h1{
+  font-size: 22px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.forgot-password-page-box h5{
+  font-size: 12px;
+  margin-bottom: 8px;
+  text-align: center;
+  color:#003399;
+}
+
+.forgot-password-form label {
+  margin-top: 11px;
+  margin-bottom: 0.9px;
+  font-size: 12px;
+  color: rgb(50, 50, 50);
+}
+
+.forgot-password-form input {
+  padding: 10px;
+  width: 300px;
+  border: 1px solid #003399;
+  border-radius: 17px;
+  background-color: white;
+  color: #0148d6;
+}
+
+.forgot-password-form div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: justify;
+  
+}
+
+.new-password-form label {
+  padding: 0px;
+  width: 300px;
+  background-color: white;
+  color: #0148d6;
+}
+
+.reset-password-button:hover {
+  background-color: #0148d6;
+}
+.radio-form {
+
+  align-items: flex-start;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+.radio-form input {
+  margin-right: 5px;
+  width: max-content;
+}
+.radio-form label {
+  margin-right: 10px;
+  font-size: 15px;
+  color: #003399;
+}
+.reset-password-button{
+  padding: 10px 20px;
+  background-color: #003399;
+  border: none;
+  border-radius: 17px;
+  cursor: pointer;
+  width: 200px;
+  color: white;
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* THIS IS THE DESIGN FOR THE FORGOTPASSWORD.JSX */
+
+
+
+/* THIS IS THE DESIGN FOR THE ABOUT.JSX */
+
+.about-page {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  
+  background-image: url('../../assets/picture/cityhall.png'); /* Replace with your image path */
+  background-size: cover; /* Makes the background image cover the entire container */
+  background-position: center; /* Centers the background image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+
+.about-page-about-us{
+  margin-top: 125px;
+}
+
+.about-container{
+  width: 400px;
+  height: auto;
+  padding: 20px; 
+  gap: 10px;
+  
+  background-color: rgba(138, 123, 123, 0.144);
+  padding: 10px;
+  text-align: center;
+  color:#2a53a3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.about-container h2{
+  color: #577ac0;
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  width: 100%; 
+  padding: 2px;
+
+}
+
+/* THIS IS THE DESIGN FOR THE ABOUT.JSX */
+
+
+
+/* THIS IS THE DESIGN FOR THE CONTACT.JSX */
+.contact-page {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  
+  background-image: url('../../assets/picture/cityhall.png'); /* Replace with your image path */
+  background-size: cover; /* Makes the background image cover the entire container */
+  background-position: center; /* Centers the background image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+
+}
+.contact-container{
+  width: 400px;
+  height: auto;
+  
+  background-color: rgba(138, 123, 123, 0.144);
+  text-align: center;
+  color:#2a53a3;
+  display: flex;
+  
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.contact-page-contact{
+  margin-top: 250px;
+  margin-bottom: 30px;
+}
+
+
+.contact-container h2{
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  width: 700px; 
+  padding: 1px;
+  color: #003399;
+
+}
+
+/* THIS IS THE DESIGN FOR THE CONTACT.JSX */
+
+
+
+/* THIS IS THE DESIGN FOR THE BACK BUTTON */
+
+.Return-Home-Button button{
+    background-color: #003399;
+    border: none;
+    cursor: pointer;
+    width: 60px;
+    height: 40px;
+    color: white;
+    text-align: center;
+    border-radius: 3px;
+
+}
+
+.Return-Home-Button button:hover {
+  background-color: #0148d6;
+}
+
+.Return-Home-Button{
+  margin-top: 10px;
+  margin-bottom: 3px;
+  margin-right: 10px;
+}
+
+/* THIS IS THE DESIGN FOR THE BACK BUTTON */

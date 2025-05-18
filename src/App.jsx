@@ -1,0 +1,61 @@
+import Consultation from './pages/Admin/Consultation'
+import Patientrecord from './pages/Admin/Patientrecord' 
+import Dashboard from './pages/Admin/Dashboard'   
+import { BrowserRouter, Routes, Route} from 'react-router-dom'
+import Maps from './pages/Admin/Maps'
+
+import Appointment from './pages/Patient/Appointment'
+import Dashboard2 from './pages/Patient/Dashboard2'
+import Patientrecord2 from './pages/Patient/Patient-Record'
+import GeoMap from './pages/Patient/GeoMap'
+
+import Register from './pages/Facepage/register'
+import Login from './pages/Facepage/login'
+import Logintwo from './pages/Facepage/logintwo'
+import ForgotPassword from './pages/Facepage/ForgotPassword'
+import Resetpass from './pages/Facepage/resetpass'  
+import Entercode from './pages/Facepage/entercode'
+import Setnewpass from './pages/Facepage/setnewpass'
+import About from './pages/Facepage/about'
+import Contact from './pages/Facepage/contact'
+import Home from './pages/Facepage/Frontpage'
+
+
+
+function App() {
+  return (
+    <div>
+       
+          <BrowserRouter>
+       
+            <Routes>
+              <Route path='/Consultation' element={<Consultation />} />
+              <Route path='/Patientrecord' element={<Patientrecord />} />
+              <Route path='/Dashboard' element={<Dashboard />} />  
+              <Route path='/Maps' element={<Maps />} />
+              
+              <Route path='/Appointment' element={<Appointment />} />
+              <Route path='/Patient-Dashboard' element={<Dashboard2/>} />
+              <Route path='/Patient-Record' element={<Patientrecord2/>} />
+              <Route path='/GeoMap' element={<GeoMap/>} />
+  
+              <Route path='/Register' element={<Register/>} />
+              <Route path='/Login' element={<Login/>} />
+              <Route path='/Logintwo' element={<Logintwo/>} />
+              <Route path='/Forgot-Password' element={<ForgotPassword/>} />
+              <Route path='/resetpass' element={<Resetpass/>} />
+              <Route path='/entercode' element={<Entercode/>} />
+              <Route path='/setnewpass' element={<Setnewpass/>} />
+              <Route path='/About' element={<About/>} />
+              <Route path='/Contact' element={<Contact/>} />
+              <Route path='/Home' element={<Home/>} />
+              <Route path="*" element={<Home />} />
+               <Route path="/" element={<Home />} />
+              
+              </Routes>
+          </BrowserRouter>
+    </div>
+  )
+}
+
+export default App
