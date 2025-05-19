@@ -21,7 +21,8 @@ import Contact from './pages/Facepage/contact'
 import Home from './pages/Facepage/Frontpage'
 
 import Prenatal from './pages/Admin/Prenatal'
-
+import UpcomingAppointment from './pages/Admin/upcomingAppt'
+import TotalPatient from './pages/Admin/TotPatient'
 
 
 function App() {
@@ -55,7 +56,8 @@ function App() {
                <Route path="/" element={<Home />} />
                
               <Route path='/Prenatal' element={<Prenatal/>} />
-              
+              <Route path='/upcomingAppt' element={<UpcomingAppointment/>} />
+              <Route path='/TotPatient' element={<TotalPatient/>} />
               </Routes>
           </BrowserRouter>
     </div>

@@ -27,7 +27,39 @@ function Consultation()
   //set active modal 
    const [activeTab, setActiveTab] = useState('patient');
 
+// Form Data for View Record
+ const [view, setView] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
 
+  const recordData = {
+    familyId: "",
+    date: "",
+    age: "",
+    bppr: "",
+    htwt: "",
+    temp: "",
+    chiefComplaint: "",
+    diagnosis: "", 
+    
+  };
+
+  const handleViewClick = () => {
+    setSelectedRecord(recordData);
+    setView(true);
+    setActiveTab(false);
+    setShowModal(false);
+   
+  };
+
+  const closeRecordModal = () => {
+    setView(false);
+    setSelectedRecord(null);
+    setActiveTab(true);
+    setShowModal(true);
+  };
+
+    
+  // Form data for Patient Consultation 
   const [formData, setFormData] = useState({
             familyId: '',
             LastName: '',
@@ -51,19 +83,6 @@ const [generalDetails, setGeneralDetails] = useState({
     contact: '',
     password: ''
 });
-
-// Dropdown for Patient Consultation
-const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState('options ▼');
-
-  const toggleDropdown = () => setIsOpen(!isOpen);
-
-  const handleOptionClick = (option) => {
-    setSelected(option);
-    setIsOpen(false);
-  };
-
- const options = ['Option 1', 'Option 2', 'Option 3'];
 
 // Sample for Search query 
 const [query, setQuery] = useState('');
@@ -178,7 +197,8 @@ const [query, setQuery] = useState('');
         })
       };
 
-      
+  
+
 
 
     // Fetch Consultation Record
@@ -238,6 +258,8 @@ const [query, setQuery] = useState('');
       setIsEditing(false);
     }
     setShowModal(true);
+    setActiveTab(false);
+ 
   };
 
   const handleModalClose = () => {
@@ -263,7 +285,6 @@ const [query, setQuery] = useState('');
       ]);
     }
     setShowModal(false);
-    setActiveTab
   };
 
 
@@ -321,7 +342,7 @@ const [query, setQuery] = useState('');
       <div className="main">
         <div className="header">
           <h2>
-            <i className="fa-solid fa-notes-medical fa-lg"></i> Patient Consultation Information
+             Patient Consultation Information
           </h2>
           <div className="icon">
           <div className="icon">
@@ -496,21 +517,14 @@ const [query, setQuery] = useState('');
 
         <div className="contents">
           <div className="patrec-btn">
-            <h3>Show </h3>
-                  <input type='text' onClick={toggleDropdown} value={selected}/>
-                
-    {isOpen && (
-      <ul>
-        {options.map(option => (
-          <li
-            key={option}
-            onClick={() => handleOptionClick(option)}
-          >
-            {option}
-          </li>
-        ))}
-      </ul>
-    )}
+            <label htmlFor="show-option"><h3>Show</h3></label>
+            <select name="show-option" id="show">
+              <option value="opt1">Option 1</option>
+              <option value="opt2">Option 2</option>
+              <option value="opt3">Option 3</option>
+            </select>
+            
+            
             <button className="adit" onClick={() => handleModalOpen()}>
               Add
             </button>
@@ -627,15 +641,18 @@ const [query, setQuery] = useState('');
            <button className={activeTab === 'parent' ? 'active' : ''}
           onClick={() => setActiveTab('parent')}> Father/Mother Profile </button>
           </div>
-            <form onSubmit={handleFormSubmit}>
+          <form onSubmit={handleFormSubmit}>
+            <label htmlFor="familyId"><h3>Family ID</h3>
             <input
               type="text"
               name="familyId"
               value={formData.familyId}
               onChange={handleFormChange}
               placeholder="Family ID"
-              required
-            />
+              required 
+              
+            /> </label>
+            <label htmlFor="LastName"><h3>Last Name</h3>
             <input
               type="text"
               name="LastName"
@@ -643,7 +660,8 @@ const [query, setQuery] = useState('');
               onChange={handleFormChange}
               placeholder="Last Name"
               required
-            />
+            /></label>
+            <label htmlFor="FirstName"><h3>First Name</h3>
             <input
               type="text"
               name="FirstName"
@@ -651,7 +669,8 @@ const [query, setQuery] = useState('');
               onChange={handleFormChange}
               placeholder="First Name"
               required
-            />
+            />  </label>
+            <label htmlFor="MiddleName"><h3>Middle Name</h3>
             <input
               type="text"
               name="MiddleName"
@@ -659,16 +678,8 @@ const [query, setQuery] = useState('');
               onChange={handleFormChange}
               placeholder="Middle Name"
               
-            />
-            <input
-              type="Contact"
-              size={12}
-              name="ContactNo"
-              value={formData.ContactNo}
-              onChange={handleFormChange}
-              placeholder="Contact No."
-              required
-            />
+            />  </label>
+            <label htmlFor="Age"><h3>Age</h3>
             <input
               type="text"
               name="Age"
@@ -676,32 +687,26 @@ const [query, setQuery] = useState('');
               onChange={handleFormChange}
               placeholder="Age"
               required
-            />
+            />  </label>
+            <label htmlFor="Bday"><h3>Birthdate</h3>
             <input
               type="date"
               name="Bday"
               value={formData.Bday}
-             
               onChange={handleFormChange}
               placeholder="Birthdate"
               required
-            />
-            <input
-              type="text"
-              name="Gender"
-              value={formData.Gender}
-              onChange={handleFormChange}
-              placeholder='Gender'
-              required
-            />
-             <input
-              type="text"
-              name="CivilStat"
-              value={formData.CivilStat}
-              placeholder='Civil Status'
-              onChange={handleFormChange}
-              required
-            />
+            /></label>
+           <label htmlFor="civilStat"><h3>Civil Status</h3>
+            <select name="civilStat" id="civilStat"> 
+              <option value="opt1">Single</option>
+              <option value="opt2">Married</option>
+              <option value="opt3">Separated</option>
+              <option value="opt4">Widowed</option>
+              <option value="opt5">Divorced</option>
+            </select>
+            </label>
+            <label htmlFor="Occupation"><h3>Occupation</h3>
              <input
               type="text"
               name="Occupation"
@@ -709,7 +714,8 @@ const [query, setQuery] = useState('');
               placeholder='Occupation'
               onChange={handleFormChange}
               required
-            />
+            /></label>
+            <label htmlFor="Educ"><h3>Educational Attainment</h3>
              <input
               type="text"
               name="Educ"
@@ -717,7 +723,17 @@ const [query, setQuery] = useState('');
               placeholder='Educational Attainment'
               onChange={handleFormChange}
               required
-            />
+            /></label>
+            <label htmlFor="ContactNo"><h3>Contact Number</h3>
+             <input
+              type="text"
+              name="ContactNo"
+              value={formData.ContactNo}
+              placeholder='Contact Number'
+              onChange={handleFormChange}
+              required
+            /></label>
+             <label htmlFor="PhilHealth"><h3>PhilHealth No.</h3>
              <input
               type="text"
               name="PhilHealth"
@@ -725,17 +741,59 @@ const [query, setQuery] = useState('');
               placeholder='PhilHealth No.'
               onChange={handleFormChange}
               required
-            />
+            /></label>
+            
             </form> 
+
             <div className='modal-buttons'>
              <button type="submit" onClick={handleSubmit3}>Save</button>
-              <button type="button" onClick={handleModalClose}>
+              <button  onClick={handleModalClose}>
                 Cancel
               </button>
-              </div>
+               <button onClick={handleViewClick}> View Record</button>
+              </div> 
+            
           </div>
         </div>
       )}
+
+        {view && (
+                  <div className='modal'>
+                    <div className='modal-content'>
+                      <h2>Record</h2>
+                      <table>
+                        <thead>
+                          <tr>
+                           
+                            <th>Date</th>
+                            <th>Age</th>
+                           <th>BP/PR</th>
+                            <th>HT/WT</th>
+                          <th>Temperature</th>
+                            <th>Chief Complaint</th>
+                            <th>Diagnosis/Medication</th>
+                           
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          <tr key={selectedRecord.familyId}>
+                            <td>{selectedRecord.date}</td>
+                            <td>{selectedRecord.age}</td>
+                            <td>{selectedRecord.bppr}</td>
+                            <td>{selectedRecord.htwt}</td>
+                            <td>{selectedRecord.temp}</td>
+                            <td>{selectedRecord.chiefComplain}</td>
+                            <td>{selectedRecord.diagnosis}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                       <button onClick={closeRecordModal} className='viewclose-btn'>Close</button>
+
+                    </div>
+                  </div>
+                )}
+
 
        {activeTab === "spouse" && (
         <div className="modal">
@@ -749,14 +807,17 @@ const [query, setQuery] = useState('');
           onClick={() => setActiveTab('parent')}> Father/Mother Profile </button>
           </div>
             <form onSubmit={handleFormSubmit}>
+            <label htmlFor="familyId"><h3>Family ID</h3>
             <input
               type="text"
               name="familyId"
               value={formData.familyId}
               onChange={handleFormChange}
               placeholder="Family ID"
-              required
-            />
+              required 
+              
+            /> </label>
+            <label htmlFor="LastName"><h3>Last Name</h3>
             <input
               type="text"
               name="LastName"
@@ -764,7 +825,8 @@ const [query, setQuery] = useState('');
               onChange={handleFormChange}
               placeholder="Last Name"
               required
-            />
+            /></label>
+            <label htmlFor="FirstName"><h3>First Name</h3>
             <input
               type="text"
               name="FirstName"
@@ -772,7 +834,8 @@ const [query, setQuery] = useState('');
               onChange={handleFormChange}
               placeholder="First Name"
               required
-            />
+            />  </label>
+            <label htmlFor="MiddleName"><h3>Middle Name</h3>
             <input
               type="text"
               name="MiddleName"
@@ -780,15 +843,8 @@ const [query, setQuery] = useState('');
               onChange={handleFormChange}
               placeholder="Middle Name"
               
-            />
-            <input
-              type="Contact"
-              name="ContactNo"
-              value={formData.ContactNo}
-              onChange={handleFormChange}
-              placeholder="Contact No."
-              required
-            />
+            />  </label>
+            <label htmlFor="Age"><h3>Age</h3>
             <input
               type="text"
               name="Age"
@@ -796,32 +852,26 @@ const [query, setQuery] = useState('');
               onChange={handleFormChange}
               placeholder="Age"
               required
-            />
+            />  </label>
+            <label htmlFor="Bday"><h3>Birthdate</h3>
             <input
               type="date"
               name="Bday"
               value={formData.Bday}
-             
               onChange={handleFormChange}
               placeholder="Birthdate"
               required
-            />
-            <input
-              type="text"
-              name="Gender"
-              value={formData.Gender}
-              onChange={handleFormChange}
-              placeholder='Gender'
-              required
-            />
-             <input
-              type="text"
-              name="CivilStat"
-              value={formData.CivilStat}
-              placeholder='Civil Status'
-              onChange={handleFormChange}
-              required
-            />
+            /></label>
+           <label htmlFor="civilStat"><h3>Civil Status</h3>
+            <select name="civilStat" id="civilStat"> 
+              <option value="opt1">Single</option>
+              <option value="opt2">Married</option>
+              <option value="opt3">Separated</option>
+              <option value="opt4">Widowed</option>
+              <option value="opt5">Divorced</option>
+            </select>
+            </label>
+            <label htmlFor="Occupation"><h3>Occupation</h3>
              <input
               type="text"
               name="Occupation"
@@ -829,7 +879,8 @@ const [query, setQuery] = useState('');
               placeholder='Occupation'
               onChange={handleFormChange}
               required
-            />
+            /></label>
+            <label htmlFor="Educ"><h3>Educational Attainment</h3>
              <input
               type="text"
               name="Educ"
@@ -837,7 +888,17 @@ const [query, setQuery] = useState('');
               placeholder='Educational Attainment'
               onChange={handleFormChange}
               required
-            />
+            /></label>
+            <label htmlFor="ContactNo"><h3>Contact Number</h3>
+             <input
+              type="text"
+              name="ContactNo"
+              value={formData.ContactNo}
+              placeholder='Contact Number'
+              onChange={handleFormChange}
+              required
+            /></label>
+             <label htmlFor="PhilHealth"><h3>PhilHealth No.</h3>
              <input
               type="text"
               name="PhilHealth"
@@ -845,22 +906,23 @@ const [query, setQuery] = useState('');
               placeholder='PhilHealth No.'
               onChange={handleFormChange}
               required
-            />
-
-               <input
+            /></label>
+             <label htmlFor="Address"><h3>Complete Address</h3>
+             <input
               type="text"
               name="Address"
-              value={formData.Address}
+              value={formData.address}
               placeholder='Complete Address'
               onChange={handleFormChange}
               required
-            />
+            /></label>
             </form> 
             <div className='modal-buttons'>
              <button type="submit" onClick={handleSubmit3}>Save</button>
               <button type="button" onClick={handleModalClose}>
                 Cancel
               </button>
+               <button onClick={handleViewClick}> View Record</button>
               </div>
           </div>
         </div>
@@ -878,7 +940,7 @@ const [query, setQuery] = useState('');
           onClick={() => setActiveTab('parent')}> Father/Mother Profile </button>
           </div>
             <form onSubmit={handleFormSubmit}>
-              <h4>Father&apos;s Information</h4>
+              <h3>Father&apos;s Information</h3>
             <input
               type="text"
               name="familyId"
@@ -980,7 +1042,7 @@ const [query, setQuery] = useState('');
             </form> 
 
              <form onSubmit={handleFormSubmit}>
-              <h4>Mother&apos;s Information</h4>
+              <h3>Mother&apos;s Information</h3>
             <input
               type="text"
               name="familyId"
@@ -1085,6 +1147,7 @@ const [query, setQuery] = useState('');
               <button type="button" onClick={handleModalClose}>
                 Cancel
               </button>
+                <button onClick={handleViewClick}> View Record</button>
             </div>
           </div>
         </div>

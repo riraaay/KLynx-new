@@ -83,7 +83,11 @@ mock.onGet('/api/animalBite').reply(200,{
 
 })
 
+
 function Dashboard() {
+
+ 
+
   //Settings state
    const [showNotifications, setShowNotifications] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
@@ -98,6 +102,18 @@ function Dashboard() {
       contact: '+1234567890',
       password: '123456'
     });
+
+    //Mock data for total patients
+//  const totalPatients = [
+//     { label: 'Vaccinated', count: 3 },
+//     { label: 'Senior', count: 3 },
+//     { label: 'Adult', count: 12 },
+//     { label: 'Minor', count: 3 },
+//     { label: 'Infant', count: 0 },
+//     { label: 'PWD', count: 2 },
+//     { label: 'Pregnant', count: 2 },
+//   ];
+   
    
   // Edit account state
   // Load account details from local storage on component mount
@@ -521,23 +537,10 @@ function Dashboard() {
         <div className="stat-card">
             <h3>Total Patient Number</h3>
             <div className="totpatient-placeholder">{totalPatients}</div>
-            <a href="/Patientrecord">
-            <button className="buton">More</button>
+            <a href="/TotPatient">
+           <button>More</button>
             </a>
           </div>
-          {/* <div className="stat-card">
-            <h3>Total Number of Patients</h3>
-          <div className='list-placeholder'>
-            <ul>
-              {topDiseases.map((disease, index) => (
-                <li key={index}>{disease}</li>
-              ))}
-            </ul> </div>  
-            <a href="/Maps">
-            <button className="buton">
-             More</button>
-           </a>
-          </div> */}
           <div className="stat-card">
             <h3>Consultations</h3>
             <div className="totpatient-placeholder">{consultations}</div>
@@ -548,7 +551,7 @@ function Dashboard() {
           <div className="stat-card">
             <h3>Upcoming Appointments</h3>
             <div className="consult-placeholder">{consultations}</div>
-            <a href="/Consultation">
+            <a href="/upcomingAppt">
             <button className="buton">More</button>
             </a>
           </div>
@@ -582,11 +585,9 @@ function Dashboard() {
             <div className="appoint">
               
                 <h3>Top 10 Diseases</h3>
-               
 
                     <PieChartExample/>
-        
-             
+
             </div>
        </div>     
 
