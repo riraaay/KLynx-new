@@ -1,58 +1,44 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import './Frontpage.css';
+import axios from "axios";
+import useAuth from '../../hooks/useAuth';
 
-const Login = ({ onLogin = () => {} }) => {
+const Login = () => {
+  const { auth, setAuth } = useAuth();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
-  const [inputs, setInputs] = useState({
-    username: '',
-    password: ''
-  });
-//  const [username, setUsername] = useState('');
-//  const [password, setPassword] = useState('');
-
-  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [inputs, setInputs] = useState({});
 
-//  const predefinedUsername = "user123";  // Set your desired username
-//  const predefinedPassword = "password123";  // Set your desired password
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputs(prev => ({ ...prev, [name]: value }));
-  };
+  const handleChange = (event) =>{
+    const name = event.target.name;
+    const value = event.target.value
+    setInputs(values => ({...values, [name]: value}));
+  }
 
-  const handleSubmit = async (e) => 
-  {
-    e.preventDefault();
-
-    if (!username || !password) {
-      setError("Username and password are required");
-      return;
-    }
- 
-    try{
-      const response = await fetch("http://localhost/api/login.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(inputs)
-      });
-
-      const data = await response.json();
-
-      if(data.status === 1){
-        onLogin("admin");
-        navigate("/dashboard");
+  const handleSubmit = (event) =>{
+        event.preventDefault();
+//        console.log(inputs);
+        axios.post('http://localhost/api/login.php', inputs).then(function(response){
+            console.log(response.data);
+            navigate(from, { replace: true });
+            setAuth({roles:[5150]});
+            
+        })  
+        .catch(function (error) {
+      // Handle HTTP error (e.g., 404, 500)
+      if (error.response && error.response.data && error.response.data.error) {
+        alert("Error: " + error.response.data.error); // backend-defined error
       } else {
-        setError(data.message || "Login failed");
+        alert("Something went wrong. Please try again."); // fallback
+        console.error(error)
       }
-    } catch(err) {
-      console.error("Login error:", err);
-      setError("Something went wrong while connecting to the server");
-    }
-    
-  };
+      console.error(error);
+    });
+  }
+  
 
 
 /*
@@ -77,29 +63,26 @@ const Login = ({ onLogin = () => {} }) => {
       <form className="login-form" onSubmit={handleSubmit}>
       <h1>Welcome, Admin!</h1>
         <div>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="adID">Admin ID:</label>
           <input
             type="text"
-            id="username"
-            name="username"
-            value={inputs.username}
+            id="adID"
+            name="adminID"
             onChange={handleChange}
             required
           />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="pwd">Password:</label>
           <input
             type="password"
-            id="password"
+            id="pwd"
             name="password"
-            value={inputs.password}
             onChange={handleChange}
             required
           />
         </div>
-        {error && <p className="error-message" style={{ color: "red" }}>{error}</p>}
-        <button type="submit" className="login-button-admin">Login</button>
+        <button className="login-button-admin">Login</button>
       </form>
       <div>
         <Link to="/forgot-password" className="addlinks-admin">Forgot Password?</Link>

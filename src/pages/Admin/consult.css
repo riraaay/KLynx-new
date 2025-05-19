@@ -1,3 +1,4 @@
+
 .container{
     display: flex;
 }
@@ -82,7 +83,7 @@
 } 
 
 /* .active:hover { background: #1e21d2;} */
-/* .PatRec:hover{background: #1e21d2;}
+ .PatRec:hover{background: #1e21d2;}
 .Consult:hover{background: #1e21d2;}
 .dash:hover{background:#1e21d2;}
 .navbar ul{
@@ -102,8 +103,8 @@
 }
 .navbar .active:hover{
     background-color: #1e21d2;
-} */
-/* .navbar a{
+} 
+ .navbar a{
     border-radius: .5em;
     padding: .85em;
     text-decoration: none;
@@ -111,17 +112,17 @@
     display: flex;
     align-items: center;
     gap: 0.5em;
-  } */
-/* .navbar .logo {
+  } 
+ .navbar .logo {
     width: 100%;
-} */
+}
 
-/* .navbar .logout{
+ .navbar .logout{
     display: flex;
    margin-top: 250%;
     justify-content: center;
     
-} */
+} 
  /* .logout:hover{color: #1e21d2;} */
 
 .main{
@@ -721,12 +722,12 @@ padding: 5px 10px;
   }
   
   /* Makes the sample page fill the window. */
-  html,
+/*  html,
   body {
     height: 100%;
     margin: 0;
     padding: 0;
-  }
+  }*/
   
   .map-control {
     background-color: #fff;
@@ -752,19 +753,19 @@ padding: 5px 10px;
   }
   
 
-  /* .sidebar {
+   .sidebar {
     display: flex;
     padding-left: 5px;
     align-items: flex-end;
     width: 250px; /* Default width */
-    /* height:100%; 
+    height:100%; 
     background-color: #1114a3; /* Adjust color */
-    /* color: #ecf0f1;
+    color: #ecf0f1;
     transition: width 0.3s ease;
     overflow: hidden;
     display: flex;
     flex-direction: column; */ */
-  /* } */
+   } 
   
   .sidebar.collapsed {
     width: 60px; /* Collapsed width */
@@ -806,7 +807,7 @@ padding: 5px 10px;
     font-size: 16px;
     white-space: nowrap;
   } */
-  
+
   .notes ul {
     display: flex;
     padding: 0;
@@ -946,6 +947,7 @@ padding: 5px 10px;
 
     
   }
+/*
   form label {
     font-weight: bold;
     
@@ -964,6 +966,7 @@ padding: 5px 10px;
    
     width: 10%;
   }
+*/
 
 .container4 {
     display: flex;
@@ -1026,7 +1029,7 @@ padding: 5px 10px;
     margin: 10px;
 }
 
-    /* .report1 span{
+     .report1 span{
 
         width: fit-content;
         height: fit-content;
@@ -1035,7 +1038,7 @@ padding: 5px 10px;
         justify-content: space-evenly   ;
     
     
-    } */
+    } 
 .report .prenatal-placeholder{
 
     width: 100%;

@@ -109,6 +109,7 @@
 
 /* THIS IS THE DESIGN FOR THE REGISTER.JSX */
 
+/*
 .register-page {
   text-align: center;
   justify-content: center;
@@ -116,49 +117,61 @@
   display:  flex;
   flex-direction: column;
 
-  background-image: url('../../assets/picture/cityhall.png'); /* Replace with your image path */
-  background-size: cover; /* Makes the background image cover the entire container */
-  background-position: center; /* Centers the background image */
-  background-repeat: no-repeat; /* Prevents the image from repeating */
-}
+  background-image: url('../../assets/picture/cityhall.png');*/ /* Replace with your image path */
+  /*background-size: cover; /* Makes the background image cover the entire container */
+  /*background-position: center; /* Centers the background image */
+  /*background-repeat: no-repeat; /* Prevents the image from repeating */
+/*}
 
 .register-page h1{
   color:#003399;
 }
 
 .Register-Page-Box{
-  width: 400px;
+  width: 60%;
   height: auto;
   padding: 20px; 
   gap: 10px;
-  display: flex;
   align-items: center;
   flex-direction: column;
   box-sizing: border-box;
   border-radius: 24px;
   background-color:#ffffff;
   border-radius: 24px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Fixed shadow */
-  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */ /* Fixed shadow */
+/*  font-size: 16px;
   font-weight: bold;
 
   margin-top: 50px;
   margin-bottom: 30px;
 }
 
+
 .Register-Page-Box h1{
   font-size: 22px;
-  margin-bottom: 8px;
+  margin-bottom: 0;
+  margin-top: 0;
   text-align: center;
+  font-weight: 500;
+  color:#003399;
 }
 
+.register-form :where(.register-input-box input) {
+  width: 1%;
+  height: 15px;
+  border: 10px solid #ddd;
+}
+
+/*
 .register-form label {
   margin-top: 11px;
   margin-bottom: 0.9px;
   font-size: 12px;
   color: rgb(50, 50, 50);
 }
+*/
 
+/*
 .register-form input {
   padding: 10px;
   width: 300px;
@@ -167,13 +180,16 @@
   background-color: white;
   color: black;
 }
+*/
 
+/*
 .register-form div {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   text-align: center;
 }
+
 
 .register-form .register-button {
   padding: 10px 20px;
@@ -205,6 +221,165 @@
   color: #002a80;
   text-decoration: none;
 }
+*/
+
+
+.register-page{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+
+  background-image: url('../../assets/picture/cityhall.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.Register-Page-Box{
+  position: relative;
+  max-width: 700px;
+  width: 100%;
+  padding: 25px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.Register-Page-Box h1{
+  font-size: 1.5rem;
+  color: #003399;
+  font-weight: 500;
+  text-align: center;
+}
+
+.Register-Page-Box .register-form{
+  margin-top: 30px;
+}
+
+.register-form .register-input-box:not(.register-gender){
+  width: 100%;
+  margin-top: 20px;
+}
+
+.register-input-box label{
+  color: rgb(50, 50, 50);
+}
+
+.register-form :where(.register-input-box input:not([type="radio"]), .register-select-box){
+  position: relative;
+  height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 1em;
+  color: black;
+  margin-top: 8px;
+  border: 1px solid #003399;
+  border-radius: 6px;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+
+.register-input-box input:focus {
+  box-shadow: 0 1px 0 rgba(199, 4, 4, 0.1);
+}
+
+.register-form .register-column{
+  display: flex;
+  column-gap: 15px;
+}
+
+.register-form .register-gender-box{
+  margin-top: 0;
+}
+
+.register-gender-box h3{
+  color: rgb(50, 50, 50);
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.register-form :where(.register-gender-option, .register-gender){
+  display: flex;
+  align-items: center;
+  column-gap: 50px;
+  flex-wrap: wrap;
+  
+}
+
+.register-form .register-gender{
+  column-gap: 5px;
+}
+
+.register-gender input {
+  accent-color: #003399;
+}
+
+.register-form :where(.register-gender input, .register-gender label){
+  cursor: pointer;
+}
+
+.register-gender label{
+  color: rgb(50, 50, 50);
+}
+
+.register-column :where(.register-select-box, .register-second-row){
+  margin-top: 8px;
+  width: 100%;
+}
+
+.register-select-box select {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  color: rgb(50, 50, 50);
+  font-size: 1rem;
+  
+}
+
+.register-gender-option input[type="radio"] {
+  transform: scale(1.8);
+  margin-right: 15px;
+  margin-bottom: 0;
+}
+
+.register-button{
+  height: 55px;
+  width: 100%;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-top: 30px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #003399;
+  margin-top: 0;
+}
+
+.register-redirect-login{
+  color: #003399;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.register-already{
+  color: #003399;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0;
+  margin-top: 45px;
+}
+
+.register-redirect-login:hover {
+  text-decoration: none;
+}
+
+
 
 /* THIS IS THE DESIGN FOR THE REGISTER.JSX */
 
