@@ -27,6 +27,10 @@ const ROLES = {
   'Editor': 1984,
   'Admin': 5150
 }
+import Prenatal from './pages/Admin/Prenatal'
+import UpcomingAppointment from './pages/Admin/upcomingAppt'
+import TotalPatient from './pages/Admin/TotPatient'
+
 
 function App() {
   return (
@@ -72,4 +76,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
