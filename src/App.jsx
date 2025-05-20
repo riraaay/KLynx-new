@@ -21,15 +21,17 @@ import Contact from './pages/Facepage/contact'
 import Home from './pages/Facepage/Frontpage'
 import Unauthorized from './components/Unauthorized'
 import RequireAuth from './components/RequireAuth'
+import Prenatal from './pages/Admin/Prenatal'
+import UpcomingAppointment from './pages/Admin/upcomingAppt'
+import TotalPatient from './pages/Admin/TotPatient'
+
 
 const ROLES = {
   'User': 2001,
   'Editor': 1984,
   'Admin': 5150
 }
-import Prenatal from './pages/Admin/Prenatal'
-import UpcomingAppointment from './pages/Admin/upcomingAppt'
-import TotalPatient from './pages/Admin/TotPatient'
+
 
 
 function App() {
@@ -51,12 +53,15 @@ function App() {
               <Route path='/Home' element={<Home/>} />
               <Route path='/Register' element={<Register/>} />
 
-              <Route path='/Consultation' element={<Consultation />} />
-              <Route path='/Patientrecord' element={<Patientrecord />} />
-              {/*<Route path='/Dashboard' element={<Dashboard />} />  */}
+              
+    
 
               <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+                <Route path='/Consultation' element={<Consultation />} />
+                <Route path='/Patientrecord' element={<Patientrecord />} />
                 <Route path='/Maps' element={<Maps />} />
+                <Route path='/Prenatal' element={<Prenatal/>} />
+                {/*<Route path='/Dashboard' element={<Dashboard />} />  */}
               </Route>
 
               <Route path='/Appointment' element={<Appointment />} />

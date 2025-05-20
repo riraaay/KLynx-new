@@ -2,10 +2,51 @@ import { useEffect, useState } from 'react';
 import './consult.css';
 import Sidebar from '../../components/Navbar';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 
 function Prenatal() 
 {
+  const [prenatalinputs, setPrenatalInputs] = useState({});
+  const [prenatalProf, setPrenatalProf] = useState([]);
+
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    console.log(prenatalinputs);
+    axios.post('http://localhost/api/prenatal-patientprofile.php', prenatalinputs).then(function(response){
+      console.log(response.data);
+      getPrenatalPP();
+      
+    });
+  }
+
+  const handleChange = (e) =>{
+    const name = e.target.name;
+    const value = e.target.value;
+    setPrenatalInputs(values => ({...values, [name]: value}));
+  }
+
+ 
+  useEffect( () => {
+    getPrenatalPP();
+  }, []);
+
+  function getPrenatalPP() {
+    axios.get('http://localhost/api/prenatal-patientprofile.php').then(function(response){
+      console.log(response.data);
+      setPrenatalProf(response.data);
+    });
+}
+
+
+    const deletePrenatalPP = (ContactNumber) => {
+        axios.delete(`http://localhost/api/prenatal-patientprofile.php`).then(function(response){
+        // .delete() means This sends a DELETE request to your PHP server to delete a specific user from the database.
+            console.log(response.data);
+            getUsers();
+        });
+    }
+
   // Settings and Notifications
   
   const [showNotifications, setShowNotifications] = useState(false);
@@ -541,13 +582,15 @@ const [query, setQuery] = useState('');
                     Edit
                   </button> 
                  
-       
+          {/*
             <button 
               className="delete"
             //  onClick={() => handleDelete(formData)}  
             >
               Delete
             </button>
+          */}
+
             <div className='patrec-btn'>
               <label htmlFor="search"><h3>Search:</h3></label>
               <input type="text" 
@@ -586,15 +629,15 @@ const [query, setQuery] = useState('');
               </tr>
             </thead>
             <tbody>
-            {currentData.map((item) => (
-                <tr key={item.id||item.familyId}>
-                  <td>{item.familyId}</td>
-                  <td>{item.LastName}</td>
-                  <td>{item.FirstName}</td>
-                  <td>{item.MiddleName}</td>
-                  <td>{item.ContactNo}</td>
+            {prenatalProf.map((prenatalpp, key) => (
+                <tr key={key}>
+                  <td>{prenatalpp.FamilyID}</td>
+                  <td>{prenatalpp.LastName}</td>
+                  <td>{prenatalpp.FirstName}</td>
+                  <td>{prenatalpp.MiddleName}</td>
+                  <td>{prenatalpp.ContactNumber}</td>
                   <td><button>View</button></td>
-                  <td><input type="checkbox" /></td>
+                  <td><button onClick={() => deletePrenatalPP(prenatalpp.ContactNumber)} >Delete</button></td>
             
                   {/* <td>
                     <button className="action-btn" 
@@ -636,6 +679,8 @@ const [query, setQuery] = useState('');
         </div>
       </div>
 
+
+          {/* Patient Profile - Prenatal */}
       {showModal   && (
         <div className="modal">
           <div className="modal-content">
@@ -645,13 +690,13 @@ const [query, setQuery] = useState('');
            <button className={activeTab === 'spouse' ? 'active' : ''}
           onClick={() => setActiveTab('spouse')}> Husband/Wife Profile </button> 
           </div>
-          <form onSubmit={handleFormSubmit}>
+          <form onSubmit={handleSubmit}>
             <label htmlFor="familyId"><h3>Family ID</h3>
             <input
               type="text"
-              name="familyId"
-              value={formData.familyId}
-              onChange={handleFormChange}
+              name="FamilyID"
+              //value={formData.familyId}
+              onChange={handleChange}
               placeholder="Family ID"
               required 
               
@@ -660,8 +705,8 @@ const [query, setQuery] = useState('');
             <input
               type="text"
               name="LastName"
-              value={formData.LastName}
-              onChange={handleFormChange}
+              //value={formData.LastName}
+              onChange={handleChange}
               placeholder="Last Name"
               required
             /></label>
@@ -669,8 +714,8 @@ const [query, setQuery] = useState('');
             <input
               type="text"
               name="FirstName"
-              value={formData.FirstName}
-              onChange={handleFormChange}
+              //value={formData.FirstName}
+              onChange={handleChange}
               placeholder="First Name"
               required
             />  </label>
@@ -678,17 +723,26 @@ const [query, setQuery] = useState('');
             <input
               type="text"
               name="MiddleName"
-              value={formData.MiddleName}
-              onChange={handleFormChange}
+              //value={formData.MiddleName}
+              onChange={handleChange}
               placeholder="Middle Name"
+              
+            />  </label>
+            <label htmlFor="ContactNum"><h3>Contact Number</h3>
+            <input
+              type="text"
+              name="ContactNum"
+              //value={formData.MiddleName}
+              onChange={handleChange}
+              placeholder="Contact Number"
               
             />  </label>
             <label htmlFor="Age"><h3>Age</h3>
             <input
               type="text"
               name="Age"
-              value={formData.Age}
-              onChange={handleFormChange}
+              //value={formData.Age}
+              onChange={handleChange}
               placeholder="Age"
               required
             />  </label>
@@ -696,63 +750,64 @@ const [query, setQuery] = useState('');
             <input
               type="date"
               name="Bday"
-              value={formData.Bday}
-              onChange={handleFormChange}
+              //value={formData.Bday}
+              onChange={handleChange}
               placeholder="Birthdate"
               required
             /></label>
            <label htmlFor="civilStat"><h3>Civil Status</h3>
-            <select name="civilStat" id="civilStat"> 
-              <option value="opt1">Single</option>
-              <option value="opt2">Married</option>
-              <option value="opt3">Separated</option>
-              <option value="opt4">Widowed</option>
-              <option value="opt5">Divorced</option>
+            <select name="civilStat" id="civilStat" onChange={handleChange} required>
+              <option hidden></option> 
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
+              <option value="Separated">Separated</option>
+              <option value="Widowed">Widowed</option>
+              <option value="Divorced">Divorced</option>
             </select>
             </label>
             <label htmlFor="Occupation"><h3>Occupation</h3>
              <input
               type="text"
               name="Occupation"
-              value={formData.Occupation}
+              //value={formData.Occupation}
               placeholder='Occupation'
-              onChange={handleFormChange}
+              onChange={handleChange}
               required
             /></label>
             <label htmlFor="Educ"><h3>Educational Attainment</h3>
              <input
               type="text"
               name="Educ"
-              value={formData.Educ} 
+              //value={formData.Educ} 
               placeholder='Educational Attainment'
-              onChange={handleFormChange}
+              onChange={handleChange}
               required
             /></label>
             <label htmlFor="Gravida"><h3>Gravida</h3>
              <input
               type="text"
               name="Gravida"
-              value={formData.Gravida}
+              //value={formData.Gravida}
               placeholder='Gravida'
-              onChange={handleFormChange}
+              onChange={handleChange}
               required
             /></label>
             <label htmlFor="Para"><h3>Para</h3>
             <input
               type="text"
               name="Para"
-              value={formData.Para}
+              //value={formData.Para}
               placeholder='Para'
-              onChange={handleFormChange}
+              onChange={handleChange}
               required
             /></label>
             <label htmlFor="LMP"><h3>LMP</h3>
             <input
               type="text"
               name="LMP"
-              value={formData.LMP}
+              //value={formData.LMP}
               placeholder='LMP'
-              onChange={handleFormChange}
+              onChange={handleChange}
               required
             />
             </label>
@@ -760,33 +815,33 @@ const [query, setQuery] = useState('');
             <input
               type="text"
               name="EDD"
-              value={formData.EDD}
+              //value={formData.EDD}
               placeholder='EDD'
-              onChange={handleFormChange}
+              onChange={handleChange}
               required
             /> </label> 
             <label htmlFor="TDStatus"><h3>TD Status</h3>
             <input
               type="text"
               name="TDStatus"
-              value={formData.TDStatus}
+              //value={formData.TDStatus}
               placeholder='TD Status'
-              onChange={handleFormChange}
+              onChange={handleChange}
               required
             /></label>
             <label htmlFor="PhilHealth"><h3>PhilHealth</h3>
              <input
               type="text"
               name="PhilHealth"
-              value={formData.PhilHealth}
+              //value={formData.PhilHealth}
               placeholder='PhilHealth No.'
-              onChange={handleFormChange}
+              onChange={handleChange}
               required
             /></label>
             
             </form> 
             <div className='modal-buttons'>
-             <button type="submit" onClick={handleSubmit3}>Save</button>
+             <button type="submit" onClick={handleSubmit}>Save</button>
               <button type="button" onClick={handleModalClose}>
                 Close
               </button>
@@ -816,7 +871,7 @@ const [query, setQuery] = useState('');
                           </tr>
                         </thead>
                         <tbody>
-
+        
                           <tr key={selectedRecord.familyId}>
                             <td>{selectedRecord.date}</td>
                             <td>{selectedRecord.age}</td>

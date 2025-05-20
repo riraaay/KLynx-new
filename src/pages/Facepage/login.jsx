@@ -7,7 +7,7 @@ import useAuth from '../../hooks/useAuth';
 const Login = () => {
   const { auth, setAuth } = useAuth();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/Consultation";
 
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({});

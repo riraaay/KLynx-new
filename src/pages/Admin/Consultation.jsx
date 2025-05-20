@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './consult.css';
 import Sidebar from '../../components/Navbar';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 
 function Consultation() 
@@ -30,6 +31,41 @@ function Consultation()
 // Form Data for View Record
  const [view, setView] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
+
+
+
+
+  const [inputs, setInputs] = useState({});
+  const [profiles, setProfiles] = useState([]);
+
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    console.log(inputs);
+    axios.post('http://localhost/api/consultation.php', inputs).then(function(response){
+      console.log(response.data);
+            
+    });
+  }
+
+  const handleChange = (e) =>{
+    const name = e.target.name;
+    const value = e.target.value;
+    setInputs(values => ({...values, [name]: value}));
+  }
+
+  useEffect( () => {
+    getProfiles();
+  }, []);
+
+
+  function getProfiles() {
+    axios.get('http://localhost/api/consultation.php').then(function(response){
+      console.log(response.data);
+      setProfiles(response.data);
+    });
+}
+
+
 
   const recordData = {
     familyId: "",
@@ -287,7 +323,7 @@ const [query, setQuery] = useState('');
     setShowModal(false);
   };
 
-
+/*
   // Admin Account Management
   const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
@@ -330,8 +366,8 @@ const [query, setQuery] = useState('');
     }
   };
 
+*/
 
-  
   // Start of the return statement
   return (
     <div className="container">
@@ -580,13 +616,13 @@ const [query, setQuery] = useState('');
               </tr>
             </thead>
             <tbody>
-            {currentData.map((item) => (
-                <tr key={item.id||item.familyId}>
-                  <td>{item.familyId}</td>
-                  <td>{item.LastName}</td>
-                  <td>{item.FirstName}</td>
-                  <td>{item.MiddleName}</td>
-                  <td>{item.ContactNo}</td>
+            {profiles.map((profile, key) => (
+                <tr key={key}>
+                  <td>{profile.FamilyID}</td>
+                  <td>{profile.LastName}</td>
+                  <td>{profile.FirstName}</td>
+                  <td>{profile.MiddleName}</td>
+                  <td>{profile.ContactNumber}</td>
                   <td><button>View</button></td>
                   <td><input type="checkbox" /></td>
             
@@ -630,6 +666,7 @@ const [query, setQuery] = useState('');
         </div>
       </div>
 
+            {/* PATIENT PROFILE */}
       {showModal && (
         <div className="modal">
           <div className="modal-content">
@@ -641,13 +678,13 @@ const [query, setQuery] = useState('');
            <button className={activeTab === 'parent' ? 'active' : ''}
           onClick={() => setActiveTab('parent')}> Father/Mother Profile </button>
           </div>
-          <form onSubmit={handleFormSubmit}>
+          <form onSubmit={handleSubmit}>
             <label htmlFor="familyId"><h3>Family ID</h3>
             <input
               type="text"
-              name="familyId"
-              value={formData.familyId}
-              onChange={handleFormChange}
+              name="familyID"
+              //value={formData.familyId}
+              onChange={handleChange}
               placeholder="Family ID"
               required 
               
@@ -656,8 +693,8 @@ const [query, setQuery] = useState('');
             <input
               type="text"
               name="LastName"
-              value={formData.LastName}
-              onChange={handleFormChange}
+              //value={formData.LastName}
+              onChange={handleChange}
               placeholder="Last Name"
               required
             /></label>
@@ -665,8 +702,8 @@ const [query, setQuery] = useState('');
             <input
               type="text"
               name="FirstName"
-              value={formData.FirstName}
-              onChange={handleFormChange}
+              //value={formData.FirstName}
+              onChange={handleChange}
               placeholder="First Name"
               required
             />  </label>
@@ -674,8 +711,8 @@ const [query, setQuery] = useState('');
             <input
               type="text"
               name="MiddleName"
-              value={formData.MiddleName}
-              onChange={handleFormChange}
+              //value={formData.MiddleName}
+              onChange={handleChange}
               placeholder="Middle Name"
               
             />  </label>
@@ -683,8 +720,8 @@ const [query, setQuery] = useState('');
             <input
               type="text"
               name="Age"
-              value={formData.Age}
-              onChange={handleFormChange}
+              //value={formData.Age}
+              onChange={handleChange}
               placeholder="Age"
               required
             />  </label>
@@ -692,61 +729,62 @@ const [query, setQuery] = useState('');
             <input
               type="date"
               name="Bday"
-              value={formData.Bday}
-              onChange={handleFormChange}
+              //value={formData.Bday}
+              onChange={handleChange}
               placeholder="Birthdate"
               required
             /></label>
            <label htmlFor="civilStat"><h3>Civil Status</h3>
-            <select name="civilStat" id="civilStat"> 
-              <option value="opt1">Single</option>
-              <option value="opt2">Married</option>
-              <option value="opt3">Separated</option>
-              <option value="opt4">Widowed</option>
-              <option value="opt5">Divorced</option>
+            <select name="civilStat" id="civilStat" onChange={handleChange} required> 
+              <option hidden></option>
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
+              <option value="Separated">Separated</option>
+              <option value="Widowed">Widowed</option>
+              <option value="Divorced">Divorced</option>
             </select>
             </label>
             <label htmlFor="Occupation"><h3>Occupation</h3>
              <input
               type="text"
               name="Occupation"
-              value={formData.Occupation}
+              //value={formData.Occupation}
               placeholder='Occupation'
-              onChange={handleFormChange}
+              onChange={handleChange}
               required
             /></label>
             <label htmlFor="Educ"><h3>Educational Attainment</h3>
              <input
               type="text"
               name="Educ"
-              value={formData.Educ} 
+              //value={formData.Educ} 
               placeholder='Educational Attainment'
-              onChange={handleFormChange}
+              onChange={handleChange}
               required
             /></label>
             <label htmlFor="ContactNo"><h3>Contact Number</h3>
              <input
               type="text"
               name="ContactNo"
-              value={formData.ContactNo}
+              //value={formData.ContactNo}
               placeholder='Contact Number'
-              onChange={handleFormChange}
+              onChange={handleChange}
               required
             /></label>
              <label htmlFor="PhilHealth"><h3>PhilHealth No.</h3>
              <input
               type="text"
               name="PhilHealth"
-              value={formData.PhilHealth}
+              //value={formData.PhilHealth}
               placeholder='PhilHealth No.'
-              onChange={handleFormChange}
+              onChange={handleChange}
               required
             /></label>
             
             </form> 
 
             <div className='modal-buttons'>
-             <button type="submit" onClick={handleSubmit3}>Save</button>
+             <button onClick={handleSubmit}>Save</button>
               <button  onClick={handleModalClose}>
                 Cancel
               </button>
