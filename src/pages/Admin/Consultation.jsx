@@ -534,14 +534,6 @@ const [query, setQuery] = useState('');
             </button>
 
 
-
-               <button
-                    className="edit"
-                    onClick={() => handleModalOpen(currentData)} 
-                  >
-                    Edit
-                  </button> 
-
             <div className='patrec-btn'>
                 <h3>Search:</h3> 
               <input type="text" value={query} 
@@ -586,9 +578,16 @@ const [query, setQuery] = useState('');
                   <td>{item.ContactNo}</td>
                   <td><button>View</button></td>
                   <td> 
-                <button className="delete">
-                 Delete
-                 </button></td>
+                 <button className="delete">
+                     <button
+                    className="edit"
+                    onClick={() => handleModalOpen(currentData)} 
+                  >
+                   <i className="fa-solid fa-pen-to-square"></i>
+                  </button> 
+                   <i className="fa-solid fa-trash-can"></i>
+                  </button>
+                 </td>
 
                   {/* <td>
                     <button className="action-btn" 
@@ -683,15 +682,6 @@ const [query, setQuery] = useState('');
               onChange={handleFormChange}
               placeholder="Middle Name"
 
-            />
-            <input
-              type="Contact"
-              size={12}
-              name="ContactNo"
-              value={formData.ContactNo}
-              onChange={handleFormChange}
-              placeholder="Contact No."
-              required
             />
             </label>
             <label htmlFor="Age"><h3>Age</h3>
@@ -942,8 +932,7 @@ const [query, setQuery] = useState('');
               required
             />
 
-               <input
-            /></label>
+            </label>
              <label htmlFor="Address"><h3>Complete Address</h3>
              <input
               type="text"

@@ -27,7 +27,7 @@ import TotalPatient from './pages/Admin/TotPatient'
 
 import Patient from './pages/Admin/patientPage'
 import Staff from './pages/Admin/staffPage'
-
+import Nurse from './pages/Admin/nursePage'
 
 function App() {
   return (
@@ -65,6 +65,8 @@ function App() {
               <Route path='/TotPatient' element={<TotalPatient/>} />
                 <Route path='/patientPage' element={<Patient/>} />
                  <Route path='/staffPage' element={<Staff/>} />
+                  <Route path='/nursePage' element={<Nurse/>} />
+                
 
               </Routes>
           </BrowserRouter>

@@ -4,7 +4,7 @@ import Sidebar from '../../components/Navbar';
 import { toast } from 'react-toastify';
 
 
-function Staff() 
+function Nurse() 
 {
   // Settings and Notifications
 
@@ -33,14 +33,15 @@ function Staff()
             LastName: '',
             FirstName: '',
             MiddleName: '',
-            Age: '',
+            lnum: '',
+            specialty: '',
+            position: '',
             contact: '',
             sex:'',
             userID: '',
             address:'',
             email:'',
-            econtact:'',
-            position:''
+            econtact:''
 
 
   });
@@ -143,18 +144,19 @@ const filteredItems = items.filter(item =>
       const handleSubmit3 =() => 
       {
         if (
-          !formData.AdminIdId ||
+   
           !formData.LastName ||
           !formData.FirstName ||
           !formData.MiddleName ||
-          !formData.Age ||
+          !formData.lnum ||
+          !formData.specialty ||
+          !formData.position ||
           !formData.sex ||
           !formData.address ||
           !formData.contact ||
           !formData.econtact||
            !formData.userID ||
-          !formData.email ||
-          !formData.position
+          !formData.email 
         
         ) {
           toast.error("Please enter all the fields");
@@ -183,18 +185,19 @@ const filteredItems = items.filter(item =>
         .then(() => 
         {
           setFormData({
-            AdminId: '',
+       
             LastName: '',
             FirstName: '',
             MiddleName: '',
-            Age: '',
+            lnum: '',
+            specialty: '',
+            position: '',
             contact: '',
             sex:'',
             userID: '',
             address:'',
             email:'',
-            econtact:'',
-               position:''
+            econtact:''
           });
           setShowModal(false);
           toast.success("Prenatal Record Added Successfully");
@@ -222,34 +225,36 @@ const filteredItems = items.filter(item =>
   const handleModalOpen = (record = null) => {
     if (record) {
       setFormData({
-        AdminIdId: record["Admin ID"],
+       
         FirstName: record["First Name"],
         LastName: record["Last Name"],
         MiddleName: record["Middle Name"],
-        Age: record["Age"],
+        lnum: record["Licensing Number"],
+        specialty: record["Specialty"],
+        position: record["Position"],
         contact: record["Contact"],
         sex: record["Sex"],
         userID: record["User ID"],
         address: record["Home Address"],
         email: record["Email"],
         econtact: record["Emergency Contact"],
-        position: record["Position"]
       });
       setIsEditing(true);
     } else {
       setFormData({
-          AdminId: '',
+        
             LastName: '',
             FirstName: '',
             MiddleName: '',
-            Age: '',
+            lnum: '',
+            specialty: '',
+            position: '',
             contact: '',
             sex:'',
             userID: '',
             address:'',
             email:'',
-            econtact:'',
-               position:''
+            econtact:''
       });
       setIsEditing(false);
     }
@@ -338,7 +343,7 @@ const filteredItems = items.filter(item =>
       <div className="main">
         <div className="header">
           <h2>
-            Staff
+            Nurse
           </h2>
 
           <div className="icon">
@@ -528,7 +533,6 @@ const filteredItems = items.filter(item =>
               Add
             </button>
 
-
             <div className='patrec-btn'>
               <label htmlFor="search"><h3>Search:</h3></label>
               <input type="text" 
@@ -577,7 +581,7 @@ const filteredItems = items.filter(item =>
                   <td>{item.Email}</td>
                   <td>{item.ContactNo}</td>
                   <td><button>View</button></td>
-                  <td> <button className="delete">
+                  <td>  <button className="delete">
                      <button
                     className="edit"
                     onClick={() => handleModalOpen(currentData)} 
@@ -585,8 +589,7 @@ const filteredItems = items.filter(item =>
                    <i className="fa-solid fa-pen-to-square"></i>
                   </button> 
                    <i className="fa-solid fa-trash-can"></i>
-                  </button>
-                  </td>
+                  </button></td>
 
                   {/* <td>
                     <button className="action-btn" 
@@ -663,27 +666,37 @@ const filteredItems = items.filter(item =>
             />
              </label>
             <label htmlFor="Sex"><h3>Sex</h3>
-            <select name="Sex" id="Sex"> 
+             <select name="Sex" id="Sex"> 
               <option value={formData.sex}>Female</option>
               <option value={formData.sex}>Male</option>
             </select>
           </label>
-            <label htmlFor="Bday"><h3>Birthdate</h3>
+            <label htmlFor="lnum"><h3>Licensing Number</h3>
             <input
-              type="date"
-              name="Bday"
-              value={formData.Bday}
+              type="text"
+              name="lnum"
+              value={formData.lnum}
               onChange={handleFormChange}
-              placeholder="Birthdate"
+              placeholder="Licensing Number"
               required
             />
            </label>
+            <label htmlFor="specialty"><h3>Specialty</h3>
+            <input
+              type="text"
+              name="specialty"
+              value={formData.specialty}
+              onChange={handleFormChange}
+              placeholder="Specialty"
+              required
+            />
+            </label>
+
            <label htmlFor="position"><h3>Position</h3>
             <select name="position" id="position"> 
-              <option value={formData}>BHW</option>
-              <option value={formData.position}>Dental Aide</option>
-              <option value={formData.position}>JO Encoder</option>
-              <option value={formData.position}>JO</option>
+              <option value={formData.position}>Medical Officer</option>
+              <option value={formData.position}>Midwife</option>
+              <option value={formData.position}>Nurse</option>
             </select>
             </label>
             <label htmlFor="address"><h3>Home Address</h3>
@@ -740,4 +753,4 @@ const filteredItems = items.filter(item =>
 }
 
 
-export default Staff;
+export default Nurse;

@@ -54,7 +54,7 @@ const Sidebar = () => {
             </a>
           </li>
           <li>
-            <a href="/">
+            <a href="/nursePage">
             {!isCollapsed && <span>Nurse</span>}
             </a>
           </li>

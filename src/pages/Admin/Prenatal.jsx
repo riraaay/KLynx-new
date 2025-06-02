@@ -538,14 +538,7 @@ const filteredItems = items.filter(item =>
               Add
             </button>
 
-
-
-               <button
-                    className="edit"
-                    onClick={() => handleModalOpen(currentData)} 
-                  >
-                    Edit
-                  </button> 
+ 
 
             <div className='patrec-btn'>
               <label htmlFor="search"><h3>Search:</h3></label>
@@ -593,9 +586,16 @@ const filteredItems = items.filter(item =>
                   <td>{item.MiddleName}</td>
                   <td>{item.ContactNo}</td>
                   <td><button>View</button></td>
-                  <td> <button className="delete">
-                    Delete
-                  </button></td>
+                  <td>  <button className="delete">
+                     <button
+                    className="edit"
+                    onClick={() => handleModalOpen(currentData)} 
+                  >
+                   <i className="fa-solid fa-pen-to-square"></i>
+                  </button> 
+                   <i className="fa-solid fa-trash-can"></i>
+                  </button>
+                  </td>
 
                   {/* <td>
                     <button className="action-btn" 
@@ -751,7 +751,7 @@ const filteredItems = items.filter(item =>
              <input
               type="text"
               name="Gravida"
-              value={formData.PhilHealth}
+              value={formData.Gravida}
               placeholder='Gravida'
               onChange={handleFormChange}
               required

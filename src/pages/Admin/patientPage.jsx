@@ -35,6 +35,7 @@ function Patient()
             MiddleName: '',
             Age: '',
             contact: '',
+            stat:'',
             sex:'',
             street: '',
             address:'',
@@ -148,6 +149,7 @@ const filteredItems = items.filter(item =>
           !formData.MiddleName ||
           !formData.Age ||
           !formData.sex ||
+          !formData.stat ||
           !formData.address ||
           !formData.contact ||
           !formData.econtact||
@@ -187,6 +189,7 @@ const filteredItems = items.filter(item =>
             MiddleName: '',
             Age: '',
             contact: '',
+            stat:'',
             sex:'',
             street: '',
             address:'',
@@ -225,6 +228,7 @@ const filteredItems = items.filter(item =>
         MiddleName: record["Middle Name"],
         Age: record["Age"],
         contact: record["Contact"],
+        stat: record["Marital Status"],
         sex: record["Sex"],
         street: record["Street"],
         address: record["Home Address"],
@@ -240,6 +244,7 @@ const filteredItems = items.filter(item =>
             MiddleName: '',
             Age: '',
             contact: '',
+            stat:'',
             sex:'',
             street: '',
             address:'',
@@ -517,7 +522,7 @@ const filteredItems = items.filter(item =>
               <option value="opt2">Option 2</option>
               <option value="opt3">Option 3</option>
             </select>
-
+          
   
             <button className="adit" onClick={() => handleModalOpen()}>
               Add
@@ -525,12 +530,12 @@ const filteredItems = items.filter(item =>
 
 
 
-               <button
+               {/* <button
                     className="edit"
                     onClick={() => handleModalOpen(currentData)} 
                   >
                     Edit
-                  </button> 
+                  </button>  */}
 
             <div className='patrec-btn'>
               <label htmlFor="search"><h3>Search:</h3></label>
@@ -581,7 +586,13 @@ const filteredItems = items.filter(item =>
                   <td>{item.ContactNo}</td>
                   <td><button>View</button></td>
                   <td> <button className="delete">
-                    Delete
+                     <button
+                    className="edit"
+                    onClick={() => handleModalOpen(currentData)} 
+                  >
+                   <i className="fa-solid fa-pen-to-square"></i>
+                  </button> 
+                   <i className="fa-solid fa-trash-can"></i>
                   </button></td>
 
                   {/* <td>
@@ -659,14 +670,10 @@ const filteredItems = items.filter(item =>
             />
              </label>
             <label htmlFor="Sex"><h3>Sex</h3>
-            <input
-              type="radiobutton"
-              name="Sex"
-              value={formData.sex}
-              onChange={handleFormChange}
-              placeholder="Sex"
-              required
-            />
+             <select name="Sex" id="Sex"> 
+              <option value={formData.sex}>Female</option>
+              <option value={formData.sex}>Male</option>
+            </select>
           </label>
             <label htmlFor="Bday"><h3>Birthdate</h3>
             <input
@@ -678,48 +685,48 @@ const filteredItems = items.filter(item =>
               required
             />
            </label>
-           <label htmlFor="civilStat"><h3>Civil Status</h3>
-            <select name="civilStat" id="civilStat"> 
-              <option value="opt1">Single</option>
-              <option value="opt2">Married</option>
-              <option value="opt3">Separated</option>
-              <option value="opt4">Widowed</option>
-              <option value="opt5">Divorced</option>
+           <label htmlFor="stat"><h3>Marital Status</h3>
+            <select name="stat" id="stat"> 
+              <option value={formData.stat}>Single</option>
+              <option value={formData.stat}>Married</option>
+              <option value={formData.stat}>Separated</option>
+              <option value={formData.stat}>Widowed</option>
+              <option value={formData.stat}>Divorced</option>
+              onChange={handleFormChange}
             </select>
             </label>
-            <label htmlFor="Home Address"><h3>Home Address</h3>
+            <label htmlFor="address"><h3>Home Address</h3>
              <input
               type="text"
-              name="Home Address"
+              name="address"
               value={formData.address}
-              placeholder='Home Address'
               onChange={handleFormChange}
-              required
-            />
-            </label>
+              placeholder="Home Address"
+            /></label>
             <label htmlFor="Street"><h3>Street</h3>
              <select name="Street" id="Street"> 
-              <option value="opt1">Kayumanggi</option>
-              <option value="opt2">Karunungan</option>
-              <option value="opt3">Kalinisan</option>
-              <option value="opt4">Katapangan</option>
-              <option value="opt5">Kagitingan</option>
-              <option value="opt6">Katatagan</option>
-              <option value="opt7">Karangalan</option>
-              <option value="opt8">Katapatan</option>
-              <option value="opt9">Kasipagan</option>
-              <option value="opt10">Kahusayan</option>
-              <option value="opt11">Kabutihan</option>
-              <option value="opt12">Katalinuhan</option>
-              <option value="opt13">Kabanalan</option>
-              <option value="opt14">Kaayusan</option>
-              <option value="opt15">Kabayanihan</option>
-              <option value="opt16">Kalayaan</option>
+              <option value={formData.street}>Kayumanggi</option>
+              <option value={formData.street}>Karunungan</option>
+              <option value={formData.street}>Kalinisan</option>
+              <option value={formData.street}>Katapangan</option>
+              <option value={formData.street}>Kagitingan</option>
+              <option value={formData.street}>Katatagan</option>
+              <option value={formData.street}>Karangalan</option>
+              <option value={formData.street}>Katapatan</option>
+              <option value={formData.street}>Kasipagan</option>
+              <option value={formData.street}>Kahusayan</option>
+              <option value={formData.street}>Kabutihan</option>
+              <option value={formData.street}>Katalinuhan</option>
+              <option value={formData.street}>Kabanalan</option>
+              <option value={formData.street}>Kaayusan</option>
+              <option value={formData.street}>Kabayanihan</option>
+              <option value={formData.street}>Kalayaan</option>
+              onChange={handleFormChange}
             </select>
             </label>
-            <label htmlFor="Contact"><h3>Contact Number</h3>
-                <input type="text"
-                name="Contact"
+            <label htmlFor="contact"><h3>Contact Number</h3>
+              <input type="text"
+                name="contact"
                 value={formData.contact}
                 placeholder='Contact'
                 onChange={handleFormChange}
@@ -727,9 +734,9 @@ const filteredItems = items.filter(item =>
                  />
             </label>
 
-            <label htmlFor="eContact"><h3>Emergency Contact Number</h3>
+            <label htmlFor="econtact"><h3>Emergency Contact Number</h3>
                 <input type="text"
-                name="eContact"
+                name="econtact"
                 value={formData.econtact}
                 placeholder='Emergency Contact Number'
                 onChange={handleFormChange}
