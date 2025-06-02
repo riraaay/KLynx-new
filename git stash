@@ -1,0 +1,54 @@
+[33mcommit 1ec1b4de0f59d79840a1f01e2d3a0abd174e2bdc[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mshing-ver[m[33m, [m[1;31morigin/shing-ver[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: riraaay <rieberna.23@gmail.com>
+Date:   Mon Jun 2 17:57:44 2025 +0800
+
+    added file maintenance except doctors and animal bite
+
+[33mcommit ffcc04487bfe20367497ecb369092caad673e53c[m
+Author: riraaay <rieberna.23@gmail.com>
+Date:   Mon Jun 2 15:22:49 2025 +0800
+
+    re-commit w/ linis +++ staff and patient page
+
+[33mcommit 2497a4d97867a72fa429f59ba03f6a1f6fd4ddb9[m[33m ([m[1;31morigin/kol's-version[m[33m)[m
+Author: anthony <anthonyprudente1@gmail.com>
+Date:   Tue May 20 10:00:28 2025 +0800
+
+    Prot Routes, Database update
+
+[33mcommit 5184d8b9876eb82f9e5a3e181511e1ea94667644[m
+Merge: 5446fed 3d0e288
+Author: anthony <anthonyprudente1@gmail.com>
+Date:   Tue May 20 04:41:06 2025 +0800
+
+    Save my changes before switching
+
+[33mcommit 5446fedf4e0c83ea94e394865288beda5fae1849[m
+Author: anthony <anthonyprudente1@gmail.com>
+Date:   Tue May 20 02:32:03 2025 +0800
+
+    test?
+
+[33mcommit 3d0e28813e67c3ccd8c670f42c29763a75f4b032[m
+Author: riraaay <rieberna.23@gmail.com>
+Date:   Tue May 20 01:52:33 2025 +0800
+
+    fixed consulatation and prenatal pages(Layouts). Added Total Patient and Upcoming Appointment Page connected sa dashboard
+
+[33mcommit 0653a98142e5d34ba3ab870896d355bd126021ce[m
+Author: riraaay <rieberna.23@gmail.com>
+Date:   Mon May 19 04:41:35 2025 +0800
+
+    Prenatal page (interface only, same as Consultation)
+
+[33mcommit 042373c6645fd0006ab0c59d32831ce871d8212c[m[33m ([m[1;31morigin/new-footer-in-frontpage[m[33m)[m
+Author: riraaay <rieberna.23@gmail.com>
+Date:   Mon May 19 00:03:49 2025 +0800
+
+    Consultation (can't save,edit,delete)
+
+[33mcommit cb1046c4e502b195db1d8b02a133b84e850a10b9[m
+Author: riraaay <rieberna.23@gmail.com>
+Date:   Sun May 18 16:00:33 2025 +0800
+
+    initial commit
