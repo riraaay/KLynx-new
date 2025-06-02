@@ -1,0 +1,19 @@
+.geo-map-container {
+  display: flex;
+  height: 100vh; /* Full height of the viewport */
+  width: 100vw; /* Full width of the viewport */
+}
+
+.geo-nav {
+  width: 250px; /* Fixed width for the Navbar */
+  background-color: #f4f4f4; /* Optional background for distinction */
+  border-right: 1px solid #ccc; /* Optional border for separation */
+}
+
+.geo-map {
+  flex: 1; /* Take up all the remaining space */
+  background-color: #e0e0e0; /* Optional background for visualization */
+  display: flex;
+  flex-direction: column; /* Ensure content inside is stackable */
+  height: 100%; /* Ensure it takes full height */
+}
