@@ -11,26 +11,26 @@ const Sidebar = () => {
   };
 
   return (
-    
+
     <div className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
       <button className="toggle-button" onClick={toggleSidebar}>
       {isCollapsed ? <i className="fa-solid fa-angles-left"></i>  : <i className="fa-solid fa-angles-right"></i>}
      </button>  
       <img src={SidebarOKBC} className="logo" alt="logo"/>
-      
+
     <div className="icon-container"> 
       <div className="menu-item">
           <ul>
            <h3>Main</h3>
               <li> 
               <a href="/Dashboard">
-              
+
               {!isCollapsed && <span>Dashboard</span>}
               </a>
               </li>
               <li>
                 <a href="/Maps">
-             
+
                 {!isCollapsed && <span>GeoMap</span>}
                 </a>
               </li>
@@ -39,12 +39,12 @@ const Sidebar = () => {
       <div className="menu-item">
         <ul> <h3>File Maintenance</h3>
           <li> 
-            <a href="/Patientrecord">
+            <a href="/patientPage">
             {!isCollapsed && <span>Patient</span>}
             </a>
           </li>
           <li>
-            <a href="/">
+            <a href="/staffPage">
             {!isCollapsed && <span>Staff</span>}
             </a>
           </li>
@@ -113,5 +113,3 @@ const Sidebar = () => {
 }
 
 export default Sidebar;
-
-

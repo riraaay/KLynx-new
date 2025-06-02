@@ -57,8 +57,8 @@ mock.onGet('/api/prescriptions').reply(200, [
   { medicine: "Amoxicillin", dosage: "250mg", frequency: "2x/day", doctor: "Dr. Jane" },
 ]);
 mock.onGet('/api/notes').reply(200, [
-    { doctor: "Dr. Smith", note: "Follow up with patients who missed their appointments." },
-    { doctor: "Dr. Jane", note: "Review lab results for all malaria cases." }
+    {PatientName: "Coleen Sanchez", doctor: "Dr. Smith", note: "Follow up with patients who missed their appointments." },
+    {PatientName: "Rie Mabitado", doctor: "Dr. Jane", note: "Review lab results for all malaria cases." }
   ]);
 mock.onPost('/api/notes').reply((config) => {
     const newNote = JSON.parse(config.data);
@@ -94,7 +94,7 @@ function Dashboard() {
    const [showManageAccount, setShowManageAccount] = useState(false);
        const [showTerms, setShowTerms] = useState(false);
        const [showAddAdmin, setShowAddAdmin] = useState(false);
-   
+
          // State for general details
      const [generalDetails, setGeneralDetails] = useState({
       name: 'John Doe',
@@ -114,7 +114,7 @@ function Dashboard() {
 //     { label: 'Pregnant', count: 2 },
 //   ];
    
-   
+
   // Edit account state
   // Load account details from local storage on component mount
   useEffect(() => {
@@ -123,8 +123,8 @@ function Dashboard() {
           setGeneralDetails(savedDetails);
       }
   }, []);
-  
-  
+
+
   const handleSave = () => {
       // Save the updated details to local storage
       localStorage.setItem('accountDetails', JSON.stringify(generalDetails));
@@ -173,7 +173,7 @@ function Dashboard() {
       console.error('Error:', error);
     }
   };
-  
+
     const handleInputChange = (e) => {
       const { name, value } = e.target;
       setGeneralDetails((prevDetails) => ({
@@ -181,9 +181,9 @@ function Dashboard() {
         [name]: value,
       }));
     };
-   
-  
-   
+
+
+
   const [topDiseases, setTopDiseases] = useState([]);
   const [totalPatients, setTotalPatients] = useState(0);
   const [consultations, setConsultations] = useState(0);
@@ -196,7 +196,7 @@ function Dashboard() {
   const [postpartumReport, setPostpartumReport] = useState([]);
   const [animalCases, setAnimalCases] = useState([]);
 
-         const [newNote, setNewNote] = useState({ doctor: '', note: '' });
+        //  const [newNote, setNewNote] = useState({ doctor: '', note: '' });
 
   useEffect(() => {
     // Fetch data from mock APIs
@@ -219,7 +219,7 @@ function Dashboard() {
 
         const upcomingResponse = await axios.get('/api/upcoming-appointment');
         setUpcomingAppointment(upcomingResponse.data);
-      
+
         const prescriptionsResponse = await axios.get('/api/prescriptions');
         setPrescriptions(prescriptionsResponse.data);
 
@@ -243,16 +243,16 @@ function Dashboard() {
     fetchData();
   }, []);
 
-        const handleNoteSubmit = async (e) => {
-            e.preventDefault();
-            try {
-            const response = await axios.post('/api/notes', newNote);
-            setNotes((prevNotes) => [...prevNotes, response.data]);
-            setNewNote({ doctor: '', note: '' });
-            } catch (error) {
-            console.error("Error submitting note:", error);
-            }
-        };
+        // const handleNoteSubmit = async (e) => {
+        //     e.preventDefault();
+        //     try {
+        //     const response = await axios.post('/api/notes', newNote);
+        //     setNotes((prevNotes) => [...prevNotes, response.data]);
+        //     setNewNote({ doctor: '', note: '' });
+        //     } catch (error) {
+        //     console.error("Error submitting note:", error);
+        //     }
+        // };
 
         const diseaseChartData = {
             labels: Object.keys(diseaseStats),
@@ -266,7 +266,7 @@ function Dashboard() {
               },
             ],
           };
-        
+
           const diseaseChartOptions = {
             responsive: true,
             plugins: {
@@ -292,7 +292,7 @@ function Dashboard() {
               },
             ],
           };
-        
+
           const IntrapartumChartOptions = {
             responsive: true,
             plugins: {
@@ -318,7 +318,7 @@ function Dashboard() {
               },
             ],
           };
-        
+
           const PostpartumChartOptions = {
             responsive: true,
             plugins: {
@@ -344,7 +344,7 @@ function Dashboard() {
               },
             ],
           };
-        
+
           const AnimalChartOptions = {
             responsive: true,
             plugins: {
@@ -451,15 +451,15 @@ function Dashboard() {
                            </div>
                        </div>
                    </div>
-   
 
-        
+
+
       )}
 
       {showAddAdmin && (
         <div className="modal">
           <div className="modal-content">
-            
+
             <h3>Add Admin Account</h3>
                 <button className="close"
                   onClick={() => setShowAddAdmin(false)}
@@ -495,7 +495,7 @@ function Dashboard() {
                 value={confirmPassword} 
                 onChange={(e) => setConfirmPassword(e.target.value)} 
                 required 
-    
+
              />
             <button onClick={HandleAddAdmin}>Add Admin</button>
 
@@ -506,14 +506,14 @@ function Dashboard() {
                     <li key={index}>{account.username}</li>
                 ))}
             </ul>
-  
-            
+
+
               </div>
-              
+
               </div>
             </div>
             )}  
-      
+
       {showTerms && (
             <div className="modal">
               <div className="modal-content">
@@ -538,9 +538,11 @@ function Dashboard() {
             <h3>Total Patient Number</h3>
             <div className="totpatient-placeholder">{totalPatients}</div>
             <a href="/TotPatient">
-           <button>More</button>
+              <button className="buton">More</button>
             </a>
+
           </div>
+        
           <div className="stat-card">
             <h3>Consultations</h3>
             <div className="totpatient-placeholder">{consultations}</div>
@@ -552,7 +554,9 @@ function Dashboard() {
             <h3>Upcoming Appointments</h3>
             <div className="consult-placeholder">{consultations}</div>
             <a href="/upcomingAppt">
-            <button className="buton">More</button>
+    
+                <button className="buton">More</button>
+         
             </a>
           </div>
           <div className="stat-card">
@@ -577,16 +581,19 @@ function Dashboard() {
            <button className='button'>Year</button>
               </div> 
                 <h3>Disease Statistics</h3>
-               
+
                 <Bar data={diseaseChartData} options={diseaseChartOptions} />
-          
+
             </div>
 
             <div className="appoint">
-              
+
                 <h3>Top 10 Diseases</h3>
+               
 
                     <PieChartExample/>
+        
+             
 
             </div>
        </div>     
@@ -602,6 +609,7 @@ function Dashboard() {
                   <th>Dosage</th>
                   <th>Frequency</th>
                   <th>Doctor&apos;s Name</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -611,42 +619,40 @@ function Dashboard() {
                     <td>{prescription.dosage}</td>
                     <td>{prescription.frequency}</td>
                     <td>{prescription.doctor}</td>
+                    <td><button className='prescript-btn'>View</button></td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <div className="notes">
-            <h3>Doctor&apos;s Notes</h3>
-            <ul>
-              {notes.map((note, index) => (
-                <li key={index}>
-                  <strong>{note.doctor}:</strong> {note.note}
-                </li>
-              ))}
-            </ul>
-             <div className="note-placeholder">
-            <form onSubmit={handleNoteSubmit}>
-              <input
-                type="text"
-                placeholder="Doctor's Name"
-                value={newNote.doctor}
-                onChange={(e) => setNewNote({ ...newNote, doctor: e.target.value })}
-                required
-              />
-              <textarea
-                placeholder="Enter note"
-                value={newNote.note}
-                onChange={(e) => setNewNote({ ...newNote, note: e.target.value })}
-                required
-              />
-              <button type="submit" >Send Note</button>
-            </form>
-          </div>
-            </div>
-          
-        </div>
 
+        </div>
+            <div className='container3'>
+               <div className="notes">
+            <h3>Doctor&apos;s Notes</h3>
+          <table>
+              <thead>
+                <tr>
+                  <th>Patient Name</th>
+                  <th>Doctor&apos;s name</th>
+                  <th>Notes</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {notes.map((notes, index) => (
+                  <tr key={index}>
+                    <td>{notes.PatientName}</td>
+                    <td>{notes.doctor}</td>
+                    <td>{notes.note}</td>
+                    <td><button className='notes-btn'>View</button></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            </div>
+            </div>
         <div className="container4">
             <div className="report">  
                 <h3>Prenatal Report</h3>  
@@ -656,15 +662,15 @@ function Dashboard() {
             <div className="report1">
               <h3>Intrapartum</h3>
                  <Bar data={IntrapartumChartData} options={IntrapartumChartOptions} />
-                
-                     
-           
+
+
+
             <h3>Postpartum</h3>
-             
+
                <Bar data={PostpartumChartData} options={PostpartumChartOptions} />
             </div>
-   
-            
+
+
             </div>
 
             <div className='container5'>
@@ -677,7 +683,7 @@ function Dashboard() {
 
                     </div>
                 </div>
-               
+
                 <div className='report2'>
 
                   <h3>
@@ -691,7 +697,7 @@ function Dashboard() {
                 </div>
 
             </div>
-              
+
       </main>
     </div>
   );
