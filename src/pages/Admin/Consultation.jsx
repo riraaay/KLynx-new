@@ -637,7 +637,6 @@ const [query, setQuery] = useState('');
               ))}
             </tbody>
           </table>
-
           <div className="pagination">
             <button
               className="page-btn"

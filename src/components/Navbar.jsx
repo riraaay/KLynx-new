@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import SidebarOKBC from '../assets/picture/medikawhite.svg'
 import './Navbar.css';
+import { Link } from 'react-router-dom';
 
 
 const Sidebar = () => {
@@ -23,79 +24,79 @@ const Sidebar = () => {
           <ul>
            <h3>Main</h3>
               <li> 
-              <a href="/Dashboard">
+              <Link to="/Dashboard">
               
               {!isCollapsed && <span>Dashboard</span>}
-              </a>
+              </Link>
               </li>
               <li>
-                <a href="/Maps">
+                <Link to="/Maps">
              
                 {!isCollapsed && <span>GeoMap</span>}
-                </a>
+                </Link>
               </li>
           </ul>
       </div>
       <div className="menu-item">
         <ul> <h3>File Maintenance</h3>
           <li> 
-            <a href="/Patientrecord">
+            <Link to="/Patientrecord">
             {!isCollapsed && <span>Patient</span>}
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/">
+            <Link to="/Staff">
             {!isCollapsed && <span>Staff</span>}
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/">
+            <Link to="/Doctors">
             {!isCollapsed && <span>Doctors</span>}
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/">
+            <Link to="/">
             {!isCollapsed && <span>Nurse</span>}
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/Consultation">
+            <Link to="/Consultation">
             {!isCollapsed && <span>Patient Consultation</span>}
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/Prenatal">
+            <Link to="/Prenatal">
             {!isCollapsed && <span>Prenatal</span>}
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/">
+            <Link to="/">
             {!isCollapsed && <span>Animal Bite Incident</span>}
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
       <div className="menu-item">
         <ul> <h3>Reports</h3>
           <li>
-            <a href="/Patientrecord">
+            <Link to="/Patientrecord">
             {!isCollapsed && <span>Patient Record</span>}
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/">
+            <Link to="/">
             {!isCollapsed && <span>Disease Report</span>}
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/">
+            <Link to="/">
             {!isCollapsed && <span>Animal Bite Incident Report</span>}
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/">
+            <Link to="/">
             {!isCollapsed && <span>FHSIS Report</span>}
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

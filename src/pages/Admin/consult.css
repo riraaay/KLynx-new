@@ -979,6 +979,10 @@ padding: 5px 10px;
     margin: 0 10px;
 }
 
+.EntriesName{
+    margin-left: 15px;
+}
+
 .modal-content2 button{
     background-color: #1114a3;
     border: none;

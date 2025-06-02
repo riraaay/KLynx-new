@@ -307,7 +307,6 @@
   align-items: center;
   column-gap: 50px;
   flex-wrap: wrap;
-  
 }
 
 .register-form .register-gender{
@@ -338,7 +337,6 @@
   border: none;
   color: rgb(50, 50, 50);
   font-size: 1rem;
-  
 }
 
 .register-gender-option input[type="radio"] {

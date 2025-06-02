@@ -25,6 +25,8 @@ import Prenatal from './pages/Admin/Prenatal'
 import UpcomingAppointment from './pages/Admin/upcomingAppt'
 import TotalPatient from './pages/Admin/TotPatient'
 
+import Doctors from './pages/Admin/Doctors'
+
 
 const ROLES = {
   'User': 2001,
@@ -58,11 +60,13 @@ function App() {
 
               <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
                 <Route path='/Consultation' element={<Consultation />} />
+                <Route path='/Doctors' element={<Doctors/>} />
                 <Route path='/Patientrecord' element={<Patientrecord />} />
                 <Route path='/Maps' element={<Maps />} />
                 <Route path='/Prenatal' element={<Prenatal/>} />
                 {/*<Route path='/Dashboard' element={<Dashboard />} />  */}
               </Route>
+              
 
               <Route path='/Appointment' element={<Appointment />} />
               <Route path='/Patient-Dashboard' element={<Dashboard2/>} />
