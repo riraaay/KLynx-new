@@ -1,6 +1,6 @@
 import Consultation from './pages/Admin/Consultation'
 import Patientrecord from './pages/Admin/Patientrecord' 
-//import Dashboard from './pages/Admin/Dashboard'   
+import Dashboard from './pages/Admin/Dashboard'   
 import { BrowserRouter, Routes, Route} from 'react-router-dom'
 import Maps from './pages/Admin/Maps'
 
@@ -19,14 +19,17 @@ import Setnewpass from './pages/Facepage/setnewpass'
 import About from './pages/Facepage/about'
 import Contact from './pages/Facepage/contact'
 import Home from './pages/Facepage/Frontpage'
-import Unauthorized from './components/Unauthorized'
-import RequireAuth from './components/RequireAuth'
+
 import Prenatal from './pages/Admin/Prenatal'
+
 import UpcomingAppointment from './pages/Admin/upcomingAppt'
 import TotalPatient from './pages/Admin/TotPatient'
 
 import Doctors from './pages/Admin/Doctors'
 
+import Patient from './pages/Admin/patientPage'
+import Staff from './pages/Admin/staffPage'
+import Nurse from './pages/Admin/nursePage'
 
 const ROLES = {
   'User': 2001,
@@ -35,15 +38,24 @@ const ROLES = {
 }
 
 
-
 function App() {
   return (
     <div>
-       
+
           <BrowserRouter>
+
             <Routes>
-              {/* public routes */}
-              <Route path="/Unauthorized" element={<Unauthorized />} />
+              <Route path='/Consultation' element={<Consultation />} />
+              <Route path='/Patientrecord' element={<Patientrecord />} />
+              <Route path='/Dashboard' element={<Dashboard />} />  
+              <Route path='/Maps' element={<Maps />} />
+
+              <Route path='/Appointment' element={<Appointment />} />
+              <Route path='/Patient-Dashboard' element={<Dashboard2/>} />
+              <Route path='/Patient-Record' element={<Patientrecord2/>} />
+              <Route path='/GeoMap' element={<GeoMap/>} />
+
+              <Route path='/Register' element={<Register/>} />
               <Route path='/Login' element={<Login/>} />
               <Route path='/Logintwo' element={<Logintwo/>} />
               <Route path='/Forgot-Password' element={<ForgotPassword/>} />
@@ -77,9 +89,18 @@ function App() {
               
               
               <Route path="*" element={<Home />} />
-              <Route path="/" element={<Home />} />
+               <Route path="/" element={<Home />} />
+
+              <Route path='/Prenatal' element={<Prenatal/>} />
               
-            </Routes>
+              <Route path='/upcomingAppt' element={<UpcomingAppointment/>} />
+              <Route path='/TotPatient' element={<TotalPatient/>} />
+                <Route path='/patientPage' element={<Patient/>} />
+                 <Route path='/staffPage' element={<Staff/>} />
+                  <Route path='/nursePage' element={<Nurse/>} />
+                
+
+              </Routes>
           </BrowserRouter>
     </div>
   )
