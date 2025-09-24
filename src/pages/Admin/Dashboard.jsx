@@ -577,13 +577,11 @@ function Dashboard() {
         <div className="container2">
             <div className="analytics"> 
               <div>   
-            <button className='button'>Month</button>
-           <button className='button'>Year</button>
+                <button className='button'>Month</button>
+                <button className='button'>Year</button>
               </div> 
                 <h3>Disease Statistics</h3>
-
                 <Bar data={diseaseChartData} options={diseaseChartOptions} />
-
             </div>
 
             <div className="appoint">

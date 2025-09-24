@@ -1,0 +1,181 @@
+/*
+    align-self: start; It tells one specific item inside a flex (or grid) container to align to the top (or left, depending on layout direction) — even if the others are centered or stretched.
+*/
+
+#mSidebar{
+    box-sizing: border-box;
+    height: 100vh;
+    width: 255px;
+    padding: 5px 1em;
+    background-color: #07598D;
+    border-right: 1px solid #42434a;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    
+
+    transition: 300ms ease-in-out;
+    /*overflow: hidden;*/
+    text-wrap: nowrap;
+    font-size: 0.8em;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 6px;
+}
+
+#mSidebar::-webkit-scrollbar {
+  width: 2px;
+}
+
+#mSidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+
+
+#mSidebar ul{
+    list-style: none;
+}
+
+/*
+    #mSidebar > ul > li:first-child - targets only the very first <li> item inside a <ul> that is directly inside the element with the ID mSidebar
+    justify-content: flex-end; moves items to the right end of a flex container.
+*/
+#mSidebar > ul > li:first-child{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+    .mSidebar-logo{
+        font-weight: 600;
+    }
+}
+
+/*
+    #mSidebar ul li.mSidebar-Active a{ - targets a link (<a>) inside a list item (<li>) that has the class mSidebar-Active, which is inside a ul, inside the element with ID mSidebar.
+*/
+#mSidebar ul li.mSidebar-Active a{
+    color: #6264e8;
+    .BiChevronsLeft{
+        color: #6264e8;
+    }
+}
+
+/*
+    #mSidebar a, #mSidebar .dropdown-btn, #mSidebar .logo{ - Select the <a> tags, .dropdown-btn elements, and .logo elements that are inside the element with id mSidebar, and apply the same CSS styles to all of them.
+    display: flex; makes the element act like a block element
+*/
+#mSidebar a, #mSidebar .mSidebar-dropdown-btn, #mSidebar .mSidebar-logo, .mSidebar-dropdown-btn2{
+    border-radius: .5em;
+    padding: .85em;
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.mSidebar-dropdown-btn, .mSidebar-dropdown-btn2{
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+}
+
+/*
+    flex-shrink: 0; - This item must keep its size. Don’t make it smaller, even if the screen shrinks
+*/
+#mSidebar .mSidebarLogo {
+    flex-shrink: 0;
+    font-size: 24px;
+    color: white;
+}
+
+#mSidebar a span, #mSidebar .mSidebar-dropdown-btn span{
+    flex-grow: 1;
+}
+
+#mSidebar a:hover, #mSidebar .mSidebar-dropdown-btn:hover{
+    background-color: #1e21d2;
+}
+
+#mSidebar .sub-mSidebar, #mSidebar .sub-mSidebar2{
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: 300ms ease-in-out;
+
+    > div{
+        overflow: hidden;
+    }
+}
+
+#mSidebar .sub-mSidebar.show, #mSidebar .sub-mSidebar2.show{
+    grid-template-rows: 1fr;
+}
+
+.rotate .BiChevronDown:last-child, #mSidebar .mSidebar-dropdown-btn2.rotate svg{
+  rotate: 180deg;
+}
+
+#mSidebar .sub-mSidebar a{
+    padding-left: 5.2em;
+}   
+
+#mSidebar .sub-mSidebar2 a, #mSidebar .sub-mSidebar2-sub-Maternal a{
+    padding-left: 6.5em;
+}   
+
+
+#mSidebar-Toggle-Btn{
+    margin-left: auto;
+    padding: 1em;
+    border: none;
+    border-radius: .5em;
+    background: none;
+    cursor: pointer;
+
+    BiChevronsLeft{
+        transition: rotate 150ms ease;
+    }
+}
+
+#mSidebar-Toggle-Btn:hover{
+    background-color: #1e21d2;
+}
+
+#mSidebar.mSidebar-close{
+    padding: 5px;
+    width: 55px;
+
+    span{
+        display: none;
+    }
+    .BiChevronDown{
+        visibility: hidden
+    }
+    .sub-mSidebar-Nondropdown{
+        visibility: hidden
+    }
+}
+
+#mSidebar .mSidebar-dropdown-btn span{
+    padding-left: 40px;
+}
+
+#mSidebar .sub-mSidebar-Nondropdown a{
+    padding-left: 50px;
+}
+
+#mSidebar .mSidebar-dropdown-btn2 span{
+    padding-left: 55px;
+}
+
+#mSidebar hr {
+  width: 100%;
+  border: none;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0.5em 0; /* add some spacing */
+}

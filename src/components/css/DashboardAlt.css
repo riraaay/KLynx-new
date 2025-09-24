@@ -1,0 +1,187 @@
+/*
+    min(30px, 7%); - Use 30px padding, unless the screen is small (width: 200px when minimize) — then use 7% of that 200px or less padding.
+    So min choose whoever is the smallest.
+*/
+
+.DashboardAlt-Main{
+    padding: min(30px, 7%);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.DashboardAlt-Main p{
+    color: #003399;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+/*
+    .DashboardAlt-Main .Temp-Container{ - Style the .Temp-Container that lives inside .DashboardAlt-Main.
+    h2, p{ margin-top: 1em } - means every <h2> and <p> inside .Temp-Container will have a top margin of 1em.
+*/
+.DashboardAlt-Main .Temp-Container{
+    border: 1px solid darkgray;
+    border-radius: 1em;
+    margin-bottom: 20px;
+    padding: min(3em, 15%);
+    h2, p{ margin-top: 1em }
+}
+
+.DashboardAlt-Header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.DashboardAlt-Content{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 1rem;
+    background: #dde6ed;
+}
+
+.DashboardAlt-Content hr{
+    width: calc(100% + 3rem);
+    border: none;
+    height: 0.5px;
+    background-color: #1114a3;
+    margin: 0.1em 0;
+    margin-left: -2rem;
+    
+}
+
+.DashboardAlt-Content .DashboardAlt-Header .DashbordAlt-HeaderTitle h1{
+    color: #1114a3;
+}
+
+.DashboardAlt-Cards-Container{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-top: 1rem;
+    color: #1114a3;
+}
+
+.DashboardAlt-Card{
+    display: flex;
+    flex: 1;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    transition: 0.5s ease-in-out;
+    box-shadow: 6px 8px 1px rgba(85, 85, 85, 0.15);
+    width: 10px;
+}
+
+.DashboardAlt-Card:hover{
+    transform: scale(1.04);
+}
+
+.DashboardAlt-HeaderSetting{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.Dashboard-Icon{
+    font-size: 26px;
+    cursor: pointer;
+    transition: 0.5s ease-in-out;
+    color: #1114a3;
+}
+
+.Dashboard-Icon:hover{
+    transform: scale(1.3);
+    cursor: pointer;
+}
+
+.DashboardAlt-CardTitle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.DashboardAlt-CardNumber{
+    text-align: center;
+    font-size: 2rem;
+}
+
+.DashboardAlt-CardButton{
+    align-items: center;
+    display: flex;
+}
+
+.DashboardAlt-CardButton button{
+    border: none;
+    /*outline: none; how cursor pointer will look on button*/ 
+    background: #1114a3;
+    color: white;
+    padding: 8px 55px;
+    border-radius: 15px;
+    font-size: large;
+    font-weight: bold;
+    transition: 0.5s ease-in-out;
+}
+
+.DashboardAlt-CardButton button:hover{
+    transform: scale(1.03);
+    cursor: pointer;
+}
+
+.DashboardAlt-CardsRow2{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-top: 2rem;
+    color: #1114a3;
+    
+}
+
+.DashboardAlt-CardButtonContainers{
+    display: flex;
+}
+
+.DashboardAlt-BarChart{
+    display: flex;
+    width: 40%;
+    max-width: 700px;
+    justify-content: center;
+}
+
+.DashboardAlt-CardRow2Column1{
+    box-sizing: border-box;
+    display: flex;
+    width: 70%;
+    
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    transition: 0.5s ease-in-out;
+    box-shadow: 6px 8px 1px rgba(85, 85, 85, 0.15);
+}
+
+.DashboardAlt-CardRow2Column1:hover{
+    transform: scale(1.03);
+}
+
+.DashboardAlt-CardRow2Column2{
+    box-sizing: border-box;
+    display: flex;
+    width: 30%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    transition: 0.5s ease-in-out;
+    box-shadow: 6px 8px 1px rgba(85, 85, 85, 0.15);
+}

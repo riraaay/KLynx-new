@@ -16,7 +16,7 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(inputs);
-    axios.post('http://localhost/api/register.php', inputs);
+    axios.post('http://localhost/api/register2.php', inputs);
   }
 
   return (
@@ -122,6 +122,10 @@ const Register = () => {
               <div className="register-input-box">
                 <label htmlFor="email">Email Address:</label>
                 <input type="text" id="Email" name="email" placeholder="Enter your first name" required onChange={handleChange} />    
+              </div>
+              <div className="register-input-box">
+                <label htmlFor="pass">Password:</label>
+                <input type="text" id="pass" name="user_password" placeholder="Enter your password" required onChange={handleChange} />    
               </div>
             </div>
             <div className="register-column-last">

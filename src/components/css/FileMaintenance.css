@@ -1,0 +1,216 @@
+/*
+    min(30px, 7%); - Use 30px padding, unless the screen is small (width: 200px when minimize) — then use 7% of that 200px or less padding.
+    So min choose whoever is the smallest.
+*/
+
+.DashboardAlt-Main{
+    padding: min(30px, 7%);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.DashboardAlt-Main p{
+    color: #003399;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+/*
+    .DashboardAlt-Main .Temp-Container{ - Style the .Temp-Container that lives inside .DashboardAlt-Main.
+    h2, p{ margin-top: 1em } - means every <h2> and <p> inside .Temp-Container will have a top margin of 1em.
+*/
+.DashboardAlt-Main .Temp-Container{
+    border: 1px solid darkgray;
+    border-radius: 1em;
+    margin-bottom: 20px;
+    padding: min(3em, 15%);
+    h2, p{ margin-top: 1em }
+}
+
+.FileMaintenance-Container{
+    display: flex;
+}
+
+.FileMaintenance-Content{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 1rem;
+    background: #dde6ed;
+}
+
+.FileMaintenance-Header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.FileMaintenance-Content hr{
+    width: calc(100% + 3rem);
+    border: none;
+    height: 0.5px;
+    background-color: #1114a3;
+    margin: 0.1em 0;
+    margin-left: -2rem;
+    
+}
+
+.FileMaintenance-Content .FileMaintenance-Header .FileMaintenance-HeaderTitle h1{
+    color: #1114a3;
+}
+
+.FileMaintenance-HeaderSetting{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.FileMaintenance-Icon{
+    font-size: 26px;
+    cursor: pointer;
+    transition: 0.5s ease-in-out;
+    color: #1114a3;
+}
+
+.FileMaintenance-Icon:hover{
+    transform: scale(1.3);
+    cursor: pointer;
+}
+
+.FileMaintenance-Filter-Container{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-top: 1rem;
+    color: #1114a3;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.FileMaintenance-Entries{
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+
+}
+
+.FileMaintenance-Entries select{
+    border-radius: 15px;
+    border: none;
+    border: 1px solid #1114a3;
+    padding: 3px 24px;
+}
+
+.FileMaintenance-AddSearch{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.FileMaintenance-AddSearch span{
+    margin-left: 0.6em;
+}
+
+.FileMaintenance-AddSearch button{
+    border-radius: 15px;
+    border: none;
+    /*outline: none; how cursor pointer will look on button*/ 
+    background: #1114a3;
+    color: white;
+    padding: 4px 24px;
+    font-size: 0.9em;
+    transition: 0.5s ease-in-out;
+}
+
+.FileMaintenance-AddSearch button:hover{
+    transform: scale(1.03);
+    cursor: pointer;
+
+}
+
+.FileMaintenance-AddSearch input{
+    border-radius: 15px;
+    border: none;
+    border: 1px solid #1114a3;
+    padding: 3px 7px;
+}
+
+.FileMaintenance-Content table{
+    margin-top: 4rem;
+    font-size: 0.8em;
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease;
+    table-layout: fixed;
+
+}
+
+.FileMaintenance-Content table td:nth-child(5) {
+    width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.FileMaintenance-Content table th:nth-last-child(-n+3),
+.FileMaintenance-Content table td:nth-last-child(-n+3) {
+  width: 14%;
+  text-align: center;
+}
+
+.FileMaintenance-TableWrapper{
+    width: calc(100% + 3rem);
+    margin-left: -2rem;
+}
+
+.FileMaintenance-Content table thead tr{
+    border-bottom: 1px solid #1114a3;
+}
+
+.FileMaintenance-Content table thead tr th{
+    font-weight: 600;
+    color: #1114a3;
+}
+
+.FileMaintenance-Content table tbody td{
+    height: 4.5em;
+    border-bottom: 1px solid #1114a3;
+}
+
+.FileMaintenance-Content table tbody tr:hover{
+    background-color: #8e8e974e;
+}
+
+.FileMaintenance-Content table tbody tr:last-child td{
+    border: none;
+}
+
+.FileMaintenance-Content table tbody td:nth-child(7) button{
+    /*outline: none; how cursor pointer will look on button*/ 
+    border-radius: 15px;
+    border: none;
+    padding: 4px 20px;
+    margin-right: 5px;
+    background: #1114a3;
+    color: white;
+    font-size: 0.9em;
+    transition: 0.5s ease-in-out;
+}
+
+.FileMaintenance-Content table tbody td .FileMaintenance-TableIcon{
+    color: #1114a3;
+    font-size: 1.4em;
+    transition: 0.5s ease-in-out;
+}
+
+.FileMaintenance-IconEdit{
+    margin-left: 1.7em;
+}
+
+.FileMaintenance-TableIcon:hover,
+.FileMaintenance-Content table tbody td:nth-child(7) button:hover{
+    transform: scale(1.09);
+    cursor: pointer;
+}

@@ -1,0 +1,56 @@
+/* Modal overlay ensures the backdrop covers everything */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensure this is higher than the calendar */
+}
+
+/* Modal content box */
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 350px;
+  max-width: 90%;
+  z-index: 10000; /* Additional specificity for the content */
+}
+
+/* Spacing for form groups */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Aligning the label above the input */
+.form-group label {
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* Actions styles */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  padding: 5px 10px;
+    background-color: #1114a3;
+    margin-left: 15px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+h2{
+    margin-top: 0;
+    font-size: 1.5em;
+    color: #1114a3;
+
+}

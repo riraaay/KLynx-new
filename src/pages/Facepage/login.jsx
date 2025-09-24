@@ -20,24 +20,23 @@ const Login = () => {
 
   const handleSubmit = (event) =>{
         event.preventDefault();
-//        console.log(inputs);
-        axios.post('http://localhost/api/login.php', inputs).then(function(response){
-            console.log(response.data);
+        console.log(inputs);
+        axios.post('http://localhost/api/login.php', inputs, {
+          withCredentials: true, // ✅ Needed to accept PHP session cookie
+
+        }).then(function(response){
+          console.log(response.data);
+          
+          if (response.data && response.data.roles){
+            setAuth({
+              roles: [response.data.roles]
+            });
             navigate(from, { replace: true });
-            setAuth({roles:[5150]});
-            
-        })  
-        .catch(function (error) {
-      // Handle HTTP error (e.g., 404, 500)
-      if (error.response && error.response.data && error.response.data.error) {
-        alert("Error: " + error.response.data.error); // backend-defined error
-      } else {
-        alert("Something went wrong. Please try again."); // fallback
-        console.error(error)
-      }
-      console.error(error);
-    });
-  }
+          } else {
+            console.error("Login failed: ", response.data.error);
+          }
+        });
+    };
   
 
 

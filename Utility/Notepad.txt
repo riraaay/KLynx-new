@@ -1,0 +1,455 @@
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import html2canvas from 'html2canvas';
+
+export const generatePDFWithChart = async ({
+  title,
+  monthYear,
+  tableHeaders,
+  tableData,
+  logo,
+  chartCanvasId
+}) => {
+  const doc = new jsPDF();
+
+  if (logo) {
+    doc.addImage(logo, 'PNG', 10, 10, 60, 30);
+  }
+
+  doc.setFontSize(16);
+  doc.text(title, 80, 20);
+  doc.setFontSize(12);
+  doc.text(`Month & Year: ${monthYear}`, 80, 30);
+
+  // 📊 Convert chart canvas to image
+  const chartCanvas = document.getElementById(chartCanvasId);
+  if (chartCanvas) {
+    const chartImage = await html2canvas(chartCanvas).then(canvas =>
+      canvas.toDataURL('image/png')
+    );
+    doc.addImage(chartImage, 'PNG', 10, 45, 90, 60); // Adjust position/size
+  }
+
+  // 📋 Add table data below the chart
+  doc.autoTable({
+    head: [tableHeaders],
+    body: tableData,
+    startY: 110, // adjust so it comes after chart
+  });
+
+  doc.save(`${title.replace(/\s+/g, '_')}_${monthYear}.pdf`);
+};
+🧠 How to Use in Component (e.g. DiseaseReport.jsx)
+jsx
+Copy
+Edit
+import React, { useRef, useEffect } from 'react';
+import Chart from 'chart.js/auto';
+import { generatePDFWithChart } from '../../utils/generatePDFWithChart';
+
+const DiseaseReport = () => {
+  const chartRef = useRef(null);
+
+  const simulatedData = [
+    { disease_name: 'Dengue', count: 30 },
+    { disease_name: 'Influenza', count: 20 },
+    { disease_name: 'TB', count: 10 },
+  ];
+
+  useEffect(() => {
+    const ctx = chartRef.current.getContext('2d');
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: simulatedData.map(d => d.disease_name),
+        datasets: [
+          {
+            data: simulatedData.map(d => d.count),
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: { position: 'bottom' },
+        },
+      },
+    });
+  }, []);
+
+  const handleDownload = async () => {
+    const headers = ['Disease Name', 'Cases'];
+    const rows = simulatedData.map(item => [
+      item.disease_name,
+      item.count,
+    ]);
+
+    const now = new Date();
+    const monthYear = now.toLocaleDateString('en-PH', {
+      timeZone: 'Asia/Manila',
+      year: 'numeric',
+      month: 'long',
+    });
+
+    await generatePDFWithChart({
+      title: 'Disease Report',
+      monthYear,
+      tableHeaders: headers,
+      tableData: rows,
+      logo: '/medikalogo.png',
+      chartCanvasId: 'diseaseChart',
+    });
+  };
+
+  return (
+    <div>
+      <h2>Disease Report</h2>
+      <canvas id="diseaseChart" width="300" height="300" style={{ display: 'none' }} ref={chartRef} />
+      <button onClick={handleDownload}>Download PDF with Chart</button>
+    </div>
+  );
+};
+
+export default DiseaseReport;
+
+
+
+
+
+
+
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import html2canvas from 'html2canvas';
+
+export const generatePDFWithChart = async ({
+  title,
+  monthYear,
+  tableHeaders,
+  tableData,
+  logo,
+  chartCanvasId
+}) => {
+  const doc = new jsPDF();
+
+  if (logo) {
+    doc.addImage(logo, 'PNG', 10, 10, 60, 30);
+  }
+
+  doc.setFontSize(16);
+  doc.text(title, 80, 20);
+  doc.setFontSize(12);
+  doc.text(`Month & Year: ${monthYear}`, 80, 30);
+
+  // 📊 Convert chart canvas to image
+  const chartCanvas = document.getElementById(chartCanvasId);
+  if (chartCanvas) {
+    const chartImage = await html2canvas(chartCanvas).then(canvas =>
+      canvas.toDataURL('image/png')
+    );
+    doc.addImage(chartImage, 'PNG', 10, 45, 90, 60); // Adjust position/size
+  }
+
+  // 📋 Add table data below the chart
+  doc.autoTable({
+    head: [tableHeaders],
+    body: tableData,
+    startY: 110, // adjust so it comes after chart
+  });
+
+  doc.save(`${title.replace(/\s+/g, '_')}_${monthYear}.pdf`);
+}
+
+
+
+
+
+
+
+
+
+
+                                                        The Original DiseaseReport Component
+
+import React, { useEffect, useState } from 'react';
+import { generatePDF } from '../Utility/ReportPDF';
+import Sidebar from '../../components/Navbar';
+const DiseaseReport = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // Replace with actual API endpoint
+    fetch('/api/get_disease_report.php')
+      .then(res => res.json())
+      .then(setData)
+      .catch(console.error);
+  }, []);
+ 
+
+const handleDownload = async () => {
+  try {
+
+    /* For real-time data, uncomment the following lines:
+    // Fetch real-time data from the API
+
+    const response = await fetch('/api/get_disease_report.php');
+    const data = await response.json(); */
+
+
+const simulatedData = [
+      { disease_name: 'Dengue', count: 24, severity: 'High' },
+      { disease_name: 'Influenza', count: 15, severity: 'Moderate' },
+      { disease_name: 'Tuberculosis', count: 5, severity: 'Low' },
+    ];
+
+
+    const headers = ['Disease Name', 'Cases', 'Severity'];
+    const rows = /*data*/simulatedData.map(item => [
+      item.disease_name,
+      item.count,
+      item.severity || 'N/A'
+    ]);
+
+    // 🕒 Get current month and year in Philippine Time
+    const now = new Date();
+    const monthYear = now.toLocaleDateString('en-PH', {
+      timeZone: 'Asia/Manila',
+      year: 'numeric',
+      month: 'long'
+    });
+
+    generatePDF({
+      title: 'Disease Report',
+      monthYear: monthYear,
+      tableHeaders: headers,
+      tableData: rows,
+      logo: 'src/assets/picture/medikablue.png',
+    });
+  } catch (error) {
+    console.error('Error fetching real-time data:', error);
+    alert('Could not generate real-time report.');
+  }
+};
+
+
+
+
+
+
+
+                                                                  The Original ReportPDF
+
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
+/**
+ * Generates a dynamic PDF report for the EMR Health Center.
+ * 
+ * @param {Object} options
+ * @param {string} options.title - Title of the report (e.g., "Disease Report")
+ * @param {string} options.monthYear - Month and year string (e.g., "June 2025")
+ * @param {string[]} options.tableHeaders - Array of column headers
+ * @param {Array[]} options.tableData - 2D array for table rows (arrays of strings/numbers)
+ * @param {string} [options.logo] - Optional image path or base64 for logo
+ */
+export function generatePDF({ title, monthYear, tableHeaders, tableData, logo }) {
+  const doc = new jsPDF('portrait', 'mm', 'a4'); // Portrait, millimeters, A4
+  const marginLeft = 14;
+
+  // Optional logo
+  if (logo) {
+    const image = new Image();
+    image.src = logo;
+    image.onload = () => {
+      doc.addImage(image, 'PNG', 150, 15, 40, 15); // Top right logo
+      drawContent();
+    };
+  } else {
+    drawContent();
+  }
+
+  function drawContent() {
+    // --- Header Section ---
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Karangalan Health Center', marginLeft, 20);
+
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Report Type: ${title}`, marginLeft, 30);
+    doc.text(`Reporting Period: ${monthYear}`, marginLeft, 36);
+
+    // --- Table Section ---
+    autoTable(doc, {
+      startY: 50,
+      head: [tableHeaders],
+      body: tableData.length > 0 ? tableData : [['No data available']],
+      theme: 'grid',
+      headStyles: {
+      fillColor: [0, 188, 212], // Cyan (Material Design cyan)
+      halign: 'center',
+      },
+      styles: {
+      fontSize: 10,
+      cellPadding: 3,
+      halign: 'center',
+      },
+    });
+
+    // --- Footer or Notes (Optional) ---
+    doc.setFontSize(10);
+    doc.text('Generated by Medika System | Timezone: Asia/Manila', marginLeft, doc.internal.pageSize.height - 10);
+
+    // --- Save PDF ---
+    const filename = `${title.replace(/\s+/g, '_')}_${monthYear}.pdf`;
+    doc.save(filename);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ORIGINAL PRE-POST
+        <div className='contents'>
+
+            <div className='stat-card'>
+                <h1>Prenatal Care</h1>
+
+            </div>
+
+                 <table className='table-cont'>
+                      <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th>Age: 10-14</th>
+                    <th>Age: 15-19</th>
+                    <th>Age: 20-49</th>
+                    <th>Overall Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sampleMaternalData.map((record, index) => {
+                    const age10_14 = Number(record["Age: 10-14"]) || 0;
+                    const age15_19 = Number(record["Age: 15-19"]) || 0;
+                    const age20_49 = Number(record["Age: 20-49"]) || 0;
+                    const total = age10_14 + age15_19 + age20_49;
+
+                    return (
+                      <tr key={index}>
+                        <td>{record["Description"]}</td>
+                        <td>{age10_14}</td>
+                        <td>{age15_19}</td>
+                        <td>{age20_49}</td>
+                        <td>{total}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+        </div>
+
+        <div className='contents'>
+
+            
+            <div className='stat-card'>
+
+                <h1>Intrapartum Care and Delivery Outcome</h1>
+
+            </div>
+
+    
+            <div className='table-container'>
+                 <table className='table-cont'>
+                      <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th>Age: 10-14</th>
+                    <th>Age: 15-19</th>
+                    <th>Age: 20-49</th>
+                    <th>Overall Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sampleMaternalData.map((record, index) => {
+                    const age10_14 = Number(record["Age: 10-14"]) || 0;
+                    const age15_19 = Number(record["Age: 15-19"]) || 0;
+                    const age20_49 = Number(record["Age: 20-49"]) || 0;
+                    const total = age10_14 + age15_19 + age20_49;
+
+                    return (
+                      <tr key={index}>
+                        <td>{record["Description"]}</td>
+                        <td>{age10_14}</td>
+                        <td>{age15_19}</td>
+                        <td>{age20_49}</td>
+                        <td>{total}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+                </table>                          
+            </div>
+             
+        </div>
+
+
+        <div className='contents'>
+
+            
+            <div className='stat-card'>
+
+                <h1>Postpartum and New Born Care</h1>
+
+            </div>
+
+            <div className='table-container'>
+                 <table className='table-cont'>
+                      <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th>Age: 10-14</th>
+                    <th>Age: 15-19</th>
+                    <th>Age: 20-49</th>
+                    <th>Overall Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sampleMaternalData.map((record, index) => {
+                    const age10_14 = Number(record["Age: 10-14"]) || 0;
+                    const age15_19 = Number(record["Age: 15-19"]) || 0;
+                    const age20_49 = Number(record["Age: 20-49"]) || 0;
+                    const total = age10_14 + age15_19 + age20_49;
+
+                    return (
+                      <tr key={index}>
+                        <td>{record["Description"]}</td>
+                        <td>{age10_14}</td>
+                        <td>{age15_19}</td>
+                        <td>{age20_49}</td>
+                        <td>{total}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+                </table>                          
+            </div> 
+             
+        </div>
+        

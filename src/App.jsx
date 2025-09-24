@@ -1,13 +1,17 @@
+
+import React from 'react';  
+import Consultation2 from './pages/Admin/Consultation2'
 import Consultation from './pages/Admin/Consultation'
 import Patientrecord from './pages/Admin/Patientrecord' 
-//import Dashboard from './pages/Admin/Dashboard'   
+/*import Dashboard from './pages/Admin/Dashboard'*/
 import { BrowserRouter, Routes, Route} from 'react-router-dom'
-import Maps from './pages/Admin/Maps'
+//import Maps from './pages/Admin/GeoMapAdd'
 
 import Appointment from './pages/Patient/Appointment'
 import Dashboard2 from './pages/Patient/Dashboard2'
 import Patientrecord2 from './pages/Patient/Patient-Record'
 import GeoMap from './pages/Patient/GeoMap'
+//import Calendar from './pages/Admin/Calendar'
 
 import Register from './pages/Facepage/register'
 import Login from './pages/Facepage/login'
@@ -21,23 +25,45 @@ import Contact from './pages/Facepage/contact'
 import Home from './pages/Facepage/Frontpage'
 import Unauthorized from './components/Unauthorized'
 import RequireAuth from './components/RequireAuth'
-import Prenatal from './pages/Admin/Prenatal'
+import PrenatalRie from './pages/Patient/PrenatalRie'
 
 import UpcomingAppointment from './pages/Admin/upcomingAppt'
-import TotalPatient from './pages/Admin/TotPatient'
+//import TotalPatient from './pages/Admin/TotPatient'
 
 import Doctors from './pages/Admin/Doctors'
 
-import Patient from './pages/Admin/patientPage'
-import Staff from './pages/Admin/staffPage'
-import Nurse from './pages/Admin/nursePage'
+import Patient1 from './pages/Admin/patientPage'
+import Staff1 from './pages/Patient/staffPage'
+import Nurse1 from './pages/Admin/nursePage'
 
+import DashboardAlt from './pages/Admin/DashboardAlt'
+import Prenatal from './pages/Admin/Prenatal';
+import Immunization from './pages/Admin/Immunization';
+import Calendar from './pages/Admin/Calendar';
+import Staff from './pages/Admin/Staff';
+import Nurse from './pages/Admin/Nurse';
+import Patient from './pages/Admin/Patient';
+//import AnimalBite from './pages/Admin/AnimalBite';
+//import TotalPatients from './pages/Admin/TotalPatients';
+//import Notes from './pages/Admin/Note';
+//import Prescription from './pages/Admin/Prescription'
+import Prenatal2 from './pages/Patient/Prenatal';
+import DiseaseReport from './pages/Reports/Diseasereport';
 const ROLES = {
   'User': 2001,
   'Editor': 1984,
   'Admin': 5150
 }
+/*
+import MaternalReport from '../Reports/Maternalreport.jsx'
+import DiseaseReport from '../Reports/Diseasereport.jsx'
+import AnimalBiteReport from '../Reports/AnimalBiteReport.jsx'
+*/
 
+import TestPage from './pages/Admin/TestPage'
+
+import GeoMaps from './pages/Admin/GeoMap';
+import IcdManager from './pages/Admin/IcdManager';
 
 function App() {
   return (
@@ -46,15 +72,16 @@ function App() {
           <BrowserRouter>
 
             <Routes>
-              <Route path='/Consultation' element={<Consultation />} />
+
+
+
               <Route path='/Patientrecord' element={<Patientrecord />} />
-              {/*<Route path='/Dashboard' element={<Dashboard />} />  */}
-              <Route path='/Maps' element={<Maps />} />
+              <Route path='/Prenatal2' element={<Prenatal2 />}/>
+              
 
               <Route path='/Appointment' element={<Appointment />} />
               <Route path='/Patient-Dashboard' element={<Dashboard2/>} />
               <Route path='/Patient-Record' element={<Patientrecord2/>} />
-              <Route path='/GeoMap' element={<GeoMap/>} />
 
               <Route path='/Register' element={<Register/>} />
               <Route path='/Login' element={<Login/>} />
@@ -69,39 +96,52 @@ function App() {
               <Route path='/Register' element={<Register/>} />
               <Route path="/Unauthorized" element={<Unauthorized />} />
 
+  
               
-    
+              
+              <Route path='/PrenatalRie' element={<PrenatalRie/>} />
 
               <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-                <Route path='/Consultation' element={<Consultation />} />
-                <Route path='/Doctors' element={<Doctors/>} />
-                <Route path='/Patientrecord' element={<Patientrecord />} />
-                <Route path='/Maps' element={<Maps />} />
+                <Route path='/IcdManager' element={<IcdManager />} />
+
+                <Route path='/GeoMap' element={<GeoMaps />} />              
+                <Route path='/DashboardAlt' element={<DashboardAlt/>} />
+
+                <Route path='/Immunization' element={<Immunization/>} />
                 <Route path='/Prenatal' element={<Prenatal/>} />
+                <Route path='/Consultation' element={<Consultation />} />
+                
+                <Route path='/Staff' element={<Staff/>} />
+                <Route path='/Nurse' element={<Nurse/>} />
+                <Route path='/Doctors' element={<Doctors/>} />
+                <Route path='/Patient' element={<Patient/>} />
+
+                <Route path='/Patientrecord' element={<Patientrecord />} />
+                <Route path='/Calendar' element={<Calendar />} />
+                
+                <Route path='/DiseaseReport' element={<DiseaseReport />} />
                 {/*<Route path='/Dashboard' element={<Dashboard />} />  */}
-              </Route>
+                
+                
+              </Route> 
               
 
               <Route path='/Appointment' element={<Appointment />} />
               <Route path='/Patient-Dashboard' element={<Dashboard2/>} />
               <Route path='/Patient-Record' element={<Patientrecord2/>} />
-              <Route path='/GeoMap' element={<GeoMap/>} />
-  
-              
-              
-              
+        
+             
+              <Route path='/TestPage' element={<TestPage/>}/>
+
               <Route path="*" element={<Home />} />
                <Route path="/" element={<Home />} />
-
-              <Route path='/Prenatal' element={<Prenatal/>} />
               
               <Route path='/upcomingAppt' element={<UpcomingAppointment/>} />
-              <Route path='/TotPatient' element={<TotalPatient/>} />
-                <Route path='/patientPage' element={<Patient/>} />
-                 <Route path='/staffPage' element={<Staff/>} />
-                  <Route path='/nursePage' element={<Nurse/>} />
-                
-
+              
+                <Route path='/patientPage' element={<Patient1/>} />
+                 <Route path='/staffPage1' element={<Staff1/>} />
+                  <Route path='/nursePage' element={<Nurse1/>} />
+              
               </Routes>
           </BrowserRouter>
     </div>

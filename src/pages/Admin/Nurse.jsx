@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import React from 'react';  
 import Sidebar from '../../components/sidebar';
 import '../../components/css/GlobalContainer.css';
 import '../../components/css/DashboardAlt.css';
 import '../../components/css/FileMaintenance.css'
 import './Doctors.css'
 import axios from 'axios';
+import React from 'react';  
 import { BiSolidCog, BiSolidBell, BiSolidEdit, BiSolidTrash } from 'react-icons/bi';
 
-const Doctors = () => {
+const Nurse = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [addDoctorsInputs, setAddDoctorsInputs] = useState({ sex: "Male" });
@@ -31,7 +31,7 @@ const Doctors = () => {
     const handleAddDoctorsSubmit = (e) =>{
         e.preventDefault();
         console.log(addDoctorsInputs);
-        axios.post('http://localhost/api/Doctors.php', addDoctorsInputs).then(function(response){
+        axios.post('http://localhost/api/Nurse.php', addDoctorsInputs).then(function(response){
             console.log(response.data);
             getDoctorsList();
             setSelectedDoctor(null);
@@ -40,7 +40,7 @@ const Doctors = () => {
     }
 
     function getDoctorsList() {
-        axios.get('http://localhost/api/Doctors.php').then(function(response){
+        axios.get('http://localhost/api/Nurse.php').then(function(response){
             console.log(response.data);
             setDoctorsList(response.data);
         });
@@ -51,14 +51,14 @@ const Doctors = () => {
     }, []);
 
     const viewDoctor = async (id) => {
-        const response = await axios.get(`http://localhost/api/Doctors.php?id=${id}`);
+        const response = await axios.get(`http://localhost/api/Nurse.php?id=${id}`);
         setSelectedDoctor(response.data);
         setViewDoctorModal(true);
         console.log(response.data);
     }
 
     const editDoctor = async (id) => {
-        const response = await axios.get(`http://localhost/api/Doctors.php?id=${id}`);
+        const response = await axios.get(`http://localhost/api/Nurse.php?id=${id}`);
         console.log("Before Doctor: ",selectedDoctor);
         console.log(response.data);
         setSelectedDoctor(response.data);
@@ -69,7 +69,7 @@ const Doctors = () => {
         e.preventDefault();
         console.log(selectedDoctor);
 
-        axios.put(`http://localhost/api/Doctors.php?id=${selectedDoctor.AdminID}`, selectedDoctor).then(function(response){
+        axios.put(`http://localhost/api/Nurse.php?id=${selectedDoctor.AdminID}`, selectedDoctor).then(function(response){
             console.log(response.data);
             getDoctorsList();
             setSelectedDoctor(null);
@@ -84,7 +84,7 @@ const Doctors = () => {
     }
 
     const deleteDoctor = (id) => {
-        axios.delete(`http://localhost/api/Doctors.php?id=${id}`).then(function(response){
+        axios.delete(`http://localhost/api/Nurse.php?id=${id}`).then(function(response){
             console.log(response.data);
             getDoctorsList();
             setSelectedDoctor(null);
@@ -98,7 +98,7 @@ const Doctors = () => {
             <main className="FileMaintenance-Content">
                 <div className="FileMaintenance-Header">
                     <div className="FileMaintenance-HeaderTitle">
-                        <h1>Doctor</h1>
+                        <h1>Nurse</h1>
                     </div>
                     <div className="FileMaintenance-HeaderSetting">
                         <BiSolidBell className="FileMaintenance-Icon" />
@@ -181,7 +181,7 @@ const Doctors = () => {
                     <button className="doctors-popup-close-button" onClick={(e) => { e.preventDefault(); setShowModal(false); setSelectedDoctor({}); } }>
                         X
                     </button>
-                    <h2>Add Doctor</h2>
+                    <h2>Add Nurse</h2>
                     <form className="add-doctors-form" onSubmit={handleAddDoctorsSubmit}>
                         <div className="add-doctors-column">
                             <div className="add-doctors-input-box">
@@ -218,16 +218,15 @@ const Doctors = () => {
                                 <input type="text" id="add-doctors-licensingNumber" name="licNumber" placeholder="Enter your first name" required onChange={handleAddDoctorsChange} />
                             </div>
                             <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-specialization">Specialization:</label>
-                                <input type="text" id="add-doctors-specialization" name="specialty" placeholder="Enter your specialization" required onChange={handleAddDoctorsChange} />
+                                <label htmlFor="add-doctors-specialty">Specialty:</label>
+                                <input type="text" id="add-doctors-specialty" name="specialty" placeholder="Enter your middle name" required onChange={handleAddDoctorsChange} />
                             </div>
                             <div className="add-doctors-input-box">
                                 <label>Position:</label>
                                 <div className="add-doctors-select-box">
                                     <select name="position" onChange={handleAddDoctorsChange} required>
                                         <option hidden></option>
-                                        <option value="Health Officer">Health Officer</option>
-                                        <option value="Midwife">Midwife</option>
+                                        <option value="Registered Nurse">Registered Nurse</option>
                                     </select>    
                                 </div>   
                             </div>
@@ -267,7 +266,7 @@ const Doctors = () => {
                 <div className="add-doctors-popup-overlay">
                     <div className="add-doctors-popup-content">
                         <button className="doctors-popup-close-button" onClick={(e) => { e.preventDefault(); setViewDoctorModal(false); setSelectedDoctor({}); } } > X </button>
-                        <h2>View Doctor</h2>
+                        <h2>Add Doctor</h2>
                         <form className="add-doctors-form" onSubmit={handleAddDoctorsSubmit}>
                             <div className="add-doctors-column">
                                 <div className="add-doctors-input-box">
@@ -431,4 +430,4 @@ const Doctors = () => {
     );
 }
 
-export default Doctors;
+export default Nurse;

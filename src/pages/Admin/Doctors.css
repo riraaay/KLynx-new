@@ -14,7 +14,7 @@
   background: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 1);
   position: relative;
   width: 100%;
   max-width: 800px;
@@ -24,20 +24,20 @@
 
 .add-doctors-popup-content h2{
   font-size: 1.5rem;
-  color: #003399;
+  color: #1114a3;
   font-weight: 500;
   text-align: center;
 }
 
 .add-doctors-popup-content h4{
   font-size: 1rem;
-  color: #003399;
+  color: #1114a3;
   font-weight: 400;
   text-align: center;
 }
 
 .add-doctors-popup-content .add-doctors-form{
-    margin-top: 30px;
+    margin-top: 5px;
 }
 
 .add-doctors-form .add-doctors-input-box{
@@ -49,7 +49,7 @@
     color: #1114a3;
 }
 
-.add-doctors-form :where(.add-doctors-input-box input:not([type="radio"]), .add-doctors-select-box){
+.add-doctors-form :where(.add-doctors-input-box input:not([type="radio"]), .add-doctors-select-box, .add-doctors-input-box textarea ){
   position: relative;
   height: 45px;
   width: 100%;
@@ -67,6 +67,42 @@
     box-shadow: 0 1px 0 rgba(199, 4, 4, 0.1);
 }
 
+.add-consult-accompanied-by-button button {
+  background-color: #1114a3;
+  border-radius: 0.9rem;
+  padding: 0.4rem 1.2rem;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9em;
+}
+
+.add-consult-accompanied-by-button button:hover {
+  background-color: #2d2fcc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.add-consult-accompanied-by-button button.selected {
+  background-color: white;
+  color: #1114a3;
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.3);
+  border: 1.5px solid #1114a3;
+}
+
+.add-consult-accompanied-by-button{
+  font-size: 0.9em;
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.add-consult-accompanied-by-section label{
+  color: #1114a3;
+}
+
 .add-doctors-form .add-doctors-column{
   display: flex;
   column-gap: 15px;
@@ -80,15 +116,15 @@
   color: #003399;
   font-size: 1.1rem;
   font-weight: 400;
-  margin-bottom: 1;
-  margin-top: 0;
+  margin-bottom: 1em;
 }
 
 .add-doctors-form :where(.add-doctors-gender-option, .add-doctors-gender){
   display: flex;
   align-items: center;
-  column-gap: 30px;
+  column-gap: 25px;
   flex-wrap: wrap;
+  margin-left: 0.4em;
 }
 
 .add-doctors-form .add-doctors-gender{
@@ -124,7 +160,7 @@
 
 .add-doctors-buttons{
     display: flex;
-    margin-left: 620px;
+    justify-content: right;
     bottom: 10px;
     margin-top: 15px;
     width: 100%;
@@ -150,6 +186,7 @@ background-color: #1114a3;
     padding: 10px 20px;
     transition: background-color 0.3s ease;
     margin: 0 10px;
+    transition: 0.5s ease-in-out;
 }
 
 .add-doctors-cancel-button{
@@ -162,6 +199,7 @@ background-color: #FF5733;
     padding: 10px 20px;
     transition: background-color 0.3s ease;
     margin: 0 10px;
+    transition: 0.5s ease-in-out;
 }
 
 .doctors-popup-close-button{
@@ -172,6 +210,14 @@ background-color: #FF5733;
   background: none;
   border: none;
   font-size: 16px;
+  transition: 0.5s ease-in-out;
+}
+
+.doctors-popup-close-button:hover,
+.add-doctors-cancel-button:hover,
+.add-doctors-save-button:hover{
+    transform: scale(1.03);
+    cursor: pointer;
 }
 
 .add-doctors-shaded-input{
@@ -179,4 +225,102 @@ background-color: #FF5733;
     cursor: not-allowed;
     color: #555;
     border: 1px solid #ccc;
+}
+
+
+
+.view-Prenatal-History-TableWrapper table{
+    margin-top: 1rem;
+    font-size: 0.8em;
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease;
+    table-layout: fixed;
+}
+
+.view-Prenatal-History-TableWrapper{
+  width: calc(100% + 2.55rem);
+  margin-left: -1.3rem;
+}
+
+.view-Prenatal-History-TableWrapper table thead tr{
+  border-bottom: 1px solid #1114a3;
+}
+
+.view-Prenatal-History-TableWrapper table thead tr th{
+    font-weight: 600;
+    color: #1114a3;
+}
+
+.view-Prenatal-History-TableWrapper table tbody td{
+    height: 4.5em;
+    border-bottom: 1px solid #1114a3;
+}
+
+.view-Prenatal-History-TableWrapper table tbody tr:hover{
+  background-color: #8e8e974e;
+}
+
+.view-Prenatal-History-AddFilter{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6em;
+  margin-top: 1rem;
+}
+
+.view-Prenatal-History-AddFilter button{
+    border-radius: 15px;
+    border: none;
+    /*outline: none; how cursor pointer will look on button*/ 
+    background: #1114a3;
+    color: white;
+    padding: 4px 24px;
+    font-size: 0.9em;
+    transition: 0.5s ease-in-out;
+}
+
+.view-Prenatal-History-AddFilter button:hover{
+  transform: scale(1.03);
+  cursor: pointer;
+}
+
+.view-Prenatal-History-popup-content { /* WHITE BOX */
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 1);
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+.view-Prenatal-History-popup-content h2{
+  font-size: 1.5rem;
+  color: #1114a3;
+  font-weight: 500;
+  text-align: center;
+}
+
+.view-Prenatal-History-popup-content h4{
+  font-size: 1rem;
+  color: #1114a3;
+  font-weight: 400;
+  text-align: center;
+}
+
+.add-doctors-popup-content .add-doctors-form{
+    margin-top: 5px;
+}
+
+.view-Prenatal-History-TableWrapper thead {
+  background-color: #8cb1e9; /* Light gray for even rows */
+  height: 4.5em;
+}
+
+.view-Prenatal-History-TableWrapper tbody tr:nth-child(even) {
+  background-color: #8cb1e9; /* light gray for even rows */
 }

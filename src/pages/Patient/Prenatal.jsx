@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import './consult.css';
+import '../Admin/consult.css';
 import Sidebar from '../../components/Navbar';
 import { toast } from 'react-toastify';
 
 
-function Staff() 
+function Prenatal() 
 {
   // Settings and Notifications
 
@@ -25,23 +25,25 @@ function Staff()
   // const [data, setData] = useState([]);
 
    //set active modal 
-    //  const [activeTab, setActiveTab] = useState('');
+     const [activeTab, setActiveTab] = useState('');
 
 
   const [formData, setFormData] = useState({
-            AdminId: '',
+            familyId: '',
             LastName: '',
             FirstName: '',
             MiddleName: '',
             Age: '',
-            contact: '',
-            sex:'',
-            userID: '',
-            address:'',
-            email:'',
-            econtact:'',
-            position:''
-
+            Bday: '',
+            CivilStat: '',
+            Occupation: '',
+            Educ: '',
+            Gravida: '',
+            Para: '',
+            LMP: '',
+            EDD: '',
+            TDStatus: '',
+             PhilHealth: '',
 
   });
 
@@ -54,40 +56,37 @@ const [generalDetails, setGeneralDetails] = useState({
 
  
 // Form Data for View Record
-//  const [view, setView] = useState(false);
-//   const [selectedRecord, setSelectedRecord] = useState(null);
+ const [view, setView] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
 
-//   const recordData = {
-//      familyId: '',
-//             LastName: '',
-//             FirstName: '',
-//             MiddleName: '',
-//             Age: '',
-//             contact: '',
-//             sex:'',
-//             street: '',
-//             address:'',
-//             email:'',
-//             econtact:''
+  const recordData = {
+    familyId: "",
+    date: "",
+    age: "",
+    bppr: "",
+    htwt: "",
+    temp: "",
+    chiefComplaint: "",
+    diagnosis: "", 
     
-//   };
+  };
 
 
 
-// const handleViewClick = () => {
-//   setSelectedRecord(recordData);
-//   setView(true);
-//   setActiveTab(false);
-//   setShowModal(false);
-// };
+const handleViewClick = () => {
+  setSelectedRecord(recordData);
+  setView(true);
+  setActiveTab(false);
+  setShowModal(false);
+};
 
 
-// const closeRecordModal = () => {
-//   setView(false);
-//   setSelectedRecord(null);
-//   setActiveTab(true);
-//   setShowModal(true);
-// };
+const closeRecordModal = () => {
+  setView(false);
+  setSelectedRecord(null);
+  setActiveTab(true);
+  setShowModal(true);
+};
 
 // Sample for Search query 
 const [query, setQuery] = useState('');
@@ -143,19 +142,21 @@ const filteredItems = items.filter(item =>
       const handleSubmit3 =() => 
       {
         if (
-          !formData.AdminIdId ||
+          !formData.familyId ||
           !formData.LastName ||
           !formData.FirstName ||
           !formData.MiddleName ||
           !formData.Age ||
-          !formData.sex ||
-          !formData.address ||
-          !formData.contact ||
-          !formData.econtact||
-           !formData.userID ||
-          !formData.email ||
-          !formData.position
-        
+          !formData.Bday ||
+          !formData.CivilStat ||
+          !formData.Occupation ||
+          !formData.Educ ||
+           !formData.Gravida ||
+          !formData.Para || 
+          !formData.LMP ||
+          !formData.EDD ||
+          !formData.TDStatus ||
+          !formData.PhilHealth
         ) {
           toast.error("Please enter all the fields");
           return;
@@ -183,18 +184,21 @@ const filteredItems = items.filter(item =>
         .then(() => 
         {
           setFormData({
-            AdminId: '',
+            familyId: '',
             LastName: '',
             FirstName: '',
             MiddleName: '',
             Age: '',
-            contact: '',
-            sex:'',
-            userID: '',
-            address:'',
-            email:'',
-            econtact:'',
-               position:''
+            Bday: '',
+            CivilStat: '',
+            Occupation: '',
+            Educ: '',
+            Gravida: '',
+            Para: '',
+            LMP: '',
+            EDD: '',
+            TDStatus: '',
+             PhilHealth: '',
           });
           setShowModal(false);
           toast.success("Prenatal Record Added Successfully");
@@ -222,34 +226,40 @@ const filteredItems = items.filter(item =>
   const handleModalOpen = (record = null) => {
     if (record) {
       setFormData({
-        AdminIdId: record["Admin ID"],
+        familyId: record["family ID"],
         FirstName: record["First Name"],
         LastName: record["Last Name"],
         MiddleName: record["Middle Name"],
         Age: record["Age"],
-        contact: record["Contact"],
-        sex: record["Sex"],
-        userID: record["User ID"],
-        address: record["Home Address"],
-        email: record["Email"],
-        econtact: record["Emergency Contact"],
-        position: record["Position"]
+        Bday: record["Birthdate"],
+        CivilStat: record["Civil Status"],
+        Occupation: record["Occupation"],
+        Educ: record["Educational Attainment"],
+        Gravida: record["Gravida"],
+        Para: record["Para"],
+        LMP: record["LMP"],
+        EDD: record["EDD"],
+        TDStatus: record["TD Status"],
+         PhilHealth: record["PhilHealth"],
       });
       setIsEditing(true);
     } else {
       setFormData({
-          AdminId: '',
+          familyId: '',
             LastName: '',
             FirstName: '',
             MiddleName: '',
             Age: '',
-            contact: '',
-            sex:'',
-            userID: '',
-            address:'',
-            email:'',
-            econtact:'',
-               position:''
+            Bday: '',
+            CivilStat: '',
+            Occupation: '',
+            Educ: '',
+            Gravida: '',
+            Para: '',
+            LMP: '',
+            EDD: '',
+            TDStatus: '',
+             PhilHealth: '',
       });
       setIsEditing(false);
     }
@@ -258,30 +268,30 @@ const filteredItems = items.filter(item =>
 
   const handleModalClose = () => {
     setShowModal(false);
-   
+    setActiveTab(false);
   };
 
 
-//   const handleFormSubmit = (e) => {
-//     e.preventDefault();
-//     if (isEditing) {
-//       setMockData((prevData) =>
-//         prevData.map((item, index) =>
-//           index === currentData.findIndex(record => record["family ID"] === formData.familyId)
-//             ? { ...item, ...formData }
-//             : item
-//         )
-//       );
-//     } else {
-//       setMockData((prevData) => [
-//         ...prevData,
-//         { ...formData, id: prevData.length + 1 }
-//       ]);
-//     }
-//     setShowModal(false);
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (isEditing) {
+      setMockData((prevData) =>
+        prevData.map((item, index) =>
+          index === currentData.findIndex(record => record["family ID"] === formData.familyId)
+            ? { ...item, ...formData }
+            : item
+        )
+      );
+    } else {
+      setMockData((prevData) => [
+        ...prevData,
+        { ...formData, id: prevData.length + 1 }
+      ]);
+    }
+    setShowModal(false);
     
 
-//   };
+  };
 
 
   // Admin Account Management
@@ -338,7 +348,7 @@ const filteredItems = items.filter(item =>
       <div className="main">
         <div className="header">
           <h2>
-            Staff
+            Prenatal
           </h2>
 
           <div className="icon">
@@ -528,6 +538,7 @@ const filteredItems = items.filter(item =>
               Add
             </button>
 
+ 
 
             <div className='patrec-btn'>
               <label htmlFor="search"><h3>Search:</h3></label>
@@ -557,27 +568,25 @@ const filteredItems = items.filter(item =>
           <table className="table-cont">
             <thead>
               <tr>
-                <th>Admin ID</th>
+                <th>Family ID</th>
                 <th>Last Name</th>
                 <th>First Name</th>
                 <th>Middle Name</th>
-                <th>Email</th>
                 <th>Contact No.</th>
-                <th>Manage Account</th>
+                <th>Record</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
             {currentData.map((item) => (
                 <tr key={item.id||item.familyId}>
-                  <td>{item.AdminId}</td>
+                  <td>{item.familyId}</td>
                   <td>{item.LastName}</td>
                   <td>{item.FirstName}</td>
                   <td>{item.MiddleName}</td>
-                  <td>{item.Email}</td>
                   <td>{item.ContactNo}</td>
                   <td><button>View</button></td>
-                  <td> <button className="delete">
+                  <td>  <button className="delete">
                      <button
                     className="edit"
                     onClick={() => handleModalOpen(currentData)} 
@@ -630,7 +639,45 @@ const filteredItems = items.filter(item =>
 
       {showModal && (
         <div className="modal">
-          <div className="modal-content-patient">
+          <div className="modal-content">
+            <div className='tab-buttons'>
+          <button
+            className={activeTab === 'showModal' ? 'active' : ''}
+            onClick={() => setActiveTab('showModal')}
+          >
+            Patient Profile
+          </button>
+          <button
+            className={activeTab === 'spouse' ? 'active' : ''}
+            onClick={() => setActiveTab('spouse')}
+          >
+            Husband/Wife Profile
+          </button>
+        
+          </div>
+          <form onSubmit={handleFormSubmit}>
+            <label htmlFor="familyId"><h3>Family ID</h3>
+            <input
+              type="text"
+              name="familyId"
+              value={formData.familyId}
+              onChange={handleFormChange}
+              placeholder="Family ID"
+              required
+            />
+             
+              
+            </label>
+            <label htmlFor="LastName"><h3>Last Name</h3>
+            <input
+              type="text"
+              name="LastName"
+              value={formData.LastName}
+              onChange={handleFormChange}
+              placeholder="Last Name"
+              required
+            />
+            </label>
             <label htmlFor="FirstName"><h3>First Name</h3>
             <input
               type="text"
@@ -638,17 +685,6 @@ const filteredItems = items.filter(item =>
               value={formData.FirstName}
               onChange={handleFormChange}
               placeholder="First Name"
-              required
-            />
-            </label>
-
-               <label htmlFor="LastName"><h3>Last Name</h3>
-            <input
-              type="text"
-              name="LastName"
-              value={formData.LastName}
-              onChange={handleFormChange}
-              placeholder="Last Name"
               required
             />
             </label>
@@ -662,11 +698,15 @@ const filteredItems = items.filter(item =>
 
             />
              </label>
-            <label htmlFor="Sex"><h3>Sex</h3>
-            <select name="Sex" id="Sex"> 
-              <option value={formData.sex}>Female</option>
-              <option value={formData.sex}>Male</option>
-            </select>
+            <label htmlFor="Age"><h3>Age</h3>
+            <input
+              type="text"
+              name="Age"
+              value={formData.Age}
+              onChange={handleFormChange}
+              placeholder="Age"
+              required
+            />
           </label>
             <label htmlFor="Bday"><h3>Birthdate</h3>
             <input
@@ -678,59 +718,290 @@ const filteredItems = items.filter(item =>
               required
             />
            </label>
-           <label htmlFor="position"><h3>Position</h3>
-            <select name="position" id="position"> 
-              <option value={formData}>BHW</option>
-              <option value={formData.position}>Dental Aide</option>
-              <option value={formData.position}>JO Encoder</option>
-              <option value={formData.position}>JO</option>
+           <label htmlFor="civilStat"><h3>Civil Status</h3>
+            <select name="civilStat" id="civilStat"> 
+              <option value="opt1">Single</option>
+              <option value="opt2">Married</option>
+              <option value="opt3">Separated</option>
+              <option value="opt4">Widowed</option>
+              <option value="opt5">Divorced</option>
             </select>
             </label>
-            <label htmlFor="address"><h3>Home Address</h3>
+            <label htmlFor="Occupation"><h3>Occupation</h3>
              <input
               type="text"
-              name="address"
-              value={formData.address}
-              placeholder='Home Address'
+              name="Occupation"
+              value={formData.Occupation}
+              placeholder='Occupation'
               onChange={handleFormChange}
               required
             />
             </label>
-            <label htmlFor="userID"><h3>User ID</h3>
-             <input type="text"
-             name="userID"
-                value={formData.userID}
-                placeholder='User ID'
-                onChange={handleFormChange}
-                required
-              />
+            <label htmlFor="Educ"><h3>Educational Attainment</h3>
+             <input
+              type="text"
+              name="Educ"
+              value={formData.Educ} 
+              placeholder='Educational Attainment'
+              onChange={handleFormChange}
+              required
+            />
+           </label>
+            <label htmlFor="Gravida"><h3>Gravida</h3>
+             <input
+              type="text"
+              name="Gravida"
+              value={formData.Gravida}
+              placeholder='Gravida'
+              onChange={handleFormChange}
+              required
+            />
+           </label>
+            <label htmlFor="Para"><h3>Para</h3>
+            <input
+              type="text"
+              name="Para"
+              value={formData.Para}
+              placeholder='Para'
+              onChange={handleFormChange}
+              required
+            />
             </label>
-            <label htmlFor="contact"><h3>Contact Number</h3>
-                <input type="text"
-                name="contact"
-                value={formData.contact}
-                placeholder='Contact'
-                onChange={handleFormChange}
-                required
-                 />
+            <label htmlFor="LMP"><h3>LMP</h3>
+            <input
+              type="text"
+              name="LMP"
+              value={formData.LMP}
+              placeholder='LMP'
+              onChange={handleFormChange}
+              required
+            />
             </label>
+            <label htmlFor="EDD"><h3>EDD</h3>
+            <input
+              type="text"
+              name="EDD"
+              value={formData.EDD}
+              placeholder='EDD'
+              onChange={handleFormChange}
+              required
+            />
+          </label> 
+            <label htmlFor="TDStatus"><h3>TD Status</h3>
+            <input
+              type="text"
+              name="TDStatus"
+              value={formData.TDStatus}
+              placeholder='TD Status'
+              onChange={handleFormChange}
+              required
+            />
+            </label>
+            <label htmlFor="PhilHealth"><h3>PhilHealth</h3>
+             <input
+              type="text"
+              name="PhilHealth"
+              value={formData.PhilHealth}
+              placeholder='PhilHealth No.'
+              onChange={handleFormChange}
+              required
+            />
+            
+           </label>
 
-            <label htmlFor="econtact"><h3>Emergency Contact Number</h3>
-                <input type="text"
-                name="econtact"
-                value={formData.econtact}
-                placeholder='Emergency Contact Number'
-                onChange={handleFormChange}
-                required
-                 />
-            </label>
-
+          
+            </form> 
             <div className='modal-buttons'>
              <button type="submit" onClick={handleSubmit3}>Save</button>
               <button type="button" onClick={handleModalClose}>
             
                 Close
               </button>
+              <button onClick={handleViewClick}> View Record</button>
+
+              </div>
+          </div>
+        </div>
+      )}
+
+       {view && (
+                  <div className='modal'>
+                    <div className='modal-content'>
+                      <h2>Record</h2>
+                      <table>
+                        <thead>
+                          <tr>
+                           
+                            <th>Date</th>
+                            <th>Age</th>
+                           <th>BP/PR</th>
+                            <th>HT/WT</th>
+                          <th>Temperature</th>
+                            <th>Chief Complaint</th>
+                            <th>Diagnosis/Medication</th>
+                           
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          <tr key={selectedRecord.familyId}>
+                            <td>{selectedRecord.date}</td>
+                            <td>{selectedRecord.age}</td>
+                            <td>{selectedRecord.bppr}</td>
+                            <td>{selectedRecord.htwt}</td>
+                            <td>{selectedRecord.temp}</td>
+                            <td>{selectedRecord.chiefComplain}</td>
+                            <td>{selectedRecord.diagnosis}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                       <button onClick={closeRecordModal} className='viewclose-btn'>Close</button>
+
+                    </div>
+                  </div>
+                )}
+
+       {activeTab === "spouse" && (
+        <div className="modal">
+          <div className="modal-content">
+            <div className='tab-buttons'>
+          <button  className={activeTab === 'showModal' ? 'active' : ''}
+          onClick={() => setActiveTab('showModal')}> Patient Profile </button>
+           <button className={activeTab === 'spouse' ? 'active' : ''}
+          onClick={() => setActiveTab('spouse')}> Husband/Wife Profile </button> 
+
+          </div>
+            <form onSubmit={handleFormSubmit}>
+            <label htmlFor="familyId"><h3>Family ID</h3>
+            <input
+              type="text"
+              name="familyId"
+              value={formData.familyId}
+              onChange={handleFormChange}
+              placeholder="Family ID"
+              required
+            />
+           
+              
+          </label>
+            <label htmlFor="LastName"><h3>Last Name</h3>
+            <input
+              type="text"
+              name="LastName"
+              value={formData.LastName}
+              onChange={handleFormChange}
+              placeholder="Last Name"
+              required
+            />
+          </label>
+            <label htmlFor="FirstName"><h3>First Name</h3>
+            <input
+              type="text"
+              name="FirstName"
+              value={formData.FirstName}
+              onChange={handleFormChange}
+              placeholder="First Name"
+              required
+            />
+            </label>
+            <label htmlFor="MiddleName"><h3>Middle Name</h3>
+            <input
+              type="text"
+              name="MiddleName"
+              value={formData.MiddleName}
+              onChange={handleFormChange}
+              placeholder="Middle Name"
+
+            />
+          
+            </label>
+            <label htmlFor="Age"><h3>Age</h3>
+            <input
+              type="text"
+              name="Age"
+              value={formData.Age}
+              onChange={handleFormChange}
+              placeholder="Age"
+              required
+            />
+            </label>
+            <label htmlFor="Bday"><h3>Birthdate</h3>
+            <input
+              type="date"
+              name="Bday"
+              value={formData.Bday}
+             
+              onChange={handleFormChange}
+              placeholder="Birthdate"
+              required
+            />
+            </label>
+           <label htmlFor="civilStat"><h3>Civil Status</h3>
+            <select name="civilStat" id="civilStat"> 
+              <option value="opt1">Single</option>
+              <option value="opt2">Married</option>
+              <option value="opt3">Separated</option>
+              <option value="opt4">Widowed</option>
+              <option value="opt5">Divorced</option>
+            </select>
+            </label>
+            <label htmlFor="Occupation"><h3>Occupation</h3>
+             <input
+              type="text"
+              name="Occupation"
+              value={formData.Occupation}
+              placeholder='Occupation'
+              onChange={handleFormChange}
+              required
+            />
+            </label>
+            <label htmlFor="Educ"><h3>Educational Attainment</h3>
+             <input
+              type="text"
+              name="Educ"
+              value={formData.Educ} 
+              placeholder='Educational Attainment'
+              onChange={handleFormChange}
+              required
+            />
+            </label>
+            <label htmlFor="ContactNo"><h3>Contact Number</h3>
+             <input
+              type="text"
+              name="ContactNo"
+              value={formData.ContactNo}
+              placeholder='Contact Number'
+              onChange={handleFormChange}
+              required
+            /></label>
+             <label htmlFor="PhilHealth"><h3>PhilHealth No.</h3>
+             <input
+              type="text"
+              name="PhilHealth"
+              value={formData.PhilHealth}
+              placeholder='PhilHealth No.'
+              onChange={handleFormChange}
+              required
+            /></label>
+             <label htmlFor="Address"><h3>Complete Address</h3>
+             <input
+              type="text"
+              name="Address"
+              value={formData.Address}
+              placeholder='Complete Address'
+              onChange={handleFormChange}
+              required
+            />
+            </label>
+            </form> 
+            <div className='modal-buttons'>
+             <button type="submit" onClick={handleSubmit3}>Save</button>
+              <button type="button" onClick={handleModalClose}>
+          
+                Close
+              </button>
+              <button onClick={handleViewClick}> View Record</button>
+
               </div>
           </div>
         </div>
@@ -740,4 +1011,4 @@ const filteredItems = items.filter(item =>
 }
 
 
-export default Staff;
+export default Prenatal;

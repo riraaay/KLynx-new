@@ -1,1014 +1,712 @@
 import { useEffect, useState } from 'react';
-import './consult.css';
-import Sidebar from '../../components/Navbar';
-import { toast } from 'react-toastify';
+import Sidebar from '../../components/sidebar';
+import '../../components/css/GlobalContainer.css';
+import '../../components/css/DashboardAlt.css';
+import '../../components/css/FileMaintenance.css'
+import './Doctors.css'
+import axios from 'axios';
+import React from 'react';  
+import { BiSolidCog, BiSolidBell, BiSolidEdit, BiSolidTrash } from 'react-icons/bi';
 
+const Prenatal = () => {
 
-function Prenatal() 
-{
-  // Settings and Notifications
+    const [allPatients, setAllPatients] = useState([]);
 
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const [showManageAccount, setShowManageAccount] = useState(false);
-  const [showTerms, setShowTerms] = useState(false);
-
-  const [showAddAdmin, setShowAddAdmin] = useState(false);
-  const [mockData, setMockData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [showModal, setShowModal] = useState(false);
-
-  const [isEditing, setIsEditing] = useState(false);
-
-  const itemsPerPage = 8;
-
-  // const [data, setData] = useState([]);
-
-   //set active modal 
-     const [activeTab, setActiveTab] = useState('');
-
-
-  const [formData, setFormData] = useState({
-            familyId: '',
-            LastName: '',
-            FirstName: '',
-            MiddleName: '',
-            Age: '',
-            Bday: '',
-            CivilStat: '',
-            Occupation: '',
-            Educ: '',
-            Gravida: '',
-            Para: '',
-            LMP: '',
-            EDD: '',
-            TDStatus: '',
-             PhilHealth: '',
-
-  });
-
-const [generalDetails, setGeneralDetails] = useState({
-    name: '',
-    username: '',
-    contact: '',
-    password: ''
-});
-
- 
-// Form Data for View Record
- const [view, setView] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState(null);
-
-  const recordData = {
-    familyId: "",
-    date: "",
-    age: "",
-    bppr: "",
-    htwt: "",
-    temp: "",
-    chiefComplaint: "",
-    diagnosis: "", 
+    const [showModal, setShowModal] = useState(false);
+    const [addDoctorsInputs, setAddDoctorsInputs] = useState({ sex: "Male" });
     
-  };
+    const [doctorsList, setDoctorsList] = useState([]);
+  //  const [prenatalPatients, setPrenatalPatients] = useState([]);
+    const [prenatalProfiles, setPrenatalProfiles] = useState([]);
+    const [viewHistoryModal, setViewHistoryModal] = useState(false);
+    const [addHistoryModal, setAddHistoryModal] = useState(false);
+    const [prenatalVisits, setPrenatalVisits] = useState([]);
+    const [addHistoryInputs, setAddHistoryInputs] = useState({});
+    const [editDoctorModal, setEditDoctorModal] = useState(false);
+    const [deleteDoctorModal, setDeleteDoctorModal] = useState(false);
+    const [selectedDoctor, setSelectedDoctor] = useState(null);
 
+    const handleModalOpen = () =>{
+        setShowModal(true);
+    }    
 
+    const handleAddDoctorsChange = (e) =>{
+        const name = e.target.name;
+        const value = e.target.value;
 
-const handleViewClick = () => {
-  setSelectedRecord(recordData);
-  setView(true);
-  setActiveTab(false);
-  setShowModal(false);
-};
+        if (name === "birthDate" || name === "pBday") {
+            const birthDate = new Date(value);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
 
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())){
+                age--; // subtract one if birthday hasn’t happened this year yet
+            }
 
-const closeRecordModal = () => {
-  setView(false);
-  setSelectedRecord(null);
-  setActiveTab(true);
-  setShowModal(true);
-};
+            const ageField = name === "birthDate" ? "Age" : "pAge";
 
-// Sample for Search query 
-const [query, setQuery] = useState('');
-const items = ['ABC123', 'Smith', 'Juan', 'Dela Cruz', 'BCD234'];
-
-const filteredItems = items.filter(item =>
-  item.toLowerCase().includes(query.toLowerCase())
-);
-
- // deleting the record
-//  const handleDelete = (id) => {
-//     const confirmed = window.confirm("Are you sure you want to delete this?");
-//     if (confirmed) {
-//       setData(prev => prev.filter(item => item.id !== id));
-//     }
-//   };
-
-  // Load account details from local storage on component mount
-  useEffect(() => {
-    const savedDetails = JSON.parse(localStorage.getItem('accountDetails'));
-    if (savedDetails) {
-        setGeneralDetails(savedDetails);
-    }
-}, []);
-
-  // Handle input changes for account management
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setGeneralDetails((prevDetails) => ({
-        ...prevDetails,
-        [name]: value
-    }));
-  };
-
-
-  const handleSave = () => {
-    // Save the updated details to local storage
-    localStorage.setItem('accountDetails', JSON.stringify(generalDetails));
-    alert('Account details saved successfully!');
-    setShowManageAccount(false);
-  };
-
-
-
-  const handleFormChange = (e) => 
-    {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    };
-
-
-    // Fetch Prenatal Record
-      const handleSubmit3 =() => 
-      {
-        if (
-          !formData.familyId ||
-          !formData.LastName ||
-          !formData.FirstName ||
-          !formData.MiddleName ||
-          !formData.Age ||
-          !formData.Bday ||
-          !formData.CivilStat ||
-          !formData.Occupation ||
-          !formData.Educ ||
-           !formData.Gravida ||
-          !formData.Para || 
-          !formData.LMP ||
-          !formData.EDD ||
-          !formData.TDStatus ||
-          !formData.PhilHealth
-        ) {
-          toast.error("Please enter all the fields");
-          return;
+            setAddDoctorsInputs(values => ({
+                ...values, [name]: value, [ageField]: age.toString()  // Update age as string to be safe
+            }));
+        } else {
+            setAddDoctorsInputs(values => ({...values, [name]: value}));
         }
 
-        // Create FormData object
-        // Change the URL to the prenatal PHP file
-        fetch('http://localhost/OneCaintaRecord/insertConsultation.php', {
-          method: 'POST',
-          body: JSON.stringify(formData),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-
-        .then((response) => 
-          {
-          if (!response.ok) 
-          {
-            throw new Error("Failed to submit data");
-          }
-          return response.text();
-        })
-
-        .then(() => 
-        {
-          setFormData({
-            familyId: '',
-            LastName: '',
-            FirstName: '',
-            MiddleName: '',
-            Age: '',
-            Bday: '',
-            CivilStat: '',
-            Occupation: '',
-            Educ: '',
-            Gravida: '',
-            Para: '',
-            LMP: '',
-            EDD: '',
-            TDStatus: '',
-             PhilHealth: '',
-          });
-          setShowModal(false);
-          toast.success("Prenatal Record Added Successfully");
-        })
-      };
-
-    // Fetch Prenatal Record
-    // useEffect(() =>
-    // {
-    //   fetch("http://localhost/OneCaintaRecord/fetchConsultation.php")
-    //   .then((response) => response.json())
-    //   .then((data) => setMockData(data))
-    //     .catch(() => toast.error("Unable to fetch data"));
-    // }, []);
-
-  // Pagination
-  const totalPages = Math.ceil(mockData.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentData = mockData.slice(startIndex, startIndex + itemsPerPage);
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  const handleModalOpen = (record = null) => {
-    if (record) {
-      setFormData({
-        familyId: record["family ID"],
-        FirstName: record["First Name"],
-        LastName: record["Last Name"],
-        MiddleName: record["Middle Name"],
-        Age: record["Age"],
-        Bday: record["Birthdate"],
-        CivilStat: record["Civil Status"],
-        Occupation: record["Occupation"],
-        Educ: record["Educational Attainment"],
-        Gravida: record["Gravida"],
-        Para: record["Para"],
-        LMP: record["LMP"],
-        EDD: record["EDD"],
-        TDStatus: record["TD Status"],
-         PhilHealth: record["PhilHealth"],
-      });
-      setIsEditing(true);
-    } else {
-      setFormData({
-          familyId: '',
-            LastName: '',
-            FirstName: '',
-            MiddleName: '',
-            Age: '',
-            Bday: '',
-            CivilStat: '',
-            Occupation: '',
-            Educ: '',
-            Gravida: '',
-            Para: '',
-            LMP: '',
-            EDD: '',
-            TDStatus: '',
-             PhilHealth: '',
-      });
-      setIsEditing(false);
+        let updatedInputs = { ...addHistoryInputs, [name]: value };
+        if ((name === "weight" || name === "height")) {
+        const weight = parseFloat(name === "weight" ? value : updatedInputs.weight);
+        const heightCm = parseFloat(name === "height" ? value : updatedInputs.height);
+        if (weight && heightCm) {
+            const heightM = heightCm / 100; // convert cm to meters
+            const bmi = weight / (heightM * heightM);
+            updatedInputs.BMI = bmi ? bmi.toFixed(2) : "";
+        } else {
+            updatedInputs.BMI = "";
+        }
+        }
     }
-    setShowModal(true);
-  };
 
-  const handleModalClose = () => {
-    setShowModal(false);
-    setActiveTab(false);
-  };
+    const handleAddDoctorsSubmit = (e) =>{
+        e.preventDefault();
+        console.log(addDoctorsInputs);
 
+        axios.post('http://localhost/api/Prenatal_Profiles.php', addDoctorsInputs).then(function(response){
+            console.log(response.data);
+            setSelectedDoctor(null);
+            if (response.data.status === 1) {
+                const newPrenatalID = response.data.prenatal_id;
+                
+                const updatedInputs = {
+                    ...addDoctorsInputs,
+                    PrenatalID_Partner: newPrenatalID
+                };
+                console.log("Updated Inputs: ", updatedInputs);
+                axios.post('http://localhost/api/Prenatal_Partners.php', updatedInputs).then(function(response){
+                    console.log(response.data);
+                    setShowModal(false);
+                    setAddDoctorsInputs({});
+                    getPrenatalProfiles();
+                });
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    if (isEditing) {
-      setMockData((prevData) =>
-        prevData.map((item, index) =>
-          index === currentData.findIndex(record => record["family ID"] === formData.familyId)
-            ? { ...item, ...formData }
-            : item
-        )
-      );
-    } else {
-      setMockData((prevData) => [
-        ...prevData,
-        { ...formData, id: prevData.length + 1 }
-      ]);
+            }
+    
+        });
+
     }
-    setShowModal(false);
+
+    function getPrenatalProfiles() {
+        axios.get('http://localhost/api/Prenatal_Profiles.php').then(function(response){
+            console.log("Get All Prenatal Profiles: ", response.data);
+            setDoctorsList(response.data);
+            setPrenatalProfiles(response.data);
+        });
+    }
+
+    useEffect( () => {
+            getPrenatalProfiles();
+    }, []);
+
+
+
+    /* Fetches All Patient Info from Patient Creation Page */
+    useEffect(() => {
+        axios.get("http://localhost/api/Patient.php")
+            .then(res => { setAllPatients(res.data); console.log(res.data); })
+            .catch(err => console.error(err));
+    }, []);
+
+    const handlePatientSelect = (e) => {
+    const selectedID = e.target.value;
+    const selected = allPatients.find(p => p.PatientID === selectedID);
+
+    if (selected) {
+        setAddDoctorsInputs({
+        ...addDoctorsInputs,
+        patientID: selected.PatientID,
+        famID: selected.FamilyID,
+        fName: selected.FirstName,
+        mName: selected.MiddleName,
+        lName: selected.LastName,
+        });
+    }
+    };
+
+    const viewHistory = async (id) => {
+        const response = await axios.get(`http://localhost/api/Prenatal_Visits.php?id=${id}`);
+        setPrenatalVisits(response.data);
+        setViewHistoryModal(true);
+        console.log("Prenatal Visits: ", response.data);
+        
+        setAddHistoryInputs((values) => ({ ...values, PrenatalID: id }));
+    }
+
+
+    const handleAddHistoryChange = (e) =>{
+        const name = e.target.name;
+        const value = e.target.value;
+        setAddHistoryInputs(values => ({...values, [name]: value}));
+    }
+
+    const submitHistoryRecord = (e) => {
+        e.preventDefault();
+        console.log("addHistoryInputs consists of: ", addHistoryInputs);
+        const prenatalId = addHistoryInputs.PrenatalID;
+
+        axios.post('http://localhost/api/Prenatal_Visits.php', addHistoryInputs).then(function(response){
+            console.log(response.data);
+            setAddHistoryModal(false);
+
+            setAddHistoryInputs({});
+            viewHistory(prenatalId);
+        });
+    }
+
+    const editDoctor = async (id) => {
+        const response = await axios.get(`http://localhost/api/Doctors.php?id=${id}`);
+        console.log("Before Doctor: ",selectedDoctor);
+        console.log(response.data);
+        setSelectedDoctor(response.data);
+        setEditDoctorModal(true);
+    }
+
+    const handleEditSubmit = (e) =>{
+        e.preventDefault();
+        console.log(selectedDoctor);
+
+        axios.put(`http://localhost/api/Doctors.php?id=${selectedDoctor.AdminID}`, selectedDoctor).then(function(response){
+            console.log(response.data);
+            getPrenatalProfiles();
+            setSelectedDoctor(null);
+            setEditDoctorModal(false);
+        });
+    }
+
+    const handleEditDoctorsChange = (e) =>{
+        const name = e.target.name;
+        const value = e.target.value;
+        setSelectedDoctor(values => ({...values, [name]: value}));
+    }
+
+    const deleteDoctor = (id) => {
+        axios.delete(`http://localhost/api/Prenatal_Partners.php?id=${id}`).then(function(response){
+        });
+        axios.delete(`http://localhost/api/Prenatal_Profiles.php?id=${id}`).then(function(response){
+        });
+        axios.delete(`http://localhost/api/Prenatal_Visits.php?id=${id}`).then(function(response){
+            console.log(response.data);
+            getPrenatalProfiles();
+            setSelectedDoctor(null);
+            setDeleteDoctorModal(false);
+        });
+    }
+
     
 
-  };
-
-
-  // Admin Account Management
-  const [fullName, setFullName] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [adminAccounts, setAdminAccounts] = useState([]);
-
-  const HandleAddAdmin = async () => {
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('fullName', fullName);
-    formData.append('username', username);
-    formData.append('password', password);
-
-    try {
-      const response = await fetch('http://localhost/OneCaintaRecord/insertAdminAccount.php', {
-        method: 'POST',
-        body: formData
-      });
-
-      if (response.ok) {
-        const result = await response.text();
-        console.log(result);
-        // Optionally, update the adminAccounts state to reflect the new admin account
-        setAdminAccounts([...adminAccounts, { fullName, username }]);
-        // Clear the form fields
-        setFullName('');
-        setUsername('');
-        setPassword('');
-        setConfirmPassword('');
-      } else {
-        console.error('Failed to add admin');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-
-
-  // Start of the return statement
-  return (
-    <div className="container">
-      <div className="navbar">
-        <Sidebar />
-      </div>
-
-      <div className="main">
-        <div className="header">
-          <h2>
-            Prenatal
-          </h2>
-
-          <div className="icon">
-          <div className="icon">
-           <i
-              className="fas fa-bell"
-              id="notif"
-              onClick={() => setShowNotifications(!showNotifications)}
-            ></i>
-            <i
-              className="fas fa-cog"
-              id="settings"
-              onClick={() => setShowSettings(!showSettings)}
-            ></i>
-          </div>
-
-          {showNotifications && (
-            <div className="dropdown notifications-dropdown">
-              <ul>
-                <li>New disease alert: Dengue</li>
-                <li>System maintenance scheduled</li>
-                <li>Weekly report available</li>
-              </ul>
-            </div>
-          )}
-          {showSettings && (
-            <div className="dropdown settings-dropdown">
-              <ul>
-                <li onClick={() => setShowManageAccount(true)}>Manage Account</li>
-                <li onClick={() => setShowTerms(true)}>Terms and Condition</li>
-                <li onClick={() => setShowAddAdmin(true)}>Add Admin Account</li>
-              </ul>
-            </div>
-          )}
-          </div>
-        </div>
-
-        <div className='container'>
-          {showManageAccount && (
-                       <div className="modal">
-                       <div className="modal-content">
-                           <h2>Manage Account</h2>
-                           <button className="close" onClick={() => setShowManageAccount(false)}>
-                               &times;
-                           </button>
-                           <div className="modal-section">
-                               <h3>General Details</h3>
-                               <form>
-                                   <label>
-                                       Complete Name:
-                                       <input
-                                           type="text"
-                                           name="name"
-                                           value={generalDetails.name}
-                                           onChange={handleInputChange}
-                                       />
-                                   </label>
-                                   <label>
-                                       Username:
-                                       <input
-                                           type="text"
-                                           name="username"
-                                           value={generalDetails.username}
-                                           onChange={handleInputChange}
-                                       />
-                                   </label>
-                                   <label>
-                                       Contact NO.:
-                                       <input
-                                           type="text"
-                                           name="contact"
-                                           value={generalDetails.contact}
-                                           onChange={handleInputChange}
-                                       />
-                                   </label>
-                                   <label>
-                                       Password:
-                                       <input
-                                           type="password"
-                                           name="password"
-                                           value={generalDetails.password}
-                                           onChange={handleInputChange}
-                                       />
-                                   </label>
-                               </form>
-                                <button className="cancel" onClick={() => setShowManageAccount(false)}>Cancel</button>
-                               <button className="save" onClick={handleSave}>Save Changes</button>
-                           </div>
-                       </div>
-                   </div>
-
-
-
-      )}
-
-      {showAddAdmin && (
-        <div className="modal">
-          <div className="modal-content">
-
-            <h3>Add Admin Account</h3>
-                <button className="close"
-                  onClick={() => setShowAddAdmin(false)}
-                >
-                  &times;
-                </button>
-          <div className="modal-section">
-
-            <input 
-            type="text"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)} 
-            placeholder="Full Name"
-             required 
-            />
-
-            <input 
-                type="text" 
-                placeholder="Username" 
-                value={username} 
-                onChange={(e) => setUsername(e.target.value)} 
-                required
-            />
-            <input 
-                type="password" 
-                placeholder="Password" 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-              required 
-            />
-            <input 
-                type="password" 
-                placeholder="Confirm Password" 
-                value={confirmPassword} 
-                onChange={(e) => setConfirmPassword(e.target.value)} 
-                required 
-
-             />
-            <button onClick={HandleAddAdmin}>Add Admin</button>
-
-            {/* Sample output para makita if nag sasave yung admin account
-            <h3>Admin Accounts(Sample lang to check if nag aadd)</h3>
-            <ul>
-                {adminAccounts.map((account, index) => (
-                    <li key={index}>{account.username}</li>
-                ))}
-            </ul> */}
-
-
-              </div>
-
-              </div>
-            </div>
-            )}  
-
-      {showTerms && (
-            <div className="modal">
-              <div className="modal-content">
-                <h2>Terms & Conditions</h2>
-                <button className="close"
-                  onClick={() => setShowTerms(false)}
-                >
-                  &times;
-                </button>
-                <div className="modal-section">
-                  <p>
-                    By using this system, you agree to our terms and conditions...
-                  </p>
+    return (
+        <div className="FileMaintenance-Container">
+            <Sidebar />
+            <main className="FileMaintenance-Content">
+                <div className="FileMaintenance-Header">
+                    <div className="FileMaintenance-HeaderTitle">
+                        <h1>Prenatal</h1>
+                    </div>
+                    <div className="FileMaintenance-HeaderSetting">
+                        <BiSolidBell className="FileMaintenance-Icon" />
+                        <BiSolidCog className="FileMaintenance-Icon" />
+                    </div>
                 </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="contents">
-          <div className="patrec-btn">
-        
-              
-            <label htmlFor="show-option"><h3>Show</h3></label>
-            <select name="show-option" id="show">
-              <option value="opt1">Option 1</option>
-              <option value="opt2">Option 2</option>
-              <option value="opt3">Option 3</option>
-            </select>
-
-  
-            <button className="adit" onClick={() => handleModalOpen()}>
-              Add
-            </button>
-
- 
-
-            <div className='patrec-btn'>
-              <label htmlFor="search"><h3>Search:</h3></label>
-              <input type="text" 
-              value={query}  
-              name='search' 
-              id='search'
-              onChange={(e) => setQuery(e.target.value)}
-              />
-
-        {query && (
-        <ul>
-          {filteredItems.length > 0 ? (
-            filteredItems.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))
-          ) : (
-            <li>No results found</li>
-          )}
-        </ul>
-      )}  
-            </div>
-          </div>
-        </div>
-
-        <div className="table-container">
-          <table className="table-cont">
-            <thead>
-              <tr>
-                <th>Family ID</th>
-                <th>Last Name</th>
-                <th>First Name</th>
-                <th>Middle Name</th>
-                <th>Contact No.</th>
-                <th>Record</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-            {currentData.map((item) => (
-                <tr key={item.id||item.familyId}>
-                  <td>{item.familyId}</td>
-                  <td>{item.LastName}</td>
-                  <td>{item.FirstName}</td>
-                  <td>{item.MiddleName}</td>
-                  <td>{item.ContactNo}</td>
-                  <td><button>View</button></td>
-                  <td>  <button className="delete">
-                     <button
-                    className="edit"
-                    onClick={() => handleModalOpen(currentData)} 
-                  >
-                   <i className="fa-solid fa-pen-to-square"></i>
-                  </button> 
-                   <i className="fa-solid fa-trash-can"></i>
-                  </button>
-                  </td>
-
-                  {/* <td>
-                    <button className="action-btn" 
-                    onClick={() => handleModalOpen(item)}
-                    >
-                      View
-                    </button>
-                  </td> */}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <div className="pagination">
-            <button
-              className="page-btn"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button
-                key={index}
-                className={`page-btn ${currentPage === index + 1 ? 'active' : ''}`}
-                onClick={() => handlePageChange(index + 1)}
-              >
-                {index + 1}
-              </button>
-            ))}
-            <button
-              className="page-btn"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <div className='tab-buttons'>
-          <button
-            className={activeTab === 'showModal' ? 'active' : ''}
-            onClick={() => setActiveTab('showModal')}
-          >
-            Patient Profile
-          </button>
-          <button
-            className={activeTab === 'spouse' ? 'active' : ''}
-            onClick={() => setActiveTab('spouse')}
-          >
-            Husband/Wife Profile
-          </button>
-        
-          </div>
-          <form onSubmit={handleFormSubmit}>
-            <label htmlFor="familyId"><h3>Family ID</h3>
-            <input
-              type="text"
-              name="familyId"
-              value={formData.familyId}
-              onChange={handleFormChange}
-              placeholder="Family ID"
-              required
-            />
-             
-              
-            </label>
-            <label htmlFor="LastName"><h3>Last Name</h3>
-            <input
-              type="text"
-              name="LastName"
-              value={formData.LastName}
-              onChange={handleFormChange}
-              placeholder="Last Name"
-              required
-            />
-            </label>
-            <label htmlFor="FirstName"><h3>First Name</h3>
-            <input
-              type="text"
-              name="FirstName"
-              value={formData.FirstName}
-              onChange={handleFormChange}
-              placeholder="First Name"
-              required
-            />
-            </label>
-            <label htmlFor="MiddleName"><h3>Middle Name</h3>
-            <input
-              type="text"
-              name="MiddleName"
-              value={formData.MiddleName}
-              onChange={handleFormChange}
-              placeholder="Middle Name"
-
-            />
-             </label>
-            <label htmlFor="Age"><h3>Age</h3>
-            <input
-              type="text"
-              name="Age"
-              value={formData.Age}
-              onChange={handleFormChange}
-              placeholder="Age"
-              required
-            />
-          </label>
-            <label htmlFor="Bday"><h3>Birthdate</h3>
-            <input
-              type="date"
-              name="Bday"
-              value={formData.Bday}
-              onChange={handleFormChange}
-              placeholder="Birthdate"
-              required
-            />
-           </label>
-           <label htmlFor="civilStat"><h3>Civil Status</h3>
-            <select name="civilStat" id="civilStat"> 
-              <option value="opt1">Single</option>
-              <option value="opt2">Married</option>
-              <option value="opt3">Separated</option>
-              <option value="opt4">Widowed</option>
-              <option value="opt5">Divorced</option>
-            </select>
-            </label>
-            <label htmlFor="Occupation"><h3>Occupation</h3>
-             <input
-              type="text"
-              name="Occupation"
-              value={formData.Occupation}
-              placeholder='Occupation'
-              onChange={handleFormChange}
-              required
-            />
-            </label>
-            <label htmlFor="Educ"><h3>Educational Attainment</h3>
-             <input
-              type="text"
-              name="Educ"
-              value={formData.Educ} 
-              placeholder='Educational Attainment'
-              onChange={handleFormChange}
-              required
-            />
-           </label>
-            <label htmlFor="Gravida"><h3>Gravida</h3>
-             <input
-              type="text"
-              name="Gravida"
-              value={formData.Gravida}
-              placeholder='Gravida'
-              onChange={handleFormChange}
-              required
-            />
-           </label>
-            <label htmlFor="Para"><h3>Para</h3>
-            <input
-              type="text"
-              name="Para"
-              value={formData.Para}
-              placeholder='Para'
-              onChange={handleFormChange}
-              required
-            />
-            </label>
-            <label htmlFor="LMP"><h3>LMP</h3>
-            <input
-              type="text"
-              name="LMP"
-              value={formData.LMP}
-              placeholder='LMP'
-              onChange={handleFormChange}
-              required
-            />
-            </label>
-            <label htmlFor="EDD"><h3>EDD</h3>
-            <input
-              type="text"
-              name="EDD"
-              value={formData.EDD}
-              placeholder='EDD'
-              onChange={handleFormChange}
-              required
-            />
-          </label> 
-            <label htmlFor="TDStatus"><h3>TD Status</h3>
-            <input
-              type="text"
-              name="TDStatus"
-              value={formData.TDStatus}
-              placeholder='TD Status'
-              onChange={handleFormChange}
-              required
-            />
-            </label>
-            <label htmlFor="PhilHealth"><h3>PhilHealth</h3>
-             <input
-              type="text"
-              name="PhilHealth"
-              value={formData.PhilHealth}
-              placeholder='PhilHealth No.'
-              onChange={handleFormChange}
-              required
-            />
-            
-           </label>
-
-          
-            </form> 
-            <div className='modal-buttons'>
-             <button type="submit" onClick={handleSubmit3}>Save</button>
-              <button type="button" onClick={handleModalClose}>
-            
-                Close
-              </button>
-              <button onClick={handleViewClick}> View Record</button>
-
-              </div>
-          </div>
-        </div>
-      )}
-
-       {view && (
-                  <div className='modal'>
-                    <div className='modal-content'>
-                      <h2>Record</h2>
-                      <table>
+                <hr></hr>
+                <div className="FileMaintenance-Filter-Container">
+                    <div className="FileMaintenance-Entries">
+                        <span>Show</span>
+                        <select>
+                            <option hidden></option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                        </select>
+                        <span>Entries</span>
+                    </div>
+                    <div className="FileMaintenance-AddSearch">
+                            <button onClick={() => handleModalOpen()}>Add</button>
+                            <span>Search:</span>
+                            <input type="text" placeholder="Search here..."/>
+                    </div>
+                </div>
+                <div className="FileMaintenance-TableWrapper">
+                    <table>
                         <thead>
-                          <tr>
-                           
-                            <th>Date</th>
-                            <th>Age</th>
-                           <th>BP/PR</th>
-                            <th>HT/WT</th>
-                          <th>Temperature</th>
-                            <th>Chief Complaint</th>
-                            <th>Diagnosis/Medication</th>
-                           
-                          </tr>
+                            <tr>
+                                <th>Prenatal ID</th>
+                                <th>Patient ID</th>
+                                <th>Family ID</th>
+                                <th>Last Name</th>
+                                <th>First Name</th>
+                                <th>Date Created</th>
+                                <th colSpan="3">Record</th>
+                            </tr>
                         </thead>
                         <tbody>
-
-                          <tr key={selectedRecord.familyId}>
-                            <td>{selectedRecord.date}</td>
-                            <td>{selectedRecord.age}</td>
-                            <td>{selectedRecord.bppr}</td>
-                            <td>{selectedRecord.htwt}</td>
-                            <td>{selectedRecord.temp}</td>
-                            <td>{selectedRecord.chiefComplain}</td>
-                            <td>{selectedRecord.diagnosis}</td>
-                          </tr>
+                            {prenatalProfiles.map((prenProf, key) => (
+                            <tr key={key}>
+                                <td>
+                                    {prenProf.PrenatalID}
+                                </td>
+                                <td>
+                                    {prenProf.PatientID}
+                                </td>
+                                <td>
+                                    {prenProf.FamilyID}
+                                </td>
+                                <td>
+                                    {prenProf.LastName}
+                                </td>
+                                <td>
+                                    {prenProf.FirstName}
+                                </td>
+                                <td>
+                                    {prenProf.DateCreated}
+                                </td>
+                                <td>
+                                    <button onClick={() => viewHistory(prenProf.PrenatalID) }>View History</button>
+                                </td>
+                                <td>
+                                    <button onClick={() => editDoctor(prenProf.PatientID) } style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }} title="Edit" >
+                                    <BiSolidEdit className="FileMaintenance-TableIcon FileMaintenance-IconEdit" />  </button>
+                                </td>
+                                <td>
+                                    <button onClick={() => { setSelectedDoctor(prenProf.PrenatalID); setDeleteDoctorModal(true); } } style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }} title="Delete" >
+                                    <BiSolidTrash className="FileMaintenance-TableIcon" />  </button>
+                                </td>
+                            </tr>
+                            ))}
                         </tbody>
-                      </table>
-                       <button onClick={closeRecordModal} className='viewclose-btn'>Close</button>
+                    </table>
+                </div>
+            </main>
 
+            {/* MODALS SECTION */}
+            {showModal && (
+            <div className="add-doctors-popup-overlay">
+                <div className="add-doctors-popup-content">
+                    <button className="doctors-popup-close-button" onClick={(e) => { e.preventDefault(); setShowModal(false); setSelectedDoctor({}); setAddDoctorsInputs({});} }>
+                        X
+                    </button>
+                    <h2>New Prenatal Profile</h2>
+                    <form className="add-doctors-form" onSubmit={handleAddDoctorsSubmit}>
+                        <div className="add-doctors-column">
+                            <div className="add-doctors-input-box">
+                                <label>Select Patient:</label>
+                                <div className="add-doctors-select-box">
+                                    <select onChange={handlePatientSelect} required>
+                                        <option hidden value="">-- Select Patient --</option>
+                                        {allPatients.map((p) => (
+                                            <option key={p.PatientID} value={p.PatientID}>
+                                                {p.PatientID}
+                                            </option>
+                                        ))}
+                                    </select>    
+                                </div>
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-lastName">Family ID:</label>  
+                                <input type="text" id="add-doctors-lastName" name="famID" placeholder="Select patient id" value={addDoctorsInputs.famID || ""} required readOnly className="add-doctors-shaded-input" />
+                            </div>
+                        </div>
+                        <div className="add-doctors-column">
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-lastName">Last Name:</label>  
+                                <input type="text" id="add-doctors-lastName" name="lName" placeholder="Select patient id" value={addDoctorsInputs.lName || ""} required readOnly className="add-doctors-shaded-input" />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-firstName">First Name:</label>
+                                <input type="text" id="add-doctors-firstName" name="fName" placeholder="Select patient id" value={addDoctorsInputs.fName || ""} required readOnly className="add-doctors-shaded-input" />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-middleName">Middle Name:</label>
+                                <input type="text" id="add-doctors-middleName" name="mName" placeholder="Select patient id" value={addDoctorsInputs.mName || ""} required readOnly className="add-doctors-shaded-input" />
+                            </div>
+                        </div>
+                        <div className="add-doctors-column">
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-age">Age:</label>
+                                <input type="text" id="add-doctors-age" name="Age" required readOnly className="add-doctors-shaded-input" value={addDoctorsInputs.Age || ""} />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-specialty">Birthdate:</label>
+                                <input type="date" id="add-doctors-specialty" name="birthDate" value={addDoctorsInputs.birthDate || ""} required onChange={handleAddDoctorsChange} />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-civilstatus">Civil Status:</label>
+                                <div className="add-doctors-select-box">
+                                    <select name="civilStatus" onChange={handleAddDoctorsChange} > 
+                                        <option hidden></option>
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Separated">Separated</option>
+                                        <option value="Widowed">Widowed</option>
+                                        <option value="Divorced">Divorced</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="add-doctors-column">
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-occu">Occupation:</label>
+                                <input type="text" id="add-doctors-occu" name="occupation" placeholder="Enter occupation" required onChange={handleAddDoctorsChange} />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-contactNumber">Contact Number:</label>
+                                <input type="text" id="add-doctors-contactNumber" name="contactNum" placeholder="Enter contact number" required onChange={handleAddDoctorsChange} />
+                            </div>
+                        </div>
+                        <div className="add-doctors-column">
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-phnum">Philhealth Number:</label>
+                                <input type="text" id="add-doctors-phnum" name="pHealthNum" placeholder="Enter philhealth number" required onChange={handleAddDoctorsChange} />
+                            </div>
+                        </div>
+                        <div className="add-doctors-column">
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-gravida">Gravida:</label>
+                                <input type="text" id="add-doctors-gravida" name="gravida" placeholder="Enter gravida" required onChange={handleAddDoctorsChange} />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-para">Para:</label>
+                                <input type="text" id="add-doctors-para" name="para" placeholder="Enter para" required onChange={handleAddDoctorsChange} />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-lmp">LMP:</label>
+                                <input type="date" id="add-doctors-lmp" name="lmp" required onChange={handleAddDoctorsChange} />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-edd">EDD:</label>
+                                <input type="date" id="add-doctors-edd" name="edd" required onChange={handleAddDoctorsChange} />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-tdstat">TD Status:</label>
+                                <input type="text" id="add-doctors-tdstat" name="tdStatus" placeholder="Enter td status" required onChange={handleAddDoctorsChange} />
+                            </div>
+                        </div>
+                        <h2 style={{ marginTop: "2.6em" }}>Husband / Partner Information</h2>
+                        <div className="add-doctors-column">
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-plastName">Last Name:</label>  
+                                <input type="text" id="add-doctors-plastName" name="pLName" placeholder="Enter partner last name" required onChange={handleAddDoctorsChange} />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-pfirstName">First Name:</label>
+                                <input type="text" id="add-doctors-pfirstName" name="pFName" placeholder="Enter partner first name" required onChange={handleAddDoctorsChange} />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-pmiddleName">Middle Name:</label>
+                                <input type="text" id="add-doctors-pmiddleName" name="pMName" placeholder="Enter partner middle name" required onChange={handleAddDoctorsChange} />
+                            </div>
+                        </div>
+                        <div className="add-doctors-column">
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-pAge">Age:</label>  
+                                <input type="text" id="add-doctors-pAge" name="pAge" readOnly className="add-doctors-shaded-input" placeholder="Select partner birthdate" required onChange={handleAddDoctorsChange} value={addDoctorsInputs.pAge || ""} />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-pbday">Birthday:</label>
+                                <input type="date" id="add-doctors-pbday" name="pBday" value={addDoctorsInputs.pBday || ""} required onChange={handleAddDoctorsChange} />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-civilstatus">Civil Status:</label>
+                                <div className="add-doctors-select-box">
+                                    <select name="pCivilStatus" onChange={handleAddDoctorsChange} > 
+                                        <option hidden></option>
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Separated">Separated</option>
+                                        <option value="Widowed">Widowed</option>
+                                        <option value="Divorced">Divorced</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="add-doctors-column">
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-pOccup">Occupation:</label>  
+                                <input type="text" id="add-doctors-pOccup" name="pOccupation" placeholder="Enter partner occupation" required onChange={handleAddDoctorsChange} />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-pContactNum">Contact Number:</label>
+                                <input type="text" id="add-doctors-pContactNum" name="pContactNum" placeholder="Enter partner contact number" required onChange={handleAddDoctorsChange} />
+                            </div>
+                        </div>
+                        <div className="add-doctors-column">
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-pPHNum">Philhealth Number:</label>
+                                <input type="text" id="add-doctors-pPHNum" name="pPhilHealthNum" placeholder="Enter partner philhealth number" required onChange={handleAddDoctorsChange} />
+                            </div>
+                        </div>
+                        <div className="add-doctors-column">
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-pCA">Complete Address:</label>
+                                <input type="text" id="add-doctors-pCA" name="pCompleteAdd" placeholder="Enter partner complete address" required onChange={handleAddDoctorsChange} />
+                            </div>
+                        </div>
+
+                        <div className="add-doctors-buttons">
+                            <button className="add-doctors-save-button" >Save</button>
+                            <button className="add-doctors-cancel-button" onClick={(e) => { e.preventDefault(); setShowModal(false); setSelectedDoctor(null); setAddDoctorsInputs({}) } }>Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            )}
+            {viewHistoryModal && (
+                <div className="add-doctors-popup-overlay">
+                    <div className="view-Prenatal-History-popup-content">
+                        <button className="doctors-popup-close-button" onClick={(e) => { e.preventDefault(); setViewHistoryModal(false); } } > X </button>
+                        <h2>Prenatal History Record</h2>
+                        <div className="view-Prenatal-History-AddFilter">
+                            <button onClick={() => setAddHistoryModal(true)}>Add</button>
+                            <span>Date Modified:</span>
+                            <select>
+                                <option hidden></option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+                        <form className="add-doctors-form" onSubmit={handleAddDoctorsSubmit}>
+                            <div className="view-Prenatal-History-TableWrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Date Visit</th>
+                                            <th>AOG</th>
+                                            <th>BP</th>
+                                            <th>PR</th>
+                                            <th>HT/WT</th>
+                                            <th>Temp</th>
+                                            <th>Chief Complain</th>
+                                            <th style={{ width: "250px" }}>Nurse/Midwife Note</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {prenatalVisits.map((prenVisit, key) => (
+                                        <tr key={key}>
+                                            <td>
+                                                {prenVisit.DateVisit}
+                                            </td>
+                                            <td>
+                                                {prenVisit.AOG}
+                                            </td>
+                                            <td>
+                                                {prenVisit.BPSystolic}/{prenVisit.BPDiastolic}
+                                            </td>
+                                            <td>
+                                                {prenVisit.PulseRate}
+                                            </td>
+                                            <td>
+                                                {prenVisit.Height}/{prenVisit.Weight}
+                                            </td>
+                                            <td>
+                                                {prenVisit.Temperature}
+                                            </td>
+                                            <td>
+                                                {prenVisit.ChiefComplaint}
+                                            </td>
+                                            <td>
+                                                {prenVisit.Notes}
+                                            </td>
+                                        </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div className="add-doctors-buttons">
+                                <button className="add-doctors-cancel-button" onClick={(e) => { e.preventDefault(); setViewHistoryModal(false); } } >Close</button>
+                            </div>
+                        </form>
                     </div>
-                  </div>
-                )}
+                </div>
+            )}
 
-       {activeTab === "spouse" && (
-        <div className="modal">
-          <div className="modal-content">
-            <div className='tab-buttons'>
-          <button  className={activeTab === 'showModal' ? 'active' : ''}
-          onClick={() => setActiveTab('showModal')}> Patient Profile </button>
-           <button className={activeTab === 'spouse' ? 'active' : ''}
-          onClick={() => setActiveTab('spouse')}> Husband/Wife Profile </button> 
+            {addHistoryModal && (
+                <div className="add-doctors-popup-overlay">
+                    <div className="add-doctors-popup-content">
+                        <button className="doctors-popup-close-button" onClick={(e) => { e.preventDefault(); setAddHistoryModal(false); } } > X </button>
+                        <h2>Add Prenatal History Record</h2>
+                        <form className="add-doctors-form" onSubmit={submitHistoryRecord}>
+                            <div className="add-doctors-column">
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-prenatal-history-date">Date:</label>
+                                    <input type="date" id="add-prenatal-history-date" name="dateVisit" required onChange={handleAddHistoryChange} />
+                                </div>
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-prenatal-history-aog">AOG:</label>
+                                    <input type="text" id="add-prenatal-history-aog" name="AOG" required onChange={handleAddHistoryChange} />
+                                </div>
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-prenatal-history-bp">BP - Systolic:</label>
+                                    <input type="text" id="add-prenatal-history-bp" name="BPS" required onChange={handleAddHistoryChange} />
+                                </div>
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-prenatal-history-bp">BP - Diastolic:</label>
+                                    <input type="text" id="add-prenatal-history-bp" name="BPD" required onChange={handleAddHistoryChange} />
+                                </div>
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-prenatal-history-pr">Pulse Rate:</label>
+                                    <input type="text" id="add-prenatal-history-pr" name="PR" required onChange={handleAddHistoryChange} />
+                                </div>             
+                            </div>
+                            <div className="add-doctors-column">
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-prenatal-history-ht">Height:</label>
+                                    <input type="text" id="add-prenatal-history-ht" name="HT" required onChange={handleAddHistoryChange} />
+                                </div>                                
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-prenatal-history-wt">Weight:</label>
+                                    <input type="text" id="add-prenatal-history-wt" name="WT" required onChange={handleAddHistoryChange} />
+                                </div>
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-prenatal-history-wt">BMI:</label>
+                                    <input type="text" id="add-prenatal-history-bmi" name="BMI" required onChange={handleAddHistoryChange} />
+                                </div>
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-prenatal-history-temp">Temperature:</label>
+                                    <input type="text" id="add-prenatal-history-temp" name="Temp" required onChange={handleAddHistoryChange} />
+                                </div> 
+                            </div>
+                            <div className="add-doctors-column">
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-prenatal-history-cc">Chief Complaints:</label>
+                                    <input type="text" id="add-prenatal-history-cc" name="ccomplaint" required onChange={handleAddHistoryChange} />
+                                </div> 
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-prenatal-history-note">Nurse's Midwife Note:</label>
+                                    <div className="add-doctors-select-box">
+                                    <select name="notes" onChange={handleAddHistoryChange} > 
+                                        <option hidden value="">-- Select Note --</option>
+                                        <option value="4_prenatal_checkups">Pregnant woman with at least 4 prenatal check ups</option>
+                                        <option value="normal_bmi">Pregnant woman assessed with normal BMI</option>
+                                        <option value="low_bmi">Low BMI</option>
+                                        <option value="high_bmi">High BMI</option>
+                                        <option value="first_time_td2">First-time pregnant woman given at least 2 Td doses</option>
+                                        <option value="td2_plus">At least 3 doses of Td vaccination (Td2 Plus)</option>
+                                        <option value="folic_acid">Folic Acid supplementation</option>
+                                        <option value="carbonate">Carbonate supplementation</option>
+                                        <option value="iodine_capsules">Given iodine capsules</option>
+                                        <option value="deworming">Given one dose of deworming tablet</option>
+                                        <option value="tested_syphilis">Tested for syphilis</option>
+                                        <option value="positive_syphilis">Tested Positive for syphilis</option>
+                                        <option value="screened_hepatitis_b">Screened for Hepatitis B</option>
+                                        <option value="positive_hepatitis_b">Tested Positive for Hepatitis B</option>
+                                        <option value="screened_hiv">Screened for HIV</option>
+                                        <option value="tested_cbc">Tested for CBC (hgB and hct)</option>
+                                        <option value="anemia">Diagnosed anemia</option>
+                                        <option value="screened_diabetes">Screened for gestational diabetes</option>
+                                    </select>
+                                </div>
+                                </div> 
+                            </div>
+                            <div className="add-doctors-buttons">
+                                <button className="add-doctors-save-button" >Save</button>
+                                <button className="add-doctors-cancel-button" onClick={(e) => { e.preventDefault(); setAddHistoryModal(false); } } >Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
 
-          </div>
-            <form onSubmit={handleFormSubmit}>
-            <label htmlFor="familyId"><h3>Family ID</h3>
-            <input
-              type="text"
-              name="familyId"
-              value={formData.familyId}
-              onChange={handleFormChange}
-              placeholder="Family ID"
-              required
-            />
-           
-              
-          </label>
-            <label htmlFor="LastName"><h3>Last Name</h3>
-            <input
-              type="text"
-              name="LastName"
-              value={formData.LastName}
-              onChange={handleFormChange}
-              placeholder="Last Name"
-              required
-            />
-          </label>
-            <label htmlFor="FirstName"><h3>First Name</h3>
-            <input
-              type="text"
-              name="FirstName"
-              value={formData.FirstName}
-              onChange={handleFormChange}
-              placeholder="First Name"
-              required
-            />
-            </label>
-            <label htmlFor="MiddleName"><h3>Middle Name</h3>
-            <input
-              type="text"
-              name="MiddleName"
-              value={formData.MiddleName}
-              onChange={handleFormChange}
-              placeholder="Middle Name"
+            {editDoctorModal && selectedDoctor && (
+            
+                <div className="add-doctors-popup-overlay">
+                    <div className="add-doctors-popup-content">
+                        <button className="doctors-popup-close-button" onClick={(e) => { e.preventDefault(); setEditDoctorModal(false); setSelectedDoctor(null); } }     > X </button>
+                        <h2>Edit Doctor</h2>
+                        <form className="add-doctors-form" onSubmit={handleEditSubmit}>
+                            <div className="add-doctors-column">
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-firstName">First Name:</label>
+                                    <input type="text" id="add-doctors-firstName" name="fName" className="add-doctors-shaded-input" readOnly value={selectedDoctor.FirstName} />
+                                </div>
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-middleName">Middle Name:</label>
+                                    <input type="text" id="add-doctors-middleName" name="MiddleName" value={selectedDoctor.MiddleName} onChange={handleEditDoctorsChange} />
+                                </div>
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-lastName">Last Name:</label>  
+                                    <input type="text" id="add-doctors-lastName" name="lName" className="add-doctors-shaded-input" readOnly value={selectedDoctor.LastName} />
+                                </div>
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-lastName">Sex:</label>  
+                                    <input type="text" id="add-doctors-lastName" name="sex" className="add-doctors-shaded-input" readOnly value={selectedDoctor.Sex} />
+                                </div>
+                            </div>
+                            <div className="add-doctors-column">
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-licensingNumber">Licensing Number:</label>
+                                    <input type="text" id="add-doctors-licensingNumber" name="licNumber" className="add-doctors-shaded-input" readOnly value={selectedDoctor.LicensingNumber} />
+                                </div>
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-specialty">Specialty:</label>
+                                    <input type="text" id="add-doctors-specialty" name="specialty" className="add-doctors-shaded-input" readOnly value={selectedDoctor.Specialty} />
+                                </div>
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-specialty">Position:</label>
+                                    <input type="text" id="add-doctors-specialty" name="position" className="add-doctors-shaded-input" readOnly value={selectedDoctor.Position} />
+                                </div>
+                            </div>
+                            <div className="add-doctors-column">
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-homeAddress">Home Address:</label>
+                                    <input type="text" id="add-doctors-homeAddress" name="HomeAddress" value={selectedDoctor.HomeAddress} onChange={handleEditDoctorsChange} />
+                                </div>
+                            </div>
+                            <div className="add-doctors-column">
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-contactNumber">Contact Number:</label>
+                                    <input type="text" id="add-doctors-contactNumber" name="ContactNumber" value={selectedDoctor.ContactNumber} onChange={handleEditDoctorsChange} />
+                                </div>
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-emergencyContact">Emergency Contact Number:</label>
+                                    <input type="text" id="add-doctors-emergencyContact" name="EmergencyNumber" value={selectedDoctor.EmergencyNumber} onChange={handleEditDoctorsChange} />
+                                </div>
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-userID">Admin ID:</label>  
+                                    <input type="text" id="add-doctors-userID" name="AdminID" className="add-doctors-shaded-input" readOnly value={selectedDoctor.AdminID} />
+                                </div>
+                            </div>
+                            <div className="add-doctors-column">
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-emailAddress">Email Address:</label>
+                                    <input type="text" id="add-doctors-emailAddress" name="emailAdd" className="add-doctors-shaded-input" readOnly value={selectedDoctor.EmailAddress} />
+                                </div>
+                            </div>
+                            <div className="add-doctors-buttons">
+                                <button className="add-doctors-save-button" >Save</button>
+                                <button className="add-doctors-cancel-button" onClick={(e) => { e.preventDefault(); setEditDoctorModal(false); setSelectedDoctor(null); } } >Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
 
-            />
-          
-            </label>
-            <label htmlFor="Age"><h3>Age</h3>
-            <input
-              type="text"
-              name="Age"
-              value={formData.Age}
-              onChange={handleFormChange}
-              placeholder="Age"
-              required
-            />
-            </label>
-            <label htmlFor="Bday"><h3>Birthdate</h3>
-            <input
-              type="date"
-              name="Bday"
-              value={formData.Bday}
-             
-              onChange={handleFormChange}
-              placeholder="Birthdate"
-              required
-            />
-            </label>
-           <label htmlFor="civilStat"><h3>Civil Status</h3>
-            <select name="civilStat" id="civilStat"> 
-              <option value="opt1">Single</option>
-              <option value="opt2">Married</option>
-              <option value="opt3">Separated</option>
-              <option value="opt4">Widowed</option>
-              <option value="opt5">Divorced</option>
-            </select>
-            </label>
-            <label htmlFor="Occupation"><h3>Occupation</h3>
-             <input
-              type="text"
-              name="Occupation"
-              value={formData.Occupation}
-              placeholder='Occupation'
-              onChange={handleFormChange}
-              required
-            />
-            </label>
-            <label htmlFor="Educ"><h3>Educational Attainment</h3>
-             <input
-              type="text"
-              name="Educ"
-              value={formData.Educ} 
-              placeholder='Educational Attainment'
-              onChange={handleFormChange}
-              required
-            />
-            </label>
-            <label htmlFor="ContactNo"><h3>Contact Number</h3>
-             <input
-              type="text"
-              name="ContactNo"
-              value={formData.ContactNo}
-              placeholder='Contact Number'
-              onChange={handleFormChange}
-              required
-            /></label>
-             <label htmlFor="PhilHealth"><h3>PhilHealth No.</h3>
-             <input
-              type="text"
-              name="PhilHealth"
-              value={formData.PhilHealth}
-              placeholder='PhilHealth No.'
-              onChange={handleFormChange}
-              required
-            /></label>
-             <label htmlFor="Address"><h3>Complete Address</h3>
-             <input
-              type="text"
-              name="Address"
-              value={formData.Address}
-              placeholder='Complete Address'
-              onChange={handleFormChange}
-              required
-            />
-            </label>
-            </form> 
-            <div className='modal-buttons'>
-             <button type="submit" onClick={handleSubmit3}>Save</button>
-              <button type="button" onClick={handleModalClose}>
-          
-                Close
-              </button>
-              <button onClick={handleViewClick}> View Record</button>
+            )}
 
-              </div>
-          </div>
+            {/* WINDOW THAT SHOWS 'DELETE BUTTON' OF DOCTOR */}
+            {deleteDoctorModal && selectedDoctor && (
+            
+                <div className="add-doctors-popup-overlay">
+                    <div className="add-doctors-popup-content">
+                        <button className="doctors-popup-close-button" onClick={(e) => { e.preventDefault(); setDeleteDoctorModal(false); setSelectedDoctor(null); } }     > X </button>
+                        <h2>Confirm Delete</h2>
+                        <h4>Are you sure you want to delete this item?</h4>
+                            <div className="delete-doctors-buttons">
+                                <button className="add-doctors-save-button" onClick={() => deleteDoctor(selectedDoctor) } >Delete</button>
+                                <button className="add-doctors-cancel-button" onClick={(e) => { e.preventDefault(); setDeleteDoctorModal(false); setSelectedDoctor(null); } } >Cancel</button>
+                            </div>
+                    </div>
+                </div>
+
+            )}
+
         </div>
-      )}
-    </div>
-  );
+    );
 }
-
 
 export default Prenatal;

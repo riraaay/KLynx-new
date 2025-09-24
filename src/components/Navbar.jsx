@@ -18,7 +18,6 @@ const Sidebar = () => {
       {isCollapsed ? <i className="fa-solid fa-angles-left"></i>  : <i className="fa-solid fa-angles-right"></i>}
      </button>  
       <img src={SidebarOKBC} className="logo" alt="logo"/>
-
     <div className="icon-container"> 
       <div className="menu-item">
           <ul>

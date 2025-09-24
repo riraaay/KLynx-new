@@ -1,0 +1,88 @@
+.Add-Staff-Overlay{
+    background: rgba(0, 0, 0, 0.5);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.Add-Staff-Container{
+    position: relative;
+    background-color: #fff;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 6px;
+    padding: 30px;
+    margin: 0 15px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 1);
+}
+
+.Add-Staff-Container h1{
+    font-size: 20px;
+    font-weight: 600;
+    color: skyblue;
+}
+
+.Add-Staff-Form{
+    position: relative;
+    min-height: 490px;
+    margin-top: 16px;
+}
+
+.Add-Staff-Fields{
+    display: flex;
+    align-items: center;
+    column-gap: 5em;
+    flex-wrap: wrap;
+}
+
+.Add-Staff-InputField{
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px;
+    margin: 4px 0;
+}
+
+.Add-Staff-InputField label{
+    font-size: 12px;
+    font-weight: 500;
+    color: #1114a3;
+}
+
+.Add-Staff-InputField input{
+    height: 40px;
+    font-size: 14px;
+    color: black;
+    padding: 0 15px;
+    outline: none;
+    border: 1px solid #1114a3;
+    border-radius: 20px;
+    margin: 8px 0;
+    width: 100%;
+}
+
+.Add-Staff-InputField input[type="date"]{
+    width: 135%;
+}
+
+.Add-Staff-InputField input:is(:focus, :valid){
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
+}
+
+.Add-Staff-InputField select{
+    height: 40px;
+    font-size: 14px;
+    color: black;
+    padding: 0 15px;
+    outline: none;
+    border: 1px solid #1114a3;
+    border-radius: 20px;
+    margin: 8px 0;
+    width: 100%;
+    margin-right: 8em;
+}

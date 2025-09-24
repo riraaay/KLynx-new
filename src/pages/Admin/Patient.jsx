@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import React from 'react';  
 import Sidebar from '../../components/sidebar';
 import '../../components/css/GlobalContainer.css';
 import '../../components/css/DashboardAlt.css';
 import '../../components/css/FileMaintenance.css'
 import './Doctors.css'
 import axios from 'axios';
+import React from 'react';  
 import { BiSolidCog, BiSolidBell, BiSolidEdit, BiSolidTrash } from 'react-icons/bi';
 
-const Doctors = () => {
+const Patient = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [addDoctorsInputs, setAddDoctorsInputs] = useState({ sex: "Male" });
@@ -31,7 +31,7 @@ const Doctors = () => {
     const handleAddDoctorsSubmit = (e) =>{
         e.preventDefault();
         console.log(addDoctorsInputs);
-        axios.post('http://localhost/api/Doctors.php', addDoctorsInputs).then(function(response){
+        axios.post('http://localhost/api/Patient.php', addDoctorsInputs).then(function(response){
             console.log(response.data);
             getDoctorsList();
             setSelectedDoctor(null);
@@ -40,7 +40,7 @@ const Doctors = () => {
     }
 
     function getDoctorsList() {
-        axios.get('http://localhost/api/Doctors.php').then(function(response){
+        axios.get('http://localhost/api/Patient.php').then(function(response){
             console.log(response.data);
             setDoctorsList(response.data);
         });
@@ -51,16 +51,14 @@ const Doctors = () => {
     }, []);
 
     const viewDoctor = async (id) => {
-        const response = await axios.get(`http://localhost/api/Doctors.php?id=${id}`);
+        const response = await axios.get(`http://localhost/api/Patient.php?id=${id}`);
         setSelectedDoctor(response.data);
         setViewDoctorModal(true);
         console.log(response.data);
     }
 
     const editDoctor = async (id) => {
-        const response = await axios.get(`http://localhost/api/Doctors.php?id=${id}`);
-        console.log("Before Doctor: ",selectedDoctor);
-        console.log(response.data);
+        const response = await axios.get(`http://localhost/api/Patient.php?id=${id}`);
         setSelectedDoctor(response.data);
         setEditDoctorModal(true);
     }
@@ -69,7 +67,7 @@ const Doctors = () => {
         e.preventDefault();
         console.log(selectedDoctor);
 
-        axios.put(`http://localhost/api/Doctors.php?id=${selectedDoctor.AdminID}`, selectedDoctor).then(function(response){
+        axios.put(`http://localhost/api/Patient.php?id=${selectedDoctor.PatientID}`, selectedDoctor).then(function(response){
             console.log(response.data);
             getDoctorsList();
             setSelectedDoctor(null);
@@ -84,7 +82,7 @@ const Doctors = () => {
     }
 
     const deleteDoctor = (id) => {
-        axios.delete(`http://localhost/api/Doctors.php?id=${id}`).then(function(response){
+        axios.delete(`http://localhost/api/Patient.php?id=${id}`).then(function(response){
             console.log(response.data);
             getDoctorsList();
             setSelectedDoctor(null);
@@ -98,7 +96,7 @@ const Doctors = () => {
             <main className="FileMaintenance-Content">
                 <div className="FileMaintenance-Header">
                     <div className="FileMaintenance-HeaderTitle">
-                        <h1>Doctor</h1>
+                        <h1>Patient</h1>
                     </div>
                     <div className="FileMaintenance-HeaderSetting">
                         <BiSolidBell className="FileMaintenance-Icon" />
@@ -126,12 +124,12 @@ const Doctors = () => {
                     <table>
                         <thead>
                             <tr>
-                                <th>Admin ID</th>
-                                <th>Last Name</th>
+                                <th>Patient ID</th>
+                                <th>Family ID</th>
                                 <th>First Name</th>
                                 <th>Middle Name</th>
-                                <th>Email</th>
-                                <th>Contact No.</th>
+                                <th>Last Name</th>
+                                <th>Sex</th>
                                 <th colSpan="3">Manage Account</th>
                             </tr>
                         </thead>
@@ -139,10 +137,10 @@ const Doctors = () => {
                             {doctorsList.map((doctorsL, key) => (
                             <tr key={key}>
                                 <td>
-                                    {doctorsL.AdminID}
+                                    {doctorsL.PatientID}
                                 </td>
                                 <td>
-                                    {doctorsL.LastName}
+                                    {doctorsL.FamilyID}
                                 </td>
                                 <td>
                                     {doctorsL.FirstName}
@@ -151,20 +149,20 @@ const Doctors = () => {
                                     {doctorsL.MiddleName}
                                 </td>
                                 <td>
-                                    {doctorsL.EmailAddress}
+                                    {doctorsL.LastName}
                                 </td>
                                 <td>
-                                    {doctorsL.ContactNumber}
+                                    {doctorsL.Sex}
                                 </td>
                                 <td>
-                                    <button onClick={() => viewDoctor(doctorsL.AdminID) }>View</button>
+                                    <button onClick={() => viewDoctor(doctorsL.PatientID) }>View</button>
                                 </td>
                                 <td>
-                                    <button onClick={() => editDoctor(doctorsL.AdminID) } style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }} title="Edit" >
+                                    <button onClick={() => editDoctor(doctorsL.PatientID) } style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }} title="Edit" >
                                     <BiSolidEdit className="FileMaintenance-TableIcon FileMaintenance-IconEdit" />  </button>
                                 </td>
                                 <td>
-                                    <button onClick={() => { setSelectedDoctor(doctorsL.AdminID); setDeleteDoctorModal(true); } } style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }} title="Delete" >
+                                    <button onClick={() => { setSelectedDoctor(doctorsL.PatientID); setDeleteDoctorModal(true); } } style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }} title="Delete" >
                                     <BiSolidTrash className="FileMaintenance-TableIcon" />  </button>
                                 </td>
                             </tr>
@@ -181,20 +179,34 @@ const Doctors = () => {
                     <button className="doctors-popup-close-button" onClick={(e) => { e.preventDefault(); setShowModal(false); setSelectedDoctor({}); } }>
                         X
                     </button>
-                    <h2>Add Doctor</h2>
+                    <h2>Add Patient</h2>
                     <form className="add-doctors-form" onSubmit={handleAddDoctorsSubmit}>
                         <div className="add-doctors-column">
                             <div className="add-doctors-input-box">
                                 <label htmlFor="add-doctors-firstName">First Name:</label>
-                                <input type="text" id="add-doctors-firstName" name="fName" placeholder="Enter your first name" required onChange={handleAddDoctorsChange} />
+                                <input type="text" id="add-doctors-firstName" name="fName" placeholder="Enter first name" required onChange={handleAddDoctorsChange} />
                             </div>
                             <div className="add-doctors-input-box">
                                 <label htmlFor="add-doctors-middleName">Middle Name:</label>
-                                <input type="text" id="add-doctors-middleName" name="mName" placeholder="Enter your middle name" required onChange={handleAddDoctorsChange} />
+                                <input type="text" id="add-doctors-middleName" name="mName" placeholder="Enter middle name" required onChange={handleAddDoctorsChange} />
                             </div>
                             <div className="add-doctors-input-box">
                                 <label htmlFor="add-doctors-lastName">Last Name:</label>  
-                                <input type="text" id="add-doctors-lastName" name="lName" placeholder="Enter your last name" required onChange={handleAddDoctorsChange} />
+                                <input type="text" id="add-doctors-lastName" name="lName" placeholder="Enter last name" required onChange={handleAddDoctorsChange} />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-suffix">Suffix:</label>  
+                                <input type="text" id="add-doctors-suffix" name="suffix" placeholder="Enter suffix" required onChange={handleAddDoctorsChange} />
+                            </div>
+                        </div>
+                        <div className="add-doctors-column">
+                            <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-specialty">Birthdate:</label>
+                                    <input type="date" id="add-doctors-specialty" name="birthDate" placeholder="Enter birthdate" required onChange={handleAddDoctorsChange} />
+                            </div>
+                            <div className="add-doctors-input-box">
+                                <label htmlFor="add-doctors-contactNumber">Family ID:</label>
+                                <input type="text" id="add-doctors-contactNumber" name="familyID" placeholder="Enter family id" required onChange={handleAddDoctorsChange} />
                             </div>
                             <div className="add-doctors-input-box">
                                 <div className="add-doctors-gender-box">
@@ -212,48 +224,6 @@ const Doctors = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="add-doctors-column">
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-licensingNumber">Licensing Number:</label>
-                                <input type="text" id="add-doctors-licensingNumber" name="licNumber" placeholder="Enter your first name" required onChange={handleAddDoctorsChange} />
-                            </div>
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-specialization">Specialization:</label>
-                                <input type="text" id="add-doctors-specialization" name="specialty" placeholder="Enter your specialization" required onChange={handleAddDoctorsChange} />
-                            </div>
-                            <div className="add-doctors-input-box">
-                                <label>Position:</label>
-                                <div className="add-doctors-select-box">
-                                    <select name="position" onChange={handleAddDoctorsChange} required>
-                                        <option hidden></option>
-                                        <option value="Health Officer">Health Officer</option>
-                                        <option value="Midwife">Midwife</option>
-                                    </select>    
-                                </div>   
-                            </div>
-                        </div>
-                        <div className="add-doctors-column">
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-homeAddress">Home Address:</label>
-                                <input type="text" id="add-doctors-homeAddress" name="homeAdd" placeholder="Enter your home address" required onChange={handleAddDoctorsChange} />
-                            </div>
-                        </div>
-                        <div className="add-doctors-column">
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-contactNumber">Contact Number:</label>
-                                <input type="text" id="add-doctors-contactNumber" name="contactNum" placeholder="Enter your contact number" required onChange={handleAddDoctorsChange} />
-                            </div>
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-emergencyContact">Emergency Contact Number:</label>
-                                <input type="text" id="add-doctors-emergencyContact" name="ecNumber" placeholder="Enter your emergency contact number" required onChange={handleAddDoctorsChange} />
-                            </div>
-                        </div>
-                        <div className="add-doctors-column">
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-emailAddress">Email Address:</label>
-                                <input type="text" id="add-doctors-emailAddress" name="emailAdd" placeholder="Enter your email address" required onChange={handleAddDoctorsChange} />
-                            </div>
-                        </div>
                         <div className="add-doctors-buttons">
                             <button className="add-doctors-save-button" >Save</button>
                             <button className="add-doctors-cancel-button" onClick={(e) => { e.preventDefault(); setShowModal(false); setSelectedDoctor(null); } }>Close</button>
@@ -267,7 +237,7 @@ const Doctors = () => {
                 <div className="add-doctors-popup-overlay">
                     <div className="add-doctors-popup-content">
                         <button className="doctors-popup-close-button" onClick={(e) => { e.preventDefault(); setViewDoctorModal(false); setSelectedDoctor({}); } } > X </button>
-                        <h2>View Doctor</h2>
+                        <h2>View Patient</h2>
                         <form className="add-doctors-form" onSubmit={handleAddDoctorsSubmit}>
                             <div className="add-doctors-column">
                                 <div className="add-doctors-input-box">
@@ -283,48 +253,28 @@ const Doctors = () => {
                                     <input type="text" id="add-doctors-lastName" name="lName" className="add-doctors-shaded-input" readOnly value={selectedDoctor.LastName} />
                                 </div>
                                 <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-suffix">Suffix:</label>  
+                                    <input type="text" id="add-doctors-suffix" name="suffix" className="add-doctors-shaded-input" readOnly value={selectedDoctor.Suffix} />
+                                </div>
+                            </div>
+                            <div className="add-doctors-column">
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-licensingNumber">Birthdate:</label>
+                                    <input type="text" id="add-doctors-licensingNumber" name="Birthdate" className="add-doctors-shaded-input" readOnly value={selectedDoctor.Birthdate} />
+                                </div>
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-specialty">Family ID:</label>
+                                    <input type="text" id="add-doctors-specialty" name="FamilyID" className="add-doctors-shaded-input" readOnly value={selectedDoctor.FamilyID} />
+                                </div>
+                                <div className="add-doctors-input-box">
                                     <label htmlFor="add-doctors-lastName">Sex:</label>  
                                     <input type="text" id="add-doctors-lastName" name="sex" className="add-doctors-shaded-input" readOnly value={selectedDoctor.Sex} />
                                 </div>
                             </div>
                             <div className="add-doctors-column">
                                 <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-licensingNumber">Licensing Number:</label>
-                                    <input type="text" id="add-doctors-licensingNumber" name="licNumber" className="add-doctors-shaded-input" readOnly value={selectedDoctor.LicensingNumber} />
-                                </div>
-                                <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-specialty">Specialty:</label>
-                                    <input type="text" id="add-doctors-specialty" name="specialty" className="add-doctors-shaded-input" readOnly value={selectedDoctor.Specialty} />
-                                </div>
-                                <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-specialty">Position:</label>
-                                    <input type="text" id="add-doctors-specialty" name="position" className="add-doctors-shaded-input" readOnly value={selectedDoctor.Position} />
-                                </div>
-                            </div>
-                            <div className="add-doctors-column">
-                                <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-homeAddress">Home Address:</label>
-                                    <input type="text" id="add-doctors-homeAddress" name="homeAdd" className="add-doctors-shaded-input" readOnly value={selectedDoctor.HomeAddress} />
-                                </div>
-                            </div>
-                            <div className="add-doctors-column">
-                                <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-contactNumber">Contact Number:</label>
-                                    <input type="text" id="add-doctors-contactNumber" name="contactNum" className="add-doctors-shaded-input" readOnly value={selectedDoctor.ContactNumber} />
-                                </div>
-                                <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-emergencyContact">Emergency Contact Number:</label>
-                                    <input type="text" id="add-doctors-emergencyContact" name="ecNumber" className="add-doctors-shaded-input" readOnly value={selectedDoctor.EmergencyNumber} />
-                                </div>
-                                <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-userID">Admin ID:</label>  
-                                    <input type="text" id="add-doctors-userID" name="AdminID" className="add-doctors-shaded-input" readOnly value={selectedDoctor.AdminID} />
-                                </div>
-                            </div>
-                            <div className="add-doctors-column">
-                                <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-emailAddress">Email Address:</label>
-                                    <input type="text" id="add-doctors-emailAddress" name="emailAdd" className="add-doctors-shaded-input" readOnly value={selectedDoctor.EmailAddress} />
+                                    <label htmlFor="add-doctors-homeAddress">Patient ID:</label>
+                                    <input type="text" id="add-doctors-homeAddress" name="PatientID" className="add-doctors-shaded-input" readOnly value={selectedDoctor.PatientID} />
                                 </div>
                             </div>
                             <div className="add-doctors-buttons">
@@ -340,12 +290,12 @@ const Doctors = () => {
                 <div className="add-doctors-popup-overlay">
                     <div className="add-doctors-popup-content">
                         <button className="doctors-popup-close-button" onClick={(e) => { e.preventDefault(); setEditDoctorModal(false); setSelectedDoctor(null); } }     > X </button>
-                        <h2>Edit Doctor</h2>
+                        <h2>Edit Patient</h2>
                         <form className="add-doctors-form" onSubmit={handleEditSubmit}>
                             <div className="add-doctors-column">
                                 <div className="add-doctors-input-box">
                                     <label htmlFor="add-doctors-firstName">First Name:</label>
-                                    <input type="text" id="add-doctors-firstName" name="fName" className="add-doctors-shaded-input" readOnly value={selectedDoctor.FirstName} />
+                                    <input type="text" id="add-doctors-firstName" name="fName" value={selectedDoctor.FirstName} onChange={handleEditDoctorsChange} />
                                 </div>
                                 <div className="add-doctors-input-box">
                                     <label htmlFor="add-doctors-middleName">Middle Name:</label>
@@ -353,51 +303,27 @@ const Doctors = () => {
                                 </div>
                                 <div className="add-doctors-input-box">
                                     <label htmlFor="add-doctors-lastName">Last Name:</label>  
-                                    <input type="text" id="add-doctors-lastName" name="lName" className="add-doctors-shaded-input" readOnly value={selectedDoctor.LastName} />
+                                    <input type="text" id="add-doctors-lastName" name="lName" value={selectedDoctor.LastName} onChange={handleEditDoctorsChange} />
+                                </div>
+                            </div>
+                            <div className="add-doctors-column">
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-specialty">Birthdate:</label>
+                                    <input type="text" id="add-doctors-specialty" name="Birthdate" value={selectedDoctor.Birthdate} onChange={handleEditDoctorsChange} />
+                                </div>
+                                <div className="add-doctors-input-box">
+                                    <label htmlFor="add-doctors-specialty">Family ID:</label>
+                                    <input type="text" id="add-doctors-specialty" name="FamilyID" value={selectedDoctor.FamilyID} onChange={handleEditDoctorsChange} />
                                 </div>
                                 <div className="add-doctors-input-box">
                                     <label htmlFor="add-doctors-lastName">Sex:</label>  
-                                    <input type="text" id="add-doctors-lastName" name="sex" className="add-doctors-shaded-input" readOnly value={selectedDoctor.Sex} />
+                                    <input type="text" id="add-doctors-lastName" name="sex" value={selectedDoctor.Sex} onChange={handleEditDoctorsChange} />
                                 </div>
                             </div>
                             <div className="add-doctors-column">
                                 <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-licensingNumber">Licensing Number:</label>
-                                    <input type="text" id="add-doctors-licensingNumber" name="licNumber" className="add-doctors-shaded-input" readOnly value={selectedDoctor.LicensingNumber} />
-                                </div>
-                                <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-specialty">Specialty:</label>
-                                    <input type="text" id="add-doctors-specialty" name="specialty" className="add-doctors-shaded-input" readOnly value={selectedDoctor.Specialty} />
-                                </div>
-                                <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-specialty">Position:</label>
-                                    <input type="text" id="add-doctors-specialty" name="position" className="add-doctors-shaded-input" readOnly value={selectedDoctor.Position} />
-                                </div>
-                            </div>
-                            <div className="add-doctors-column">
-                                <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-homeAddress">Home Address:</label>
-                                    <input type="text" id="add-doctors-homeAddress" name="HomeAddress" value={selectedDoctor.HomeAddress} onChange={handleEditDoctorsChange} />
-                                </div>
-                            </div>
-                            <div className="add-doctors-column">
-                                <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-contactNumber">Contact Number:</label>
-                                    <input type="text" id="add-doctors-contactNumber" name="ContactNumber" value={selectedDoctor.ContactNumber} onChange={handleEditDoctorsChange} />
-                                </div>
-                                <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-emergencyContact">Emergency Contact Number:</label>
-                                    <input type="text" id="add-doctors-emergencyContact" name="EmergencyNumber" value={selectedDoctor.EmergencyNumber} onChange={handleEditDoctorsChange} />
-                                </div>
-                                <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-userID">Admin ID:</label>  
-                                    <input type="text" id="add-doctors-userID" name="AdminID" className="add-doctors-shaded-input" readOnly value={selectedDoctor.AdminID} />
-                                </div>
-                            </div>
-                            <div className="add-doctors-column">
-                                <div className="add-doctors-input-box">
-                                    <label htmlFor="add-doctors-emailAddress">Email Address:</label>
-                                    <input type="text" id="add-doctors-emailAddress" name="emailAdd" className="add-doctors-shaded-input" readOnly value={selectedDoctor.EmailAddress} />
+                                    <label htmlFor="add-doctors-homeAddress">Patient ID:</label>
+                                    <input type="text" id="add-doctors-homeAddress" className="add-doctors-shaded-input" readOnly value={selectedDoctor.PatientID} />
                                 </div>
                             </div>
                             <div className="add-doctors-buttons">
@@ -424,11 +350,10 @@ const Doctors = () => {
                             </div>
                     </div>
                 </div>
-
             )}
 
         </div>
     );
 }
 
-export default Doctors;
+export default Patient;
