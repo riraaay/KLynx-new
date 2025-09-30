@@ -69,6 +69,10 @@ const Sidebar = () => {
                         <span><strong>File Maintenance</strong></span>
                     </Link>
                 </li>
+                <li className="sub-mSidebar-Nondropdown">
+                    <Link to="/ICDManager2">ICD-10</Link>
+                    <Link to="/NurseNotes">Nurse Notes</Link>
+                </li>
                 <li>
                     <button className={`mSidebar-dropdown-btn ${openDropdowns.includes(1) ? "rotate" : ""}`} onClick={() => toggleDropdown(1)}>
                         <span>Patient Records</span>

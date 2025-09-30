@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Select from "react-select";
 
-/* grouped ICD data */
 const icdOptions = [
   {
     label: "Infectious Diseases",
@@ -90,8 +90,45 @@ const CollapsibleMenuList = (props) => {
   );
 };
 
-export default function IcdCollapsibleDropdown() {
+export default function IcdCollapsibleDropdown({ onChange }) {
   const [selected, setSelected] = useState([]);
+
+  const handleChange = (value) => {
+    setSelected(value);
+    if (onChange) {
+      onChange(value);
+    }
+  };
+
+  const [options, setOptions] = useState([]);
+
+   useEffect(() => {
+    axios.get("http://localhost/api/ICD-10.php").then((res) => {
+      const grouped = groupByCategory(res.data);
+      setOptions(grouped);
+    });
+  }, []);
+
+  const groupByCategory = (data) => {
+    const groupedData = {};
+
+    data.forEach((item) => {
+      if (!groupedData[item.Category]) {
+        groupedData[item.Category] = [];
+      }
+      groupedData[item.Category].push({
+        value: item.Code,
+        label: `${item.Code} - ${item.Description}`,
+      });
+    });
+
+    return Object.keys(groupedData).map((key) => ({
+      label: key,
+      options: groupedData[key],
+    }));
+
+  }
+
 
   return (
     <div style={{ maxWidth: 600, margin: "0 auto", padding: 12 }}>
@@ -100,18 +137,41 @@ export default function IcdCollapsibleDropdown() {
       </label>
 
       <Select
-        options={icdOptions}
-        value={selected}
-        onChange={setSelected}
-        isSearchable
-        isMulti
-        placeholder="Search or select ICD..."
-        components={{ MenuList: CollapsibleMenuList }}
-        styles={{
-          menu: (base) => ({ ...base, zIndex: 9999 }), // avoid overlap
-        }}
-      />
-
+  options={options}
+  value={selected}
+  onChange={handleChange}
+  isSearchable
+  isMulti
+  placeholder="Search or select ICD..."
+  components={{ MenuList: CollapsibleMenuList }}
+  styles={{
+    container: (base) => ({
+      ...base,
+      width: "100%",          // match parent width
+    }),
+    control: (base) => ({
+      ...base,
+      minHeight: 38,          // match typical input height
+      borderRadius: 4,        // match your input box radius
+      borderColor: "#ced4da",// match form input border
+      boxShadow: "none",      // remove default shadow
+      "&:hover": { borderColor: "#a1a1a1" }, // hover border
+    }),
+    multiValue: (base) => ({
+      ...base,
+      backgroundColor: "#e6f0ff", // match your selected background if needed
+    }),
+    menu: (base) => ({
+      ...base,
+      zIndex: 9999,
+    }),
+    placeholder: (base) => ({
+      ...base,
+      color: "#6c757d",       // match your placeholder color
+    }),
+  }}
+/>
+{/*
       {selected && selected.length > 0 && (
         <div
             style={{
@@ -130,6 +190,7 @@ export default function IcdCollapsibleDropdown() {
             </ul>
         </div>
         )}
+        */}
     </div>
   );
 }

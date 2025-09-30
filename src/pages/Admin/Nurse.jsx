@@ -190,7 +190,7 @@ const Nurse = () => {
                             </div>
                             <div className="add-doctors-input-box">
                                 <label htmlFor="add-doctors-middleName">Middle Name:</label>
-                                <input type="text" id="add-doctors-middleName" name="mName" placeholder="Enter your middle name" required onChange={handleAddDoctorsChange} />
+                                <input type="text" id="add-doctors-middleName" name="mName" placeholder="Enter your middle name" onChange={handleAddDoctorsChange} />
                             </div>
                             <div className="add-doctors-input-box">
                                 <label htmlFor="add-doctors-lastName">Last Name:</label>  
@@ -218,8 +218,8 @@ const Nurse = () => {
                                 <input type="text" id="add-doctors-licensingNumber" name="licNumber" placeholder="Enter your first name" required onChange={handleAddDoctorsChange} />
                             </div>
                             <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-specialty">Specialty:</label>
-                                <input type="text" id="add-doctors-specialty" name="specialty" placeholder="Enter your middle name" required onChange={handleAddDoctorsChange} />
+                                <label htmlFor="add-doctors-specialty">Specialization:</label>
+                                <input type="text" id="add-doctors-specialty" name="specialization" placeholder="Enter your specialization" required onChange={handleAddDoctorsChange} />
                             </div>
                             <div className="add-doctors-input-box">
                                 <label>Position:</label>

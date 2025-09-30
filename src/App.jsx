@@ -64,6 +64,8 @@ import TestPage from './pages/Admin/TestPage'
 
 import GeoMaps from './pages/Admin/GeoMap';
 import IcdManager from './pages/Admin/IcdManager';
+import IcdManager2 from './pages/Admin/IcdManager2';
+import NurseNotes from './pages/Admin/NurseNotes';
 
 function App() {
   return (
@@ -103,6 +105,8 @@ function App() {
 
               <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
                 <Route path='/IcdManager' element={<IcdManager />} />
+                <Route path='/IcdManager2' element={<IcdManager2 />} />
+                <Route path='/NurseNotes' element={<NurseNotes />} />
 
                 <Route path='/GeoMap' element={<GeoMaps />} />              
                 <Route path='/DashboardAlt' element={<DashboardAlt/>} />

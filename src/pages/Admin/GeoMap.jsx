@@ -103,6 +103,7 @@ export default function Map() {
       type: 'Point',
       coordinates: [Number(entry.longitude), Number(entry.latitude)]
     },
+    
     properties: {
       description: `<b>Street:</b> ${entry.Street}<br><b>Disease:</b> ${entry.DiagnosisName}`,
       disease: entry.DiagnosisName

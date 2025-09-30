@@ -190,7 +190,7 @@ const Doctors = () => {
                             </div>
                             <div className="add-doctors-input-box">
                                 <label htmlFor="add-doctors-middleName">Middle Name:</label>
-                                <input type="text" id="add-doctors-middleName" name="mName" placeholder="Enter your middle name" required onChange={handleAddDoctorsChange} />
+                                <input type="text" id="add-doctors-middleName" name="mName" placeholder="Enter your middle name" onChange={handleAddDoctorsChange} />
                             </div>
                             <div className="add-doctors-input-box">
                                 <label htmlFor="add-doctors-lastName">Last Name:</label>  

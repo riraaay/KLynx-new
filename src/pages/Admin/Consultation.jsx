@@ -7,6 +7,7 @@ import './Doctors.css'
 import axios from 'axios';
 import React from 'react';  
 import { BiSolidCog, BiSolidBell, BiSolidEdit, BiSolidTrash } from 'react-icons/bi';
+import IcdCollapsibleDropdown from "./IcdManager";
 
 const Consultation = () => {
 
@@ -164,6 +165,10 @@ const Consultation = () => {
 
     useEffect( () => {
             getConsultProfiles();
+            setAddHistoryInputs((prev) => ({
+    ...prev,
+    consult_date_visit: new Date().toISOString().split("T")[0]
+  }));
     }, []);
 
 
@@ -253,6 +258,10 @@ const Consultation = () => {
             setAddHistoryModal(false);
 
             setAddHistoryInputs({});
+            setAddHistoryInputs((prev) => ({
+                ...prev,
+                consult_date_visit: new Date().toISOString().split("T")[0]
+            }));
             viewHistory(consultId);
         });
         
@@ -1207,7 +1216,7 @@ const Consultation = () => {
                             <div className="add-doctors-column">
                                 <div className="add-doctors-input-box">
                                     <label htmlFor="add-consultation-history-date">Date Visit:</label>
-                                    <input type="date" id="add-consultation-history-date" name="consult_date_visit" required onChange={handleAddHistoryChange} />
+                                    <input type="date" id="add-consultation-history-date" name="consult_date_visit" required value={addHistoryInputs.consult_date_visit} onChange={handleAddHistoryChange} />
                                 </div>
                                 <div className="add-doctors-input-box">
                                     <label htmlFor="add-consultation-history-age">Age:</label>
@@ -1272,46 +1281,15 @@ const Consultation = () => {
                             <h4 style={{ marginTop: "1.4em" }}>Doctor's Diagnosis</h4>
                             <div className="add-doctors-column">
                                 <div className="add-doctors-input-box">
-                                    <label htmlFor="add-consultation-history-diagnosis">Diagnosis:</label>
-                                    <div className="add-doctors-select-box">
-                                        <select name="consult_icd_codes" onChange={handleAddHistoryChange} > 
-                                            <option hidden>Select Diagnosis</option>
-                                            {/*<!-- Non-Communicable -->*/}
-                                            <option value="I10|Essential (primary) hypertension">I10 - Essential (primary) hypertension</option>
-                                            <option value="E11|Type 2 diabetes mellitus">E11 - Type 2 diabetes mellitus</option>
-                                            <option value="J45|Asthma">J45 - Asthma</option>
-                                            <option value="F32.9|Major depressive disorder, single episode, unspecified">F32.9 - Major depressive disorder, single episode, unspecified</option>
-                                            <option value="H52.1|Myopia (nearsightedness)">H52.1 - Myopia (nearsightedness)</option>
-                                            <option value="H52.2|Hypermetropia (farsightedness)">H52.2 - Hypermetropia (farsightedness)</option>
-
-                                            {/*<!-- Communicable & Infectious -->*/}
-                                            <option value="A90|Dengue fever (classical dengue)">A90 - Dengue fever (classical dengue)</option>
-                                            <option value="A91|Dengue hemorrhagic fever">A91 - Dengue hemorrhagic fever</option>
-                                            <option value="B50.9|Plasmodium falciparum malaria, unspecified">B50.9 - Plasmodium falciparum malaria, unspecified</option>
-                                            <option value="U07.1|COVID-19, virus identified">U07.1 - COVID-19, virus identified</option>
-                                            <option value="A00|Cholera">A00 - Cholera</option>
-                                            <option value="A27.0|Leptospirosis icterohaemorrhagica">A27.0 - Leptospirosis icterohaemorrhagica</option>
-                                            <option value="A27.9|Leptospirosis, unspecified">A27.9 - Leptospirosis, unspecified</option>
-                                            <option value="J10.1|Influenza with other respiratory manifestations, virus identified">J10.1 - Influenza with other respiratory manifestations, virus identified</option>
-                                            <option value="A15.0|Tuberculosis of lung">A15.0 - Tuberculosis of lung</option>
-                                            <option value="J18.9|Pneumonia, unspecified organism">J18.9 - Pneumonia, unspecified organism</option>
-                                            <option value="J06.9|Acute upper respiratory infection, unspecified">J06.9 - Acute upper respiratory infection, unspecified</option>
-                                            <option value="R50.9|Fever, unspecified">R50.9 - Fever, unspecified</option>
-                                            <option value="B34.9|Viral infection, unspecified">B34.9 - Viral infection, unspecified</option>
-                                            <option value="A09|Infectious gastroenteritis and colitis, unspecified">A09 - Infectious gastroenteritis and colitis, unspecified</option>
-                                            <option value="B05|Measles">B05 - Measles</option>
-                                            <option value="B01|Varicella (chickenpox)">B01 - Varicella (chickenpox)</option>
-                                            <option value="B65.9|Schistosomiasis, unspecified">B65.9 - Schistosomiasis, unspecified</option>
-
-                                            {/*<!-- Other Common Diagnoses -->*/}
-                                            <option value="K21.0|Gastro-esophageal reflux disease with esophagitis">K21.0 - Gastro-esophageal reflux disease with esophagitis</option>
-                                            <option value="N39.0|Urinary tract infection, site not specified">N39.0 - Urinary tract infection, site not specified</option>
-                                            <option value="L30.9|Dermatitis, unspecified">L30.9 - Dermatitis, unspecified</option>
-                                            <option value="Z34.9|Supervision of normal pregnancy, unspecified">Z34.9 - Supervision of normal pregnancy, unspecified</option>
-                                            <option value="Z00.0|General medical examination">Z00.0 - General medical examination</option>
-                                            <option value="P07.3|Other preterm newborns">P07.3 - Other preterm newborns</option>
-                                        </select>
-                                    </div>
+                                       <IcdCollapsibleDropdown
+                                            onChange={(selectedOptions) => {
+                                                setAddHistoryInputs((prev) => ({
+                                                ...prev,
+                                                consult_icd_codes: selectedOptions.map((s) => s.value).join(","),
+                                                DiagnosisName: selectedOptions?.map((s) => s.label.split(" - ")[1]).join("|") || "",
+                                                }));
+                                            }}
+                                        />
                                 </div> 
                                 <div className="add-doctors-input-box">
                                     <label htmlFor="add-consultation-history-notes">Doctors Notes:</label>
@@ -1371,8 +1349,16 @@ const Consultation = () => {
                                         <select name="consult_frequency" onChange={handleAddHistoryChange} > 
                                             <option hidden>Select Frequency</option>
                                             <option value="Once a day">Once a day</option>
+                                            <option value="Once a day, Before meal">Once a day, Before meal</option>
+                                            <option value="Once a day, After meal">Once a day, After meal</option>
+
                                             <option value="Twice a day">Twice a day</option>
+                                            <option value="Twice a day, Before meal">Twice a day, Before meal</option>
+                                            <option value="Twice a day, After meal">Twice a day, After meal</option>
+
                                             <option value="Three times a day">Three times a day</option>
+                                            <option value="Three times a day, Before meal">Three times a day, Before meal</option>
+                                            <option value="Three times a day, After meal">Three times a day, After meal</option>
                                         </select>
                                     </div>
                                 </div> 

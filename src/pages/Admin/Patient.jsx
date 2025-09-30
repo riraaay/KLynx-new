@@ -188,7 +188,7 @@ const Patient = () => {
                             </div>
                             <div className="add-doctors-input-box">
                                 <label htmlFor="add-doctors-middleName">Middle Name:</label>
-                                <input type="text" id="add-doctors-middleName" name="mName" placeholder="Enter middle name" required onChange={handleAddDoctorsChange} />
+                                <input type="text" id="add-doctors-middleName" name="mName" placeholder="Enter middle name" onChange={handleAddDoctorsChange} />
                             </div>
                             <div className="add-doctors-input-box">
                                 <label htmlFor="add-doctors-lastName">Last Name:</label>  
@@ -196,7 +196,7 @@ const Patient = () => {
                             </div>
                             <div className="add-doctors-input-box">
                                 <label htmlFor="add-doctors-suffix">Suffix:</label>  
-                                <input type="text" id="add-doctors-suffix" name="suffix" placeholder="Enter suffix" required onChange={handleAddDoctorsChange} />
+                                <input type="text" id="add-doctors-suffix" name="suffix" placeholder="Enter suffix" onChange={handleAddDoctorsChange} />
                             </div>
                         </div>
                         <div className="add-doctors-column">

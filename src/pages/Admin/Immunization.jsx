@@ -10,6 +10,7 @@ import { BiSolidCog, BiSolidBell, BiSolidEdit, BiSolidTrash } from 'react-icons/
 
 const Immunization = () => {
 
+    const [showFatherInputs, setShowFatherInputs] = useState(false);
     const [allPatients, setAllPatients] = useState([]);
 
     const [showModal, setShowModal] = useState(false);
@@ -522,77 +523,95 @@ const Immunization = () => {
                                 <input type="text" id="facility_name" name="facility_name" placeholder="Enter facility name" value={addDoctorsInputs.facility_name || ''} required onChange={handleAddDoctorsChange} />
                             </div>
                         </div>
-                        <h2 style={{ marginTop: "2.6em" }}>Father's Information</h2>
+
                         <div className="add-doctors-column">
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-fatherLastName">Last Name:</label>
-                                <input type="text" id="add-doctors-fatherLastName" name="father_last_name" placeholder="Enter father's last name" required onChange={handleAddDoctorsChange} />
-                            </div>
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-fatherFirstName">First Name:</label>
-                                <input type="text" id="add-doctors-fatherFirstName" name="father_first_name" placeholder="Enter father's first name" required onChange={handleAddDoctorsChange} />
-                            </div>
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-fatherMiddleName">Middle Name:</label>
-                                <input type="text" id="add-doctors-fatherMiddleName" name="father_middle_name" placeholder="Enter father's middle name" required onChange={handleAddDoctorsChange} />
+                            <div className="add-doctors-input-box" style={{ display: "flex", alignItems: "center", paddingLeft: "17em"}}> 
+                                <input
+                                    type="checkbox"
+                                    checked={showFatherInputs}
+                                    onChange={(e) => setShowFatherInputs(e.target.checked)}
+                                    style={{ width: "20px", height: "20px", marginRight: "10px" }}
+                                />
+                                <label style={{ paddingTop: "20px", margin: 0, fontWeight: "500" }}>    Father / Partner Present </label>
                             </div>
                         </div>
-                        <div className="add-doctors-column">
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-fatherAge">Age:</label>  
-                                <input type="text" id="add-doctors-fatherAge" name="pAge" readOnly className="add-doctors-shaded-input" placeholder="Select father's birthdate" required onChange={handleAddDoctorsChange} value={addDoctorsInputs.pAge || ""} />
-                            </div>
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-fatherBirthday">Birthday:</label>
-                                <input type="date" id="add-doctors-fatherBirthday" name="pBday" value={addDoctorsInputs.pBday || ""} required onChange={handleAddDoctorsChange} />
-                            </div>
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-fatherCivilStatus">Civil Status:</label>
-                                <div className="add-doctors-select-box">
-                                    <select name="father_civilStatus" required onChange={handleAddDoctorsChange} > 
-                                        <option hidden value="">-- Select Civil Status --</option>
-                                        <option value="Single">Single</option>
-                                        <option value="Married">Married</option>
-                                        <option value="Separated">Separated</option>
-                                        <option value="Widowed">Widowed</option>
-                                        <option value="Divorced">Divorced</option>
-                                    </select>
+
+                        {showFatherInputs && (
+                            <>
+                                <h2 style={{ marginTop: "1.5em" }}>Father's Information</h2>
+                                <div className="add-doctors-column">
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-fatherLastName">Last Name:</label>
+                                        <input type="text" id="add-doctors-fatherLastName" name="father_last_name" placeholder="Enter father's last name" onChange={handleAddDoctorsChange} />
+                                    </div>
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-fatherFirstName">First Name:</label>
+                                        <input type="text" id="add-doctors-fatherFirstName" name="father_first_name" placeholder="Enter father's first name" onChange={handleAddDoctorsChange} />
+                                    </div>
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-fatherMiddleName">Middle Name:</label>
+                                        <input type="text" id="add-doctors-fatherMiddleName" name="father_middle_name" placeholder="Enter father's middle name" onChange={handleAddDoctorsChange} />
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="add-doctors-column">
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-fatherOccupation">Occupation:</label>
-                                <input type="text" id="add-doctors-fatherOccupation" name="father_occupation" placeholder="Enter father's occupation" required onChange={handleAddDoctorsChange} />
-                            </div>
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-fatherEducAttainment">Educational Attainment:</label>
-                                <div className="add-doctors-select-box">
-                                    <select name="father_educ_attainment" required onChange={handleAddDoctorsChange} > 
-                                        <option hidden value="">-- Select education level --</option>
-                                        <option value="No Formal Education">No Formal Education</option>
-                                        <option value="Elementary Level">Elementary Level</option>
-                                        <option value="Elementary Graduate">Elementary Graduate</option>
-                                        <option value="High School Level">High School Level</option>
-                                        <option value="High School Graduate">High School Graduate</option>
-                                        <option value="College Level">College Level</option>
-                                        <option value="College Graduate">College Graduate</option>
-                                        <option value="Vocational Graduate">Vocational Graduate</option>
-                                        <option value="Post-Graduate">Post-Graduate</option>
-                                    </select>
+                                <div className="add-doctors-column">
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-fatherAge">Age:</label>  
+                                        <input type="text" id="add-doctors-fatherAge" name="pAge" readOnly className="add-doctors-shaded-input" placeholder="Select father's birthdate" onChange={handleAddDoctorsChange} value={addDoctorsInputs.pAge || ""} />
+                                    </div>
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-fatherBirthday">Birthday:</label>
+                                        <input type="date" id="add-doctors-fatherBirthday" name="pBday" value={addDoctorsInputs.pBday || ""} onChange={handleAddDoctorsChange} />
+                                    </div>
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-fatherCivilStatus">Civil Status:</label>
+                                        <div className="add-doctors-select-box">
+                                            <select name="father_civilStatus" required onChange={handleAddDoctorsChange} > 
+                                                <option hidden value="">-- Select Civil Status --</option>
+                                                <option value="Single">Single</option>
+                                                <option value="Married">Married</option>
+                                                <option value="Separated">Separated</option>
+                                                <option value="Widowed">Widowed</option>
+                                                <option value="Divorced">Divorced</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-fatherContactNum">Contact Number:</label>
-                                <input type="text" id="add-doctors-fatherContactNum" name="father_contact_num" pattern="^(09|\+639)\d{9}$" placeholder="09XXXXXXXXX" required onChange={handleAddDoctorsChange} />
-                            </div>
-                        </div> 
-                        <div className="add-doctors-column">
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-fatherPhilHealthNum">Father’s PhilHealth No:</label>
-                                <input type="text" id="add-doctors-fatherPhilHealthNum" name="father_philhealth_num" placeholder="12-345678901-2" pattern="^\d{2}-\d{9}-\d{1}$" required onChange={handleAddDoctorsChange} />
-                            </div>
-                        </div>
+                                <div className="add-doctors-column">
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-fatherOccupation">Occupation:</label>
+                                        <input type="text" id="add-doctors-fatherOccupation" name="father_occupation" placeholder="Enter father's occupation" onChange={handleAddDoctorsChange} />
+                                    </div>
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-fatherEducAttainment">Educational Attainment:</label>
+                                        <div className="add-doctors-select-box">
+                                            <select name="father_educ_attainment" required onChange={handleAddDoctorsChange} > 
+                                                <option hidden value="">-- Select education level --</option>
+                                                <option value="No Formal Education">No Formal Education</option>
+                                                <option value="Elementary Level">Elementary Level</option>
+                                                <option value="Elementary Graduate">Elementary Graduate</option>
+                                                <option value="High School Level">High School Level</option>
+                                                <option value="High School Graduate">High School Graduate</option>
+                                                <option value="College Level">College Level</option>
+                                                <option value="College Graduate">College Graduate</option>
+                                                <option value="Vocational Graduate">Vocational Graduate</option>
+                                                <option value="Post-Graduate">Post-Graduate</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-fatherContactNum">Contact Number:</label>
+                                        <input type="text" id="add-doctors-fatherContactNum" name="father_contact_num" pattern="^(09|\+639)\d{9}$" placeholder="09XXXXXXXXX" onChange={handleAddDoctorsChange} />
+                                    </div>
+                                </div> 
+                                <div className="add-doctors-column">
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-fatherPhilHealthNum">Father’s PhilHealth No:</label>
+                                        <input type="text" id="add-doctors-fatherPhilHealthNum" name="father_philhealth_num" placeholder="12-345678901-2" pattern="^\d{2}-\d{9}-\d{1}$" onChange={handleAddDoctorsChange} />
+                                    </div>
+                                </div>
+                            </>
+                        )}
+
                         <h2 style={{ marginTop: "2.6em" }}>Mother's Information</h2>
                         <div className="add-doctors-column">
                             <div className="add-doctors-input-box">

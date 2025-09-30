@@ -9,8 +9,10 @@ import React from 'react';
 import { BiSolidCog, BiSolidBell, BiSolidEdit, BiSolidTrash } from 'react-icons/bi';
 
 const Prenatal = () => {
+    const [showPartnerInputs, setShowPartnerInputs] = useState(false);
 
     const [allPatients, setAllPatients] = useState([]);
+    const [Notes, setNotes] = useState([]);
 
     const [showModal, setShowModal] = useState(false);
     const [addDoctorsInputs, setAddDoctorsInputs] = useState({ sex: "Male" });
@@ -114,6 +116,10 @@ const Prenatal = () => {
         axios.get("http://localhost/api/Patient.php")
             .then(res => { setAllPatients(res.data); console.log(res.data); })
             .catch(err => console.error(err));
+        axios
+        .get("http://localhost/api/Nurse_Notes.php")
+        .then((res) => setNotes(res.data))
+        .catch((err) => console.error("Error fetching Notes:", err));
     }, []);
 
     const handlePatientSelect = (e) => {
@@ -388,66 +394,83 @@ const Prenatal = () => {
                                 <input type="text" id="add-doctors-tdstat" name="tdStatus" placeholder="Enter td status" required onChange={handleAddDoctorsChange} />
                             </div>
                         </div>
-                        <h2 style={{ marginTop: "2.6em" }}>Husband / Partner Information</h2>
+
                         <div className="add-doctors-column">
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-plastName">Last Name:</label>  
-                                <input type="text" id="add-doctors-plastName" name="pLName" placeholder="Enter partner last name" required onChange={handleAddDoctorsChange} />
-                            </div>
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-pfirstName">First Name:</label>
-                                <input type="text" id="add-doctors-pfirstName" name="pFName" placeholder="Enter partner first name" required onChange={handleAddDoctorsChange} />
-                            </div>
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-pmiddleName">Middle Name:</label>
-                                <input type="text" id="add-doctors-pmiddleName" name="pMName" placeholder="Enter partner middle name" required onChange={handleAddDoctorsChange} />
+                            <div className="add-doctors-input-box" style={{ display: "flex", alignItems: "center", paddingLeft: "17em"}}> 
+                                <input
+                                    type="checkbox"
+                                    checked={showPartnerInputs}
+                                    onChange={(e) => setShowPartnerInputs(e.target.checked)}
+                                    style={{ width: "20px", height: "20px", marginRight: "10px" }}
+                                />
+                                <label style={{ paddingTop: "20px", margin: 0, fontWeight: "500" }}>    Father / Partner Present </label>
                             </div>
                         </div>
-                        <div className="add-doctors-column">
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-pAge">Age:</label>  
-                                <input type="text" id="add-doctors-pAge" name="pAge" readOnly className="add-doctors-shaded-input" placeholder="Select partner birthdate" required onChange={handleAddDoctorsChange} value={addDoctorsInputs.pAge || ""} />
-                            </div>
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-pbday">Birthday:</label>
-                                <input type="date" id="add-doctors-pbday" name="pBday" value={addDoctorsInputs.pBday || ""} required onChange={handleAddDoctorsChange} />
-                            </div>
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-civilstatus">Civil Status:</label>
-                                <div className="add-doctors-select-box">
-                                    <select name="pCivilStatus" onChange={handleAddDoctorsChange} > 
-                                        <option hidden></option>
-                                        <option value="Single">Single</option>
-                                        <option value="Married">Married</option>
-                                        <option value="Separated">Separated</option>
-                                        <option value="Widowed">Widowed</option>
-                                        <option value="Divorced">Divorced</option>
-                                    </select>
+
+                        {showPartnerInputs && (
+                            <>
+                                <h2 style={{ marginTop: "2.6em" }}>Husband / Partner Information</h2>
+                                <div className="add-doctors-column">
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-plastName">Last Name:</label>  
+                                        <input type="text" id="add-doctors-plastName" name="pLName" placeholder="Enter partner last name" onChange={handleAddDoctorsChange} />
+                                    </div>
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-pfirstName">First Name:</label>
+                                        <input type="text" id="add-doctors-pfirstName" name="pFName" placeholder="Enter partner first name" onChange={handleAddDoctorsChange} />
+                                    </div>
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-pmiddleName">Middle Name:</label>
+                                        <input type="text" id="add-doctors-pmiddleName" name="pMName" placeholder="Enter partner middle name" onChange={handleAddDoctorsChange} />
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="add-doctors-column">
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-pOccup">Occupation:</label>  
-                                <input type="text" id="add-doctors-pOccup" name="pOccupation" placeholder="Enter partner occupation" required onChange={handleAddDoctorsChange} />
-                            </div>
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-pContactNum">Contact Number:</label>
-                                <input type="text" id="add-doctors-pContactNum" name="pContactNum" placeholder="Enter partner contact number" required onChange={handleAddDoctorsChange} />
-                            </div>
-                        </div>
-                        <div className="add-doctors-column">
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-pPHNum">Philhealth Number:</label>
-                                <input type="text" id="add-doctors-pPHNum" name="pPhilHealthNum" placeholder="Enter partner philhealth number" required onChange={handleAddDoctorsChange} />
-                            </div>
-                        </div>
-                        <div className="add-doctors-column">
-                            <div className="add-doctors-input-box">
-                                <label htmlFor="add-doctors-pCA">Complete Address:</label>
-                                <input type="text" id="add-doctors-pCA" name="pCompleteAdd" placeholder="Enter partner complete address" required onChange={handleAddDoctorsChange} />
-                            </div>
-                        </div>
+                                <div className="add-doctors-column">
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-pAge">Age:</label>  
+                                        <input type="text" id="add-doctors-pAge" name="pAge" readOnly className="add-doctors-shaded-input" placeholder="Select partner birthdate" onChange={handleAddDoctorsChange} value={addDoctorsInputs.pAge || ""} />
+                                    </div>
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-pbday">Birthday:</label>
+                                        <input type="date" id="add-doctors-pbday" name="pBday" value={addDoctorsInputs.pBday || ""} onChange={handleAddDoctorsChange} />
+                                    </div>
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-civilstatus">Civil Status:</label>
+                                        <div className="add-doctors-select-box">
+                                            <select name="pCivilStatus" onChange={handleAddDoctorsChange} > 
+                                                <option hidden></option>
+                                                <option value="Single">Single</option>
+                                                <option value="Married">Married</option>
+                                                <option value="Separated">Separated</option>
+                                                <option value="Widowed">Widowed</option>
+                                                <option value="Divorced">Divorced</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="add-doctors-column">
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-pOccup">Occupation:</label>  
+                                        <input type="text" id="add-doctors-pOccup" name="pOccupation" placeholder="Enter partner occupation" onChange={handleAddDoctorsChange} />
+                                    </div>
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-pContactNum">Contact Number:</label>
+                                        <input type="text" id="add-doctors-pContactNum" name="pContactNum" placeholder="Enter partner contact number" onChange={handleAddDoctorsChange} />
+                                    </div>
+                                </div>
+                                <div className="add-doctors-column">
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-pPHNum">Philhealth Number:</label>
+                                        <input type="text" id="add-doctors-pPHNum" name="pPhilHealthNum" placeholder="Enter partner philhealth number" onChange={handleAddDoctorsChange} />
+                                    </div>
+                                </div>
+                                <div className="add-doctors-column">
+                                    <div className="add-doctors-input-box">
+                                        <label htmlFor="add-doctors-pCA">Complete Address:</label>
+                                        <input type="text" id="add-doctors-pCA" name="pCompleteAdd" placeholder="Enter partner complete address" onChange={handleAddDoctorsChange} />
+                                    </div>
+                                </div>
+                            </>
+                        )}
 
                         <div className="add-doctors-buttons">
                             <button className="add-doctors-save-button" >Save</button>
@@ -582,24 +605,11 @@ const Prenatal = () => {
                                     <div className="add-doctors-select-box">
                                     <select name="notes" onChange={handleAddHistoryChange} > 
                                         <option hidden value="">-- Select Note --</option>
-                                        <option value="4_prenatal_checkups">Pregnant woman with at least 4 prenatal check ups</option>
-                                        <option value="normal_bmi">Pregnant woman assessed with normal BMI</option>
-                                        <option value="low_bmi">Low BMI</option>
-                                        <option value="high_bmi">High BMI</option>
-                                        <option value="first_time_td2">First-time pregnant woman given at least 2 Td doses</option>
-                                        <option value="td2_plus">At least 3 doses of Td vaccination (Td2 Plus)</option>
-                                        <option value="folic_acid">Folic Acid supplementation</option>
-                                        <option value="carbonate">Carbonate supplementation</option>
-                                        <option value="iodine_capsules">Given iodine capsules</option>
-                                        <option value="deworming">Given one dose of deworming tablet</option>
-                                        <option value="tested_syphilis">Tested for syphilis</option>
-                                        <option value="positive_syphilis">Tested Positive for syphilis</option>
-                                        <option value="screened_hepatitis_b">Screened for Hepatitis B</option>
-                                        <option value="positive_hepatitis_b">Tested Positive for Hepatitis B</option>
-                                        <option value="screened_hiv">Screened for HIV</option>
-                                        <option value="tested_cbc">Tested for CBC (hgB and hct)</option>
-                                        <option value="anemia">Diagnosed anemia</option>
-                                        <option value="screened_diabetes">Screened for gestational diabetes</option>
+                                        {Notes.map((note) => (
+                                            <option key={note.ID} value={note.Note}>
+                                                {note.Note}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                                 </div> 
