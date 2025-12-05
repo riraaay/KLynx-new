@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import Sidebar from '../../components/Navbar';
+import Sidebar from '../../components/Sidebar';
 import './consult.css';
 import { Bar } from 'react-chartjs-2';
 import PieChartExample from '../../components/piechart';  
