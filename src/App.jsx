@@ -64,7 +64,7 @@ import TestPage from './pages/Admin/TestPage'
 
 import GeoMaps from './pages/Admin/GeoMap';
 import IcdManager from './pages/Admin/IcdManager';
-import IcdManager2 from './pages/Admin/IcdManager2';
+import IcdManager2 from './pages/Admin/ICDManager2';
 import NurseNotes from './pages/Admin/NurseNotes';
 
 function App() {
