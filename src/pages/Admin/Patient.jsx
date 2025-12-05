@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Sidebar from '../../components/sidebar';
+import Sidebar from '../../components/Sidebar';
 import '../../components/css/GlobalContainer.css';
 import '../../components/css/DashboardAlt.css';
 import '../../components/css/FileMaintenance.css'

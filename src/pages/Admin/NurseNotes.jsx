@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Sidebar from "../../components/sidebar";
+import Sidebar from "../../components/Sidebar";
 
 function IcdManager2() {
   const [newNote, setNewNote] = useState("");

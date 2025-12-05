@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import './consult.css';
-import Sidebar from "../../components/Navbar";
+import Sidebar from "../../components/Sidebar";
 
 function Maps() {
   const mapRef = useRef(null); // Ref for the map container

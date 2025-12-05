@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "./consult.css";
-import Sidebar from "../../components/Navbar";
+import Sidebar from "../../components/Sidebar";
 
 function Patientrecord() {
   const [records, setRecords] = useState([]);

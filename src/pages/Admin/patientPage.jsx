@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './consult.css';
-import Sidebar from '../../components/Navbar';
+import Sidebar from '../../components/Sidebar';
 import { toast } from 'react-toastify';
 
 
